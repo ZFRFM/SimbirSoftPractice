@@ -13,6 +13,10 @@ dependencyResolutionManagement {
     }
 }
 
+<<<<<<< HEAD
 rootProject.name = "JavaCoreTrainingPart1"
+=======
+rootProject.name = "Git Practice"
+>>>>>>> repo/develop
 include(":app")
  
