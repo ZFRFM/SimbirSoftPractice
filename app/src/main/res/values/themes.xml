@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.JavaCoreTrainingPart1" parent="Theme.Material3.DayNight.NoActionBar">
@@ -7,10 +6,4 @@
     </style>
 
     <style name="Theme.JavaCoreTrainingPart1" parent="Base.Theme.JavaCoreTrainingPart1" />
-=======
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-
-    <style name="Theme.GitPractice" parent="android:Theme.Material.Light.NoActionBar" />
->>>>>>> repo/develop
 </resources>
