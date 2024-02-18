@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsBinding
-import ru.faimizufarov.simbirtraining.java.data.Category
+import ru.faimizufarov.simbirtraining.java.data.CategoryFilter
 import ru.faimizufarov.simbirtraining.java.data.News
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.NewsAdapter
 import java.util.concurrent.Executors
@@ -143,9 +143,9 @@ class NewsFragment : Fragment() {
         }
     }
 
-    private fun List<News>.filterByCategory(category: Category) =
+    private fun List<News>.filterByCategory(categoryFilter: CategoryFilter) =
         filter { news ->
-            news.helpCategory.any { it == category }
+            news.helpCategory.any { it == categoryFilter.enumValue }
         }
 
     private fun openFilterFragment() {
@@ -166,17 +166,17 @@ class NewsFragment : Fragment() {
         val bundle =
             bundleOf(
                 DetailDescriptionFragment.IMAGE_VIEW_NEWS
-                    to news.newsImageUrl,
+                        to news.newsImageUrl,
                 DetailDescriptionFragment.TEXT_VIEW_NAME
-                    to news.nameText,
+                        to news.nameText,
                 DetailDescriptionFragment.TEXT_VIEW_DESCRIPTION
-                    to news.descriptionText,
+                        to news.descriptionText,
                 DetailDescriptionFragment.TEXT_VIEW_REMAINING_TIME
-                    to news.remainingTimeText,
+                        to news.remainingTimeText,
                 DetailDescriptionFragment.START_DATE
-                    to startDate,
+                        to startDate,
                 DetailDescriptionFragment.FINISH_DATE
-                    to finishDate,
+                        to finishDate,
             )
 
         setFragmentResult(DetailDescriptionFragment.NEWS_POSITION_RESULT, bundle)

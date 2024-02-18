@@ -3,7 +3,7 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.adapters
 import androidx.recyclerview.widget.RecyclerView
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.ItemNewsFilterFragmentBinding
-import ru.faimizufarov.simbirtraining.java.data.Category
+import ru.faimizufarov.simbirtraining.java.data.CategoryFilter
 import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
 
 class FilterViewHolder(
@@ -25,10 +25,10 @@ class FilterViewHolder(
         }
     }
 
-    fun bind(category: Category) {
+    fun bind(categoryFilter: CategoryFilter) {
         with(itemBinding) {
             val titleRes =
-                when (category.enumValue) {
+                when (categoryFilter.enumValue) {
                     HelpCategoryEnum.CHILDREN -> R.string.children
                     HelpCategoryEnum.ADULTS -> R.string.adults
                     HelpCategoryEnum.ELDERLY -> R.string.elderly
@@ -37,7 +37,7 @@ class FilterViewHolder(
                     null -> error("Unknown category encountered, can't process it as a filter")
                 }
             textViewFilterItem.setText(titleRes)
-            switchFilterItem.isChecked = category.checked
+            switchFilterItem.isChecked = categoryFilter.checked
         }
     }
 }
