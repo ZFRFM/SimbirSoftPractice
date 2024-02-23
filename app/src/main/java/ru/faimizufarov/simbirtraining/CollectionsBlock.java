@@ -120,25 +120,42 @@ public class CollectionsBlock<T extends Comparable> {
      * @return список inputList после циклического сдвига
      * @throws NullPointerException если один из параметров null
      */
-
-    /*
-     * Честное сердечное: это задание решал около 2 часов,
-     * и с помощью for, и с помощью System.arraycopy().
-     * По итогу закинул в чат гпт и получил такое решение.
-     * Решение понятное, упустил момент с наличием в интерфейсе
-     * Collections метода rotate.
-     * */
     public List<T> collectionTask3(@NonNull List<T> inputList, int n) throws NullPointerException {
         if (inputList == null) {
             throw new NullPointerException();
         }
-        if (n > 0) {
-            Collections.rotate(inputList, n);
+
+        if (n == 0 || inputList.isEmpty()) {
+            return inputList;
         } else if (n < 0) {
-            int shift = -n % inputList.size();
-            Collections.rotate(inputList, shift == 0 ? -(inputList.size()) : -shift);
+            return rotateLeft(inputList, -n);
+        } else {
+            return rotateRight(inputList, n);
         }
-        return inputList;
+    }
+
+    private List<T> rotateRight(@NonNull List<T> inputList, int n) {
+        ArrayList<T> result = new ArrayList<>();
+        int cycledN = n % inputList.size();
+        for (int i = 0; i < cycledN; i++) {
+            result.add(inputList.get(inputList.size() - cycledN + i));
+        }
+        for (int i = cycledN; i < inputList.size(); i++) {
+            result.add(inputList.get(i - cycledN));
+        }
+        return result;
+    }
+
+    private List<T> rotateLeft(@NonNull List<T> inputList, int n) {
+        ArrayList<T> result = new ArrayList<>();
+        int cycledN = n % inputList.size();
+        for (int i = cycledN; i < inputList.size(); i++) {
+            result.add(inputList.get(i));
+        }
+        for (int i = 0; i < cycledN; i++) {
+            result.add(inputList.get(i));
+        }
+        return result;
     }
 
     /**
