@@ -1,4 +1,4 @@
-package com.example.javacoretrainingpart1;
+package ru.faimizufarov.simbirtraining;
 
 import androidx.annotation.NonNull;
 
@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
-import kotlin.KotlinNothingValueException;
 
 /**
  * Набор тренингов по работе со строками в java.

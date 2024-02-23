@@ -1,4 +1,4 @@
-package com.example.javacoretrainingpart1;
+package ru.faimizufarov.simbirtraining;
 
 /**
  * Набор тренингов по работе с примитивными типами java.
