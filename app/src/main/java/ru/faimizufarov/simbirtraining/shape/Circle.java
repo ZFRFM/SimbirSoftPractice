@@ -1,4 +1,4 @@
-package com.example.javacoretrainingpart1.shape;
+package ru.faimizufarov.simbirtraining.shape;
 
 public class Circle implements Shape {
 

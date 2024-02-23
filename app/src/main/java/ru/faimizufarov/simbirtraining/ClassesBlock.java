@@ -1,4 +1,4 @@
-package com.example.javacoretrainingpart1;
+package ru.faimizufarov.simbirtraining;
 
 /**
  * Набор заданий по работе с классами в java.

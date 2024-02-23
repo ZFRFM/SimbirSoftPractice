@@ -3,11 +3,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.javacoretrainingpart1"
+    namespace = "ru.faimizufarov.simbirtraining"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.javacoretrainingpart1"
+        applicationId = "ru.faimizufarov.simbirtraining"
         minSdk = 26
         targetSdk = 34
         versionCode = 1

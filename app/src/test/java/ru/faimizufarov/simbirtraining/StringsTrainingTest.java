@@ -1,4 +1,4 @@
-package com.example.javacoretrainingpart1;
+package ru.faimizufarov.simbirtraining;
 
 import org.junit.BeforeClass;
 import org.junit.Test;

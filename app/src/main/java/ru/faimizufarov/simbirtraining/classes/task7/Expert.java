@@ -1,4 +1,4 @@
-package com.example.javacoretrainingpart1.classes.task7;
+package ru.faimizufarov.simbirtraining.classes.task7;
 
 public class Expert {
 

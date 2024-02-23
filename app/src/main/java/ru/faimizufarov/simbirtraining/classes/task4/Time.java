@@ -1,4 +1,4 @@
-package com.example.javacoretrainingpart1.classes.task4;
+package ru.faimizufarov.simbirtraining.classes.task4;
 
 /*
       IV

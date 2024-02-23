@@ -1,4 +1,4 @@
-package com.example.javacoretrainingpart1.classes.task6;
+package ru.faimizufarov.simbirtraining.classes.task6;
 
 public class Exam {
     int score = 0;
