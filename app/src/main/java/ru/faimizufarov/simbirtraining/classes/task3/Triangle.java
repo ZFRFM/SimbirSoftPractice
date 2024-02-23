@@ -6,40 +6,44 @@ package ru.faimizufarov.simbirtraining.classes.task3;
       Описать класс, представляющий треугольник. Предусмотреть методы для создания объектов,
       вычисления площади, периметра и точки пересечения медиан.
       Описать свойства для получения состояния объекта.
-     */
+*/
 
 class Triangle {
-    private double side1 = 1.0;
-    private double side2 = 1.0;
-    private double side3 = 1.0;
 
-    Triangle(double side1, double side2, double side3) {
-        this.side1 = side1;
-        this.side2 = side2;
-        this.side3 = side3;
+    public Point a;
+    public Point b;
+    public Point c;
+
+    double getAB() {
+        return a.distanceTo(b);
     }
 
-    double getSide1() {
-        return side1;
+    double getAC() {
+        return a.distanceTo(c);
     }
 
-    double getSide2() {
-        return side2;
+    double getBC() {
+        return a.distanceTo(c);
     }
 
-    double getSide3() {
-        return side3;
+    public Triangle(Point a, Point b, Point c) {
+        this.a = a;
+        this.b = b;
+        this.c = c;
     }
 
     double perimeterOfTriangle() {
-        return side1 + side2 + side3;
+        return getAB() + getBC() + getAC();
     }
 
     double areaOfTriangle() {
         double perim = this.perimeterOfTriangle();
-        return Math.sqrt((perim * (perim -  side1) * (perim - side2) * (perim - side3)));
+        return Math.sqrt((perim * (perim - getAB()) * (perim - getAC()) * (perim - getBC())));
     }
-    // для определния точки пересечения медиан нужно вводить
-    // координаты -> полностью переписывать класс(
 
+    Point getMedianIntersectionPoint() {
+        double x = (a.x + b.x + c.x) / 3.0;
+        double y = (a.y + b.y + c.y) / 3.0;
+        return new Point(x, y);
+    }
 }
