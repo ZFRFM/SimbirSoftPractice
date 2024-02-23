@@ -5,6 +5,7 @@ import androidx.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -31,14 +32,45 @@ public class CollectionsBlock<T extends Comparable> {
      * @return объединенный упорядоченный список
      * @throws NullPointerException если один из параметров null
      */
+    // Fusion sort
     public List<T> collectionTask0(@NonNull List<T> firstList, @NonNull List<T> secondList) {
         if (firstList == null || secondList == null) {
             throw new NullPointerException();
         }
-        TreeSet<T> treeSet = new TreeSet<>(Collections.reverseOrder());
-        treeSet.addAll(firstList);
-        treeSet.addAll(secondList);
-        return new ArrayList<>(treeSet);
+
+        // Creating new sorted list for result.
+        List<T> result = new LinkedList();
+        // Making indices, which will iterate over source lists.
+        int firstListIndex = 0;
+        int secondListIndex = 0;
+        int resultSize = firstList.size() + secondList.size();
+        // Start iterating over both lists simultaneously.
+        while ((firstListIndex + secondListIndex) < resultSize) {
+            // If we finished with the first list - adding remaining items from the second list.
+            if (firstListIndex >= firstList.size()) {
+                result.addAll(secondList.subList(secondListIndex, secondList.size()));
+                break;
+            }
+
+            // If we finished with the second list - adding remaining items from the first list.
+            if (secondListIndex >= secondList.size()) {
+                result.addAll(firstList.subList(firstListIndex, firstList.size()));
+                break;
+            }
+
+            T firstItem = firstList.get(firstListIndex);
+            T secondItem = secondList.get(secondListIndex);
+            // Adding the smallest item between two
+            // and incrementing index of the list we took it from.
+            if (firstItem.compareTo(secondItem) >= 0) {
+                result.add(firstItem);
+                firstListIndex++;
+            } else {
+                result.add(secondItem);
+                secondListIndex++;
+            }
+        }
+        return result;
     }
 
     /**
@@ -90,12 +122,12 @@ public class CollectionsBlock<T extends Comparable> {
      */
 
     /*
-    * Честное сердечное: это задание решал около 2 часов,
-    * и с помощью for, и с помощью System.arraycopy().
-    * По итогу закинул в чат гпт и получил такое решение.
-    * Решение понятное, упустил момент с наличием в интерфейсе
-    * Collections метода rotate.
-    * */
+     * Честное сердечное: это задание решал около 2 часов,
+     * и с помощью for, и с помощью System.arraycopy().
+     * По итогу закинул в чат гпт и получил такое решение.
+     * Решение понятное, упустил момент с наличием в интерфейсе
+     * Collections метода rotate.
+     * */
     public List<T> collectionTask3(@NonNull List<T> inputList, int n) throws NullPointerException {
         if (inputList == null) {
             throw new NullPointerException();
