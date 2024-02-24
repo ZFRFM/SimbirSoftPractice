@@ -11,6 +11,7 @@ package ru.faimizufarov.simbirtraining.studentcollection;
       Для каждой группы найдите лучшего с точки зрения успеваемости студента.
  */
 
+import androidx.annotation.NonNull;
 import java.util.Arrays;
 
 public class Student {
@@ -23,12 +24,20 @@ public class Student {
 
     int group;
 
-    int[] fiveSubjectsGrades = new int[5];
+    int course;
+
+    // TODO: change to Map<String, Integer>
+    int[] fiveSubjectsGrades;
 
     double avgGrade = 0.0;
 
-    Student(String surname, String name, String patronymic,
-            int yearOfBirth, int group, int[] fiveSubjectsGrades
+    Student(
+            String surname,
+            String name,
+            String patronymic,
+            int yearOfBirth,
+            int group,
+            int[] fiveSubjectsGrades
     ) {
         this.surname = surname;
         this.name = name;
@@ -38,20 +47,14 @@ public class Student {
         this.fiveSubjectsGrades = fiveSubjectsGrades;
     }
 
-    int getGroup() {
-        return this.group;
-    }
-
-    String getSurname() {
-        return this.surname;
-    }
-
-    int getYearOfBirth() {
-        return this.yearOfBirth;
-    }
-
     double getAvgGrade() {
         this.avgGrade = Arrays.stream(this.fiveSubjectsGrades).sum() / 5.0;
         return this.avgGrade;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return String.format("%s %s %s, группа %d", surname, name, patronymic, group);
     }
 }
