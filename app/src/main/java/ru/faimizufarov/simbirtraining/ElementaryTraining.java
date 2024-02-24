@@ -1,5 +1,7 @@
 package ru.faimizufarov.simbirtraining;
 
+import java.util.Arrays;
+
 /**
  * Набор тренингов по работе с примитивными типами java.
  * <p>
@@ -74,10 +76,11 @@ public class ElementaryTraining {
             return value;
         }
         else {
-            String result = strNumberValue.charAt(strNumberValue.length()-1)
-                    + strNumberValue.substring(1, strNumberValue.length()-1)
-                    + strNumberValue.charAt(0);
-            return Integer.parseInt(result);
+            int indexOfLastChar = strNumberValue.length() - 1;
+            StringBuilder builder = new StringBuilder(strNumberValue.substring(1, indexOfLastChar));
+            builder.insert(0, strNumberValue.charAt(indexOfLastChar))
+                    .append(strNumberValue.charAt(0));
+            return Integer.parseInt(String.valueOf(builder));
         }
     }
 
@@ -92,8 +95,8 @@ public class ElementaryTraining {
      * @return новое число
      */
     public int zeroEvenNumber(int value) {
-        String strNumberValue = String.valueOf(value);
-        if (strNumberValue.length() > 5) {
+        char[] chars = (String.valueOf(value)).toCharArray();
+        if (chars.length > 5) {
             System.out.println("Обработаю максимум пятизначное число. Больше не буду :)");
             return 0;
         }
@@ -101,13 +104,12 @@ public class ElementaryTraining {
             return value;
         }
         else {
-            for (int i = 0; i < strNumberValue.length(); i++){
-                if ((int) strNumberValue.charAt(i) % 2 == 0) {
-                    strNumberValue = strNumberValue
-                            .replace(strNumberValue.charAt(i), '0');
+            for (int i = 0; i < chars.length; i++){
+                if ((int) chars[i] % 2 == 0) {
+                    chars[i] = '0';
                 }
             }
-            return Integer.parseInt(strNumberValue);
+            return Integer.parseInt(new String(chars));
         }
     }
 }

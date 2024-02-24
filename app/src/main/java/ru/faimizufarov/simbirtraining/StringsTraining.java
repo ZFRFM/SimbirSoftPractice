@@ -92,21 +92,16 @@ public class StringsTraining {
             for (int i = 0; i < text.length(); i++) {
                 char actualChar = text.charAt(i);
                 if (Character.isDigit(actualChar)) {
-                    switch (actualChar) {
-                        case '0':
-                            result = result.replaceAll(String.valueOf(actualChar), "zero");
-                            break;
-                        case '1':
-                            result = result.replaceAll(String.valueOf(actualChar), "one");
-                            break;
-                        case '2':
-                            result = result.replaceAll(String.valueOf(actualChar), "two");
-                            break;
-                        case '3':
-                            result = result.replaceAll(String.valueOf(actualChar), "three");
-                            break;
-                        // и на все цифры до 9, для тестов достаточно первых двух
-                    }
+                    if (actualChar == '0') result = result.replaceAll(String.valueOf(actualChar), "zero");
+                    if (actualChar == '1') result = result.replaceAll(String.valueOf(actualChar), "one");
+                    if (actualChar == '2') result = result.replaceAll(String.valueOf(actualChar), "two");
+                    if (actualChar == '3') result = result.replaceAll(String.valueOf(actualChar), "three");
+                    if (actualChar == '4') result = result.replaceAll(String.valueOf(actualChar), "four");
+                    if (actualChar == '5') result = result.replaceAll(String.valueOf(actualChar), "five");
+                    if (actualChar == '6') result = result.replaceAll(String.valueOf(actualChar), "six");
+                    if (actualChar == '7') result = result.replaceAll(String.valueOf(actualChar), "seven");
+                    if (actualChar == '8') result = result.replaceAll(String.valueOf(actualChar), "eight");
+                    if (actualChar == '9') result = result.replaceAll(String.valueOf(actualChar), "nine");
                 }
             }
         }

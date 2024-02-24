@@ -12,13 +12,15 @@ package ru.faimizufarov.simbirtraining.classes.task2;
 */
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Random;
 
 class ArrayFlow {
+
     ArrayList<Integer> arrayList;
+
     int sizeOfArray = 0;
+
     ArrayFlow(int sizeOfArray) {
         this.sizeOfArray = sizeOfArray;
         arrayList = new ArrayList<>(this.sizeOfArray);
@@ -33,8 +35,21 @@ class ArrayFlow {
     }
 
     ArrayList<Integer> shuffleArray() {
-        Collections.shuffle(arrayList);
-        return arrayList;
+        int[] shuffledArray = new int[arrayList.size()];
+        Random random = new Random();
+        ArrayList<Integer> randomNumbers = new ArrayList<>();
+        for (int i = 0; i < arrayList.size(); i++) {
+            int randomNumber = random.nextInt(arrayList.size());
+            while (randomNumbers.contains(randomNumber)) {
+                randomNumber = random.nextInt(arrayList.size());
+            }
+            shuffledArray[randomNumber] = arrayList.get(i);
+        }
+        ArrayList<Integer> shuffledArrayList = new ArrayList<>();
+        for (int i = 0; i < arrayList.size(); i++) {
+            shuffledArrayList.add(i, shuffledArray[i]);
+        }
+        return shuffledArrayList;
     }
 
     int uniqueElements() {

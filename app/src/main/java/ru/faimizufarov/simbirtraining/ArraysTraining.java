@@ -85,20 +85,16 @@ public class ArraysTraining {
             return new int[0];
         }
         else {
-            int[] array = new int[numbersCount];
+            int[] resultArray = new int[numbersCount];
+            int n1 = 0;
+            int n2 = 1;
             for (int i = 0; i < numbersCount; i++) {
-                array[i] = fibonachi(i);
+                int n3 = n1 + n2;
+                n1 = n2;
+                n2 = n3;
+                resultArray[i] = n1;
             }
-            return array;
-        }
-    }
-
-    static int fibonachi(int n) {
-        if (n <= 1) {
-            return 1;
-        }
-        else {
-            return fibonachi(n - 1) + fibonachi(n - 2);
+            return resultArray;
         }
     }
 

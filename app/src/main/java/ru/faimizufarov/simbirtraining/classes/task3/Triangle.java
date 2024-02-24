@@ -32,12 +32,12 @@ class Triangle {
         this.c = c;
     }
 
-    double perimeterOfTriangle() {
+    double getPerimeterOfTriangle() {
         return getAB() + getBC() + getAC();
     }
 
-    double areaOfTriangle() {
-        double perim = this.perimeterOfTriangle();
+    double getAreaOfTriangle() {
+        double perim = this.getPerimeterOfTriangle();
         return Math.sqrt((perim * (perim - getAB()) * (perim - getAC()) * (perim - getBC())));
     }
 

@@ -17,8 +17,24 @@ import androidx.annotation.NonNull;
 
 class User {
     private long id;
-    private String surname, name, lastName, address;
-    private int creditCard, debet, credit, minOfInternal, minOfInternational;
+
+    private String surname;
+
+    private String name;
+
+    private String lastName;
+
+    private String address;
+
+    private int creditCard;
+
+    private int debet;
+
+    private int credit;
+
+    private int minOfInternal;
+
+    private int minOfInternational;
 
     User(long id) {
         this.id = id;
