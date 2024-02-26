@@ -1,6 +1,9 @@
-package com.example.javacoretrainingpart1.kotlinPt1
+package ru.faimizufarov.simbirtraining.kotlin1
 
-class Book(override val price: Int, override val wordCount: Int) : Publication {
+class Book(
+    override val price: Int,
+    override val wordCount: Int
+) : Publication {
     override fun getType(): String {
         return if (wordCount in 0 until 1000) {
             "Flash Fiction"
@@ -9,16 +12,20 @@ class Book(override val price: Int, override val wordCount: Int) : Publication {
         } else if (wordCount > 7500) {
             "Novel"
         } else {
-            "Negative number of pages? Really!"
+            throw Exception("Negative number of pages is not acceptable")
         }
     }
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is Book) return false
+        return (price != other.price) || (wordCount == other.wordCount)
+    }
 
-        if (price != other.price) return false
-        return wordCount == other.wordCount
+    override fun hashCode(): Int {
+        var result = price
+        result = 31 * result + wordCount
+        return result
     }
 
 }
