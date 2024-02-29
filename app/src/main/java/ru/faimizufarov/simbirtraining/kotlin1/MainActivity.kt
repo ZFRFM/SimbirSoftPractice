@@ -29,9 +29,9 @@ class MainActivity : AppCompatActivity() {
         sum(4637, 2304)
         sum(12345, 234)
 
-        Log.d(TAG, bookOne.returnInfoAboutPublication(bookOne.getType(), bookOne.price, bookOne.wordCount))
-        Log.d(TAG, bookTwo.returnInfoAboutPublication(bookTwo.getType(), bookTwo.price, bookTwo.wordCount))
-        Log.d(TAG, magazineOne.returnInfoAboutPublication(magazineOne.getType(), magazineOne.price, magazineOne.wordCount))
+        Log.d(TAG, bookOne.returnInfoAboutPublication())
+        Log.d(TAG, bookTwo.returnInfoAboutPublication())
+        Log.d(TAG, magazineOne.returnInfoAboutPublication())
         Log.d(TAG, "${bookOne === bookTwo}")
         Log.d(TAG, "${bookOne.equals(bookTwo)}")
 

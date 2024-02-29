@@ -9,7 +9,7 @@ interface Publication {
     fun getType(): String
 }
 
-fun Publication.returnInfoAboutPublication(type: String, price: Int, wordCount: Int): String {
+fun Publication.returnInfoAboutPublication(): String {
     val euro = Currency.getInstance("EUR").symbol
-    return "$type; $price $euro; $wordCount"
+    return "${this.getType()}; ${this.price} $euro; ${this.wordCount}"
 }
