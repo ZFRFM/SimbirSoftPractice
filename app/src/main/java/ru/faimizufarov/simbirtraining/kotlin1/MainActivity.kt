@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import ru.faimizufarov.simbirtraining.R
-import java.util.Currency
 
 
 const val TAG = "Publication Tag"
