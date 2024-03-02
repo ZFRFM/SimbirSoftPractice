@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
 
         auth(user, anonObject, ::updateCache)
 
-        val action = Login(user)
+        val action = Action.Login(user)
         doAction(action, user, anonObject, ::updateCache)
     }
 
@@ -62,9 +62,10 @@ class MainActivity : AppCompatActivity() {
 
     fun doAction(action: Action, user: User, authCallback: AuthCallback, updateCache: () -> Unit) {
         when(action) {
-            is Registration -> Log.d(TAG, "Registration started")
-            is Login -> auth(user, authCallback, updateCache)
-            is Logout -> Log.d(TAG, "Logout started")
+            is Action.Registration -> Log.d(TAG, "Registration started")
+            is Action.Login -> auth(user, authCallback, updateCache)
+            is Action.Logout -> Log.d(TAG, "Logout started")
+            else -> {}
         }
     }
 }
