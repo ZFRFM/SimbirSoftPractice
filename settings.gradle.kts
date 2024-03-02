@@ -13,6 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "JavaCoreTrainingPart1"
+rootProject.name = "SimbirSoftPractice"
 include(":app")
  
