@@ -9,6 +9,8 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+import ru.faimizufarov.simbirtraining.java.CollectionsBlock;
+
 public class CollectionsBlockTest {
 
     private static CollectionsBlock<Integer> collectionsBlock;

@@ -6,6 +6,8 @@ import org.junit.Test;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
+import ru.faimizufarov.simbirtraining.java.StringsTraining;
+
 public class StringsTrainingTest {
 
     private static StringsTraining stringsTraining;
