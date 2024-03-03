@@ -10,7 +10,7 @@ const val TAG = "Publication Tag"
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_kotlin)
 
         val bookOne = Book(price = 400, wordCount = 3420)
         val bookTwo = Book(price = 650, wordCount = 7783)
