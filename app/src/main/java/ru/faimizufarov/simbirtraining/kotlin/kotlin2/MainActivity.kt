@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.kotlin2
+package ru.faimizufarov.simbirtraining.kotlin.kotlin2
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
