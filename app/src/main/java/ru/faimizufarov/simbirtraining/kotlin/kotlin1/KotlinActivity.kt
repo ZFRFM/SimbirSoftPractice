@@ -7,7 +7,7 @@ import ru.faimizufarov.simbirtraining.R
 
 
 const val TAG = "Publication Tag"
-class MainActivity : AppCompatActivity() {
+class KotlinActivity: AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kotlin)

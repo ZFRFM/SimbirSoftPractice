@@ -15,11 +15,11 @@ data class User(
 }
 
 fun User.isAdult(): Boolean {
-    if (this.age > 18) {
+    if (age > 18) {
         Log.d(TAG, this.toString())
         return true
     }
     else {
-        throw Exception("This man is 18 years old or younger")
+        throw Error("This man is 18 years old or younger")
     }
 }
