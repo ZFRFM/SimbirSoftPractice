@@ -4,5 +4,9 @@
     <color name="white">#FFFFFFFF</color>
     <color name="splash_screen_background">#eff3f6</color>
     <color name="turtle_green">#7db354</color>
+    <color name="leaf">#66a636</color>
+    <color name="text_view_grey">#61000000</color>
+    <color name="grey">#aabbbb</color>
+    <color name="warm_grey">#979797</color>
 
 </resources>
