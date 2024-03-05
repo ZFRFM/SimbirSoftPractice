@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/name_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/roboto"
+            android:text="@string/name"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/birth_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/date_of_birth"
+            android:textSize="12sp"
+            android:textColor="@color/text_view_grey"
+            android:fontFamily="@font/roboto"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="@id/name_text_view"
+            app:layout_constraintTop_toBottomOf="@id/name_text_view" />
+
+        <TextView
+            android:id="@+id/birth_value_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/date_of_birth_value"
+            android:textSize="16sp"
+            android:fontFamily="@font/roboto"
+            app:layout_constraintStart_toStartOf="@id/name_text_view"
+            app:layout_constraintTop_toBottomOf="@id/birth_text_view" />
+
+        <TextView
+            android:id="@+id/job_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_view_grey"
+            android:fontFamily="@font/roboto"
+            android:textSize="12sp"
+            android:text="@string/job"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="@+id/birth_value_text_view"
+            app:layout_constraintTop_toBottomOf="@+id/birth_value_text_view" />
+
+        <TextView
+            android:id="@+id/job_value_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:text="@string/job_value"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="@+id/job_text_view"
+            app:layout_constraintTop_toBottomOf="@+id/job_text_view" />
+
+        <TextView
+            android:id="@+id/push_permission_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/roboto"
+            android:text="@string/push"
+            android:textSize="16sp"
+            android:layout_marginTop="28dp"
+            app:layout_constraintStart_toStartOf="@+id/job_value_text_view"
+            app:layout_constraintTop_toBottomOf="@+id/job_value_text_view" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            app:thumbTint="@color/turtle_green"
+            app:trackTint="@color/turtle_green"
+            android:layout_marginEnd="26dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/push_permission_text_view"
+            app:layout_constraintBottom_toBottomOf="@id/push_permission_text_view" />
+
+        <View
+            android:id="@+id/first_divider_view"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="18dp"
+            android:background="@color/grey"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/push_permission_text_view" />
+
+        <TextView
+            android:id="@+id/friends_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_view_grey"
+            android:fontFamily="@font/roboto"
+            android:text="@string/friends"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="@id/name_text_view"
+            app:layout_constraintTop_toBottomOf="@id/first_divider_view" />
+
+        <ImageView
+            android:id="@+id/first_avatar_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/avatar_3"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="@id/friends_text_view"
+            app:layout_constraintTop_toBottomOf="@id/friends_text_view"
+            />
+
+        <ImageView
+            android:id="@+id/second_avatar_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/avatar_2"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="@id/friends_text_view"
+            app:layout_constraintTop_toBottomOf="@id/first_avatar_image_view" />
+
+        <ImageView
+            android:id="@+id/third_avatar_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/avatar_1"
+            android:layout_marginTop="10dp"
+            app:layout_constraintStart_toStartOf="@id/friends_text_view"
+            app:layout_constraintTop_toBottomOf="@id/second_avatar_image_view" />
+
+        <TextView
+            android:id="@+id/first_friend_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Дмитрий Валерьевич"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toEndOf="@id/first_avatar_image_view"
+            app:layout_constraintTop_toTopOf="@id/first_avatar_image_view"
+            app:layout_constraintBottom_toBottomOf="@id/first_avatar_image_view" />
+
+        <TextView
+            android:id="@+id/second_friend_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Евгений Александров"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toEndOf="@id/second_avatar_image_view"
+            app:layout_constraintTop_toTopOf="@id/second_avatar_image_view"
+            app:layout_constraintBottom_toBottomOf="@id/second_avatar_image_view" />
+
+        <TextView
+            android:id="@+id/third_friend_text_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:text="Виктор Кузнецов"
+            android:layout_marginStart="20dp"
+            app:layout_constraintStart_toEndOf="@id/third_avatar_image_view"
+            app:layout_constraintTop_toTopOf="@id/third_avatar_image_view"
+            app:layout_constraintBottom_toBottomOf="@id/third_avatar_image_view" />
+
+        <View
+            android:id="@+id/second_divider_view"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="18dp"
+            android:background="@color/grey"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/third_avatar_image_view" />
+
+        <Button
+            android:id="@+id/exit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shape_for_button"
+            android:letterSpacing="0.05"
+            android:text="@string/exit_text"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:textAllCaps="false"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginBottom="68dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/second_divider_view" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
