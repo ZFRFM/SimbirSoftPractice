@@ -117,7 +117,7 @@
             android:layout_marginTop="16dp"
             app:layout_constraintStart_toStartOf="@id/friends_text_view"
             app:layout_constraintTop_toBottomOf="@id/friends_text_view"
-            />
+            android:contentDescription="@string/friends" />
 
         <ImageView
             android:id="@+id/second_avatar_image_view"
@@ -126,7 +126,8 @@
             android:src="@drawable/avatar_2"
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="@id/friends_text_view"
-            app:layout_constraintTop_toBottomOf="@id/first_avatar_image_view" />
+            app:layout_constraintTop_toBottomOf="@id/first_avatar_image_view"
+            android:contentDescription="@string/friends" />
 
         <ImageView
             android:id="@+id/third_avatar_image_view"
@@ -135,14 +136,15 @@
             android:src="@drawable/avatar_1"
             android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="@id/friends_text_view"
-            app:layout_constraintTop_toBottomOf="@id/second_avatar_image_view" />
+            app:layout_constraintTop_toBottomOf="@id/second_avatar_image_view"
+            android:contentDescription="@string/friends" />
 
         <TextView
             android:id="@+id/first_friend_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="Дмитрий Валерьевич"
+            android:text="@string/dmitry"
             android:layout_marginStart="20dp"
             app:layout_constraintStart_toEndOf="@id/first_avatar_image_view"
             app:layout_constraintTop_toTopOf="@id/first_avatar_image_view"
@@ -153,7 +155,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="Евгений Александров"
+            android:text="@string/evgeny"
             android:layout_marginStart="20dp"
             app:layout_constraintStart_toEndOf="@id/second_avatar_image_view"
             app:layout_constraintTop_toTopOf="@id/second_avatar_image_view"
@@ -164,7 +166,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="16sp"
-            android:text="Виктор Кузнецов"
+            android:text="@string/victor"
             android:layout_marginStart="20dp"
             app:layout_constraintStart_toEndOf="@id/third_avatar_image_view"
             app:layout_constraintTop_toTopOf="@id/third_avatar_image_view"

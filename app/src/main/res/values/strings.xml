@@ -149,4 +149,9 @@
     </string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_scrolling_check">ScrollingActivityCheck</string>
+    <string name="no">no</string>
+    <string name="edit">edit</string>
+    <string name="dmitry">Дмитрий Валерьевич</string>
+    <string name="evgeny">Евгений Александров</string>
+    <string name="victor">Виктор Кузнецов</string>
 </resources>

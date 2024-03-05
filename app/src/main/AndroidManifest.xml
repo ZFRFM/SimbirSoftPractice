@@ -12,26 +12,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SimbirSoftPractice"
         tools:targetApi="31">
-        <activity
-            android:name=".presentation.layouts.ScrollingActivityCheck"
-            android:exported="false"
-            android:label="@string/title_activity_scrolling_check"
-            android:theme="@style/Theme.SimbirSoftPractice.NoActionBar" />
-        <activity
-            android:name=".presentation.layouts.ScrollingActivity"
-            android:exported="false"
-            android:label="@string/title_activity_scrolling"
-            android:theme="@style/Theme.SimbirSoftPractice.NoActionBar" />
+
         <activity
             android:name=".presentation.layouts.ProfileActivity"
             android:exported="false" />
-        <activity
-            android:name=".kotlin.kotlin1.MainActivity"
-            android:exported="false" />
+
         <activity
             android:name=".presentation.layouts.SplashActivity"
             android:exported="true"
-            android:label="@string/app_name"
             android:theme="@style/Theme.SimbirSoftPractice">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
