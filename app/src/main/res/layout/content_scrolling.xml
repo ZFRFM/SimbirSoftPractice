@@ -10,6 +10,17 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <ImageView
+            android:id="@+id/man_image_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/image_man"
+            android:adjustViewBounds="true"
+            android:importantForAccessibility="no"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
         <TextView
             android:id="@+id/textViewName"
             android:layout_width="wrap_content"
@@ -19,7 +30,7 @@
             android:text="@string/name"
             android:textAppearance="@style/TextAppearance.FieldWithBigText"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/man_image_view" />
 
         <TextView
             android:id="@+id/textViewBirthDay"
@@ -177,11 +188,13 @@
             android:id="@+id/buttonExit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
             android:background="@drawable/shape_for_button"
             android:letterSpacing="0.05"
             android:text="@string/exit_text"
             android:textAppearance="@style/TextAppearance.ButtonText"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="68dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

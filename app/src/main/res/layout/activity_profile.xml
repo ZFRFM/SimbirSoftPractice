@@ -15,84 +15,52 @@
         android:fitsSystemWindows="true"
         android:theme="@style/Theme.SimbirSoftPractice.AppBarOverlay">
 
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-            android:id="@+id/toolbar_layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:minHeight="60dp"
-            android:fitsSystemWindows="true"
-            app:layout_scrollFlags="scroll|enterAlwaysCollapsed"
-            app:contentScrim="@color/leaf"
-            app:toolbarId="@+id/toolbar">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/leaf"
+                app:layout_collapseMode="pin"
+                app:layout_scrollFlags="scroll|enterAlways"
+                app:popupTheme="@style/Theme.SimbirSoftPractice.PopupOverlay"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
 
-                <androidx.appcompat.widget.Toolbar
-                    android:id="@+id/toolbar"
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin"
-                    android:background="@color/leaf"
-                    app:popupTheme="@style/Theme.SimbirSoftPractice.PopupOverlay"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toTopOf="@id/man_image_view">
+                    android:layout_height="match_parent">
 
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                    <TextView
+                        android:id="@+id/text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/officina_sans_extra_bold_c"
+                        android:text="@string/profile"
+                        android:textColor="@color/white"
+                        android:textSize="21sp"
+                        android:textStyle="bold"
+                        android:gravity="center"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
 
-                        <TextView
-                            android:id="@+id/text_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:fontFamily="@font/officina_sans_extra_bold_c"
-                            android:text="@string/profile"
-                            android:textColor="@color/white"
-                            android:textSize="21sp"
-                            android:textStyle="bold"
-                            android:gravity="center"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintBottom_toTopOf="@id/man_image_view"/>
+                    <ImageView
+                        android:id="@+id/edit_image_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end|center_vertical"
+                        android:src="@drawable/baseline_create_24"
+                        android:layout_marginEnd="22dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/text_view"
+                        app:layout_constraintBottom_toBottomOf="@id/text_view"
+                        android:contentDescription="@string/edit" />
 
-                        <ImageView
-                            android:id="@+id/edit_image_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="end|center_vertical"
-                            android:src="@drawable/baseline_create_24"
-                            android:layout_marginEnd="22dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/text_view"
-                            app:layout_constraintBottom_toBottomOf="@id/text_view"
-                            android:contentDescription="@string/edit" />
+                </FrameLayout>
 
-                    </FrameLayout>
-
-                </androidx.appcompat.widget.Toolbar>
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/man_image_view"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/image_man"
-                    android:fitsSystemWindows="true"
-                    android:adjustViewBounds="true"
-                    app:layout_collapseMode="parallax"
-                    app:layout_constraintTop_toBottomOf="@id/toolbar"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+            </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
