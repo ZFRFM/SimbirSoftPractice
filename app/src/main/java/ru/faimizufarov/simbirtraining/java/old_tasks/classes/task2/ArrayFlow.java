@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.classes.task2;
+package ru.faimizufarov.simbirtraining.java.old_tasks.classes.task2;
 
 /*
       II

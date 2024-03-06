@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java;
+package ru.faimizufarov.simbirtraining.java.old_tasks;
 
 /**
  * Набор тренингов по работе с массивами в java.

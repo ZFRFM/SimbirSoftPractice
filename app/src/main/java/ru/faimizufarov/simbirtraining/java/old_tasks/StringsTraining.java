@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java;
+package ru.faimizufarov.simbirtraining.java.old_tasks;
 
 import java.text.ChoiceFormat;
 import java.util.ArrayList;

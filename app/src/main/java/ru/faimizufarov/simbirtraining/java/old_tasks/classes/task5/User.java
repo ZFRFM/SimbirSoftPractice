@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.classes.task5;
+package ru.faimizufarov.simbirtraining.java.old_tasks.classes.task5;
 
 /*
       V

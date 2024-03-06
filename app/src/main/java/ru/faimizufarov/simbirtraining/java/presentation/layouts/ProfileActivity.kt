@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.presentation.layouts
+package ru.faimizufarov.simbirtraining.java.presentation.layouts
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

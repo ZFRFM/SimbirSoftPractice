@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.classes.task3;
+package ru.faimizufarov.simbirtraining.java.old_tasks.classes.task3;
 
 public class Point {
     public double x;

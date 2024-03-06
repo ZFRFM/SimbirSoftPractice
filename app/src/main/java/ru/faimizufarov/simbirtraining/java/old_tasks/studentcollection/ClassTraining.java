@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.studentcollection;
+package ru.faimizufarov.simbirtraining.java.old_tasks.studentcollection;
 
 /*
       Задание подразумевает создание класса(ов) для выполнения задачи.

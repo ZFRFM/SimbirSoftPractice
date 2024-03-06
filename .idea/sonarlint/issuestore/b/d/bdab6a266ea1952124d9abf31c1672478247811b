@@ -1,9 +1,0 @@
-
-D
-java:S1905'")Remove this unnecessary cast to "double".(åŽƒ‚úÿÿÿÿ
-?	java:S106H"+Replace this use of System.out by a logger.(ä´ÁB
-?	java:S106d"+Replace this use of System.out by a logger.(ä´ÁB
-<
-java:S1905l"&Remove this unnecessary cast to "int".(øéïå
-H
-java:S1128"-Remove this unused import 'java.util.Arrays'.(î–˜Éüÿÿÿÿ

@@ -6,7 +6,7 @@ import org.junit.Test;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
-import ru.faimizufarov.simbirtraining.java.ArraysTraining;
+import ru.faimizufarov.simbirtraining.java.old_tasks.ArraysTraining;
 
 public class ArraysTrainingTest {
 

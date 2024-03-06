@@ -9,7 +9,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-import ru.faimizufarov.simbirtraining.java.CollectionsBlock;
+import ru.faimizufarov.simbirtraining.java.old_tasks.CollectionsBlock;
 
 public class CollectionsBlockTest {
 

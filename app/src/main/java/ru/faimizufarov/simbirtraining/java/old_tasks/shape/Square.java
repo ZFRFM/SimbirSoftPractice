@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.shape;
+package ru.faimizufarov.simbirtraining.java.old_tasks.shape;
 
 public class Square implements Shape {
 

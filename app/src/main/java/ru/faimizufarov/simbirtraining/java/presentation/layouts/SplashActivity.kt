@@ -1,9 +1,9 @@
-package ru.faimizufarov.simbirtraining.presentation.layouts
+package ru.faimizufarov.simbirtraining.java.presentation.layouts
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
+import androidx.appcompat.app.AppCompatActivity
 import ru.faimizufarov.simbirtraining.R
 
 class SplashActivity : AppCompatActivity() {

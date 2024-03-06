@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.classes.task6;
+package ru.faimizufarov.simbirtraining.java.old_tasks.classes.task6;
 
 public class Teacher {
 

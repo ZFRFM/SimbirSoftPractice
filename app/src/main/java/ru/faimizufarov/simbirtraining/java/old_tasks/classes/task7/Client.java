@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.classes.task7;
+package ru.faimizufarov.simbirtraining.java.old_tasks.classes.task7;
 
 import java.util.ArrayList;
 import java.util.Arrays;
