@@ -22,10 +22,7 @@
                 android:background="@color/leaf"
                 app:layout_collapseMode="pin"
                 app:layout_scrollFlags="scroll|enterAlways"
-                app:popupTheme="@style/Theme.SimbirSoftPractice.PopupOverlay"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:popupTheme="@style/Theme.SimbirSoftPractice.PopupOverlay">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -41,10 +38,7 @@
                         android:textColor="@color/white"
                         android:textSize="21sp"
                         android:textStyle="bold"
-                        android:gravity="center"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        android:gravity="center"/>
 
                     <ImageView
                         android:id="@+id/edit_image_view"
@@ -52,10 +46,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="end|center_vertical"
                         android:src="@drawable/baseline_create_24"
-                        android:layout_marginEnd="22dp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/text_view"
-                        app:layout_constraintBottom_toBottomOf="@id/text_view"
+                        android:layout_marginEnd="@dimen/image_view_edit_margin_end"
                         android:contentDescription="@string/edit" />
 
                 </FrameLayout>
