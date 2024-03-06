@@ -4,8 +4,8 @@ import java.util.List;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 import org.junit.Test;
-import ru.faimizufarov.simbirtraining.studentcollection.ClassTraining;
-import ru.faimizufarov.simbirtraining.studentcollection.Student;
+import ru.faimizufarov.simbirtraining.java.old_tasks.studentcollection.ClassTraining;
+import ru.faimizufarov.simbirtraining.java.old_tasks.studentcollection.Student;
 
 public class ClassTrainingTest {
 

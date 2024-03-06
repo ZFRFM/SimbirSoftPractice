@@ -1,3 +1,17 @@
 <resources>
-    <dimen name="fab_margin">16dp</dimen>
+
+    <dimen name="logo_width">245dp</dimen>
+    <dimen name="logo_height">73dp</dimen>
+    <dimen name="progress_bar_width">38dp</dimen>
+    <dimen name="progress_bar_height">38dp</dimen>
+    <dimen name="simbir_logo_margin_bottom">40dp</dimen>
+    <dimen name="main_name_margin_top">20dp</dimen>
+    <dimen name="main_name_margin_start">20dp</dimen>
+    <dimen name="switch_margin_end">26dp</dimen>
+    <dimen name="divider_view_margin_top">18dp</dimen>
+    <dimen name="text_view_friends_margin_top">20dp</dimen>
+    <dimen name="images_btw_margin_top">10dp</dimen>
+    <dimen name="friend_name_margin_start">20dp</dimen>
+    <dimen name="button_start_end_padding">16dp</dimen>
+    <dimen name="image_view_edit_margin_end">22dp</dimen>
 </resources>

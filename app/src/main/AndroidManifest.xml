@@ -6,23 +6,31 @@
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/launch_icon"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@drawable/launch_icon"
         android:supportsRtl="true"
-        android:theme="@style/Theme.JavaCoreTrainingPart1"
+        android:theme="@style/Theme.SimbirSoftPractice"
         tools:targetApi="31">
+
         <activity
-            android:name=".kotlinPt1.MainActivity"
+            android:name=".java.presentation.layouts.ProfileActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".java.presentation.layouts.SplashActivity"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.JavaCoreTrainingPart1">
+            android:theme="@style/Theme.SimbirSoftPractice">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

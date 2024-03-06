@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageViewMan"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/image_man"
+            android:adjustViewBounds="true"
+            android:importantForAccessibility="no"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/textViewName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/main_name_margin_top"
+            android:layout_marginTop="@dimen/main_name_margin_start"
+            android:text="@string/name"
+            android:textAppearance="@style/TextAppearance.FieldWithBigText"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewMan" />
+
+        <TextView
+            android:id="@+id/textViewBirthDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/date_of_birth"
+            android:textAppearance="@style/TextAppearance.FieldLabelText"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="@id/textViewName"
+            app:layout_constraintTop_toBottomOf="@id/textViewName" />
+
+        <TextView
+            android:id="@+id/textViewBirthDayValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/date_of_birth_value"
+            android:textAppearance="@style/TextAppearance.FieldValueText"
+            app:layout_constraintStart_toStartOf="@id/textViewName"
+            app:layout_constraintTop_toBottomOf="@id/textViewBirthDay" />
+
+        <TextView
+            android:id="@+id/textViewJob"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/job"
+            android:textAppearance="@style/TextAppearance.FieldLabelText"
+            android:layout_marginTop="20dp"
+            app:layout_constraintStart_toStartOf="@+id/textViewBirthDayValue"
+            app:layout_constraintTop_toBottomOf="@+id/textViewBirthDayValue" />
+
+        <TextView
+            android:id="@+id/textViewJobValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/job_value"
+            android:textAppearance="@style/TextAppearance.FieldValueText"
+            app:layout_constraintStart_toStartOf="@+id/textViewJob"
+            app:layout_constraintTop_toBottomOf="@+id/textViewJob" />
+
+        <TextView
+            android:id="@+id/textViewPushPermission"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/push"
+            android:textAppearance="@style/TextAppearance.FieldValueText"
+            android:layout_marginTop="28dp"
+            app:layout_constraintStart_toStartOf="@+id/textViewJobValue"
+            app:layout_constraintTop_toBottomOf="@+id/textViewJobValue" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            app:thumbTint="@color/turtle_green"
+            app:trackTint="@color/turtle_green"
+            android:layout_marginEnd="@dimen/switch_margin_end"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/textViewPushPermission"
+            app:layout_constraintBottom_toBottomOf="@id/textViewPushPermission" />
+
+        <View
+            android:id="@+id/dividerViewFirst"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/divider_view_margin_top"
+            android:background="@color/grey"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textViewPushPermission" />
+
+        <TextView
+            android:id="@+id/textViewFriends"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/friends"
+            android:textAppearance="@style/TextAppearance.FieldLabelText"
+            android:layout_marginTop="@dimen/text_view_friends_margin_top"
+            app:layout_constraintStart_toStartOf="@id/textViewName"
+            app:layout_constraintTop_toBottomOf="@id/dividerViewFirst" />
+
+        <ImageView
+            android:id="@+id/imageViewFirstAvatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/avatar_3"
+            android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="@id/textViewFriends"
+            app:layout_constraintTop_toBottomOf="@id/textViewFriends"
+            android:contentDescription="@string/friends" />
+
+        <ImageView
+            android:id="@+id/imageViewSecondAvatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/avatar_2"
+            android:layout_marginTop="@dimen/images_btw_margin_top"
+            app:layout_constraintStart_toStartOf="@id/textViewFriends"
+            app:layout_constraintTop_toBottomOf="@id/imageViewFirstAvatar"
+            android:contentDescription="@string/friends" />
+
+        <ImageView
+            android:id="@+id/imageViewThirdAvatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/avatar_1"
+            android:layout_marginTop="@dimen/images_btw_margin_top"
+            app:layout_constraintStart_toStartOf="@id/textViewFriends"
+            app:layout_constraintTop_toBottomOf="@id/imageViewSecondAvatar"
+            android:contentDescription="@string/friends" />
+
+        <TextView
+            android:id="@+id/textViewFirstFriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/friend_name_margin_start"
+            android:text="@string/dmitry"
+            android:textAppearance="@style/TextAppearance.FieldValueText"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewFirstAvatar"
+            app:layout_constraintStart_toEndOf="@id/imageViewFirstAvatar"
+            app:layout_constraintTop_toTopOf="@id/imageViewFirstAvatar" />
+
+        <TextView
+            android:id="@+id/textViewSecondFriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/friend_name_margin_start"
+            android:text="@string/evgeny"
+            android:textAppearance="@style/TextAppearance.FieldValueText"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewSecondAvatar"
+            app:layout_constraintStart_toEndOf="@id/imageViewSecondAvatar"
+            app:layout_constraintTop_toTopOf="@id/imageViewSecondAvatar" />
+
+        <TextView
+            android:id="@+id/textViewThirdFriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/friend_name_margin_start"
+            android:text="@string/victor"
+            android:textAppearance="@style/TextAppearance.FieldValueText"
+            app:layout_constraintBottom_toBottomOf="@id/imageViewThirdAvatar"
+            app:layout_constraintStart_toEndOf="@id/imageViewThirdAvatar"
+            app:layout_constraintTop_toTopOf="@id/imageViewThirdAvatar" />
+
+        <View
+            android:id="@+id/dividerViewSecond"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="@dimen/divider_view_margin_top"
+            android:background="@color/grey"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/imageViewThirdAvatar" />
+
+        <Button
+            android:id="@+id/buttonExit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_for_button"
+            android:letterSpacing="0.05"
+            android:text="@string/exit_text"
+            android:textAppearance="@style/TextAppearance.ButtonText"
+            android:paddingStart="@dimen/button_start_end_padding"
+            android:paddingEnd="@dimen/button_start_end_padding"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="68dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dividerViewSecond" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>
