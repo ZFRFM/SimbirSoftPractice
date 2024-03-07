@@ -62,3 +62,15 @@ D
 app/build.gradle.kts,d\2\d2a4383452aad84a18429a5844d31330a012a9e6
 å
 \app/src/main/java/ru/faimizufarov/simbirtraining/java/presentation/layouts/SplashActivity.kt,d\e\defda2402e9dd51b844272e6c4b49bfafe54fe2f
+Ö
+Uapp/src/main/java/ru/faimizufarov/simbirtraining/java/presentation/ProfileActivity.kt,4\9\49c09a8c490a925a9f988a64917aac9fb675bdd6
+à
+Xapp/src/main/java/ru/faimizufarov/simbirtraining/java/presentation/ui/ProfileActivity.kt,7\a\7a21215213ee69068301655a30c4db10c7abf979
+ì
+capp/src/main/java/ru/faimizufarov/simbirtraining/java/presentation/ui/activities/ProfileActivity.kt,5\2\52cc0700a7cf733ec726b6b1d3a07c2fa0028e79
+ê
+`app/src/main/java/ru/faimizufarov/simbirtraining/java/presentation/ui/activities/MainActivity.kt,e\2\e205c69c131f6553e62302284020a64e26ce94ee
+í
+bapp/src/main/java/ru/faimizufarov/simbirtraining/java/presentation/ui/fragments/ProfileFragment.kt,6\4\641202853b8b6d9ddf0480c9ca1c33a37aa4fbfa
+í
+bapp/src/main/java/ru/faimizufarov/simbirtraining/java/presentation/ui/activities/SplashActivity.kt,5\e\5e5e0cfe5cedf6a3764b801f5d4f83fa71e8622e

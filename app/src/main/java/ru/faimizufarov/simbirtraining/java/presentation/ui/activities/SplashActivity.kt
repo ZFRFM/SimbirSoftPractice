@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.presentation.layouts
+package ru.faimizufarov.simbirtraining.java.presentation.ui.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,8 +11,8 @@ class SplashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         Handler().postDelayed({
-            startActivity(Intent(this, ProfileActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
-        }, 1250)
+        }, 1000)
     }
 }
