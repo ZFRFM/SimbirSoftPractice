@@ -154,6 +154,9 @@
     <string name="dmitry">Дмитрий Валерьевич</string>
     <string name="evgeny">Евгений Александров</string>
     <string name="victor">Виктор Кузнецов</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="choose_photo">Выбрать фото</string>
+    <string name="take_a_photo">Сделать снимок</string>
+    <string name="delete">Удалить</string>
+    <string name="authorities">ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.FileProvider</string>
 </resources>

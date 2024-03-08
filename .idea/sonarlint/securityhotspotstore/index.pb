@@ -74,3 +74,5 @@ capp/src/main/java/ru/faimizufarov/simbirtraining/java/presentation/ui/activitie
 bapp/src/main/java/ru/faimizufarov/simbirtraining/java/presentation/ui/fragments/ProfileFragment.kt,6\4\641202853b8b6d9ddf0480c9ca1c33a37aa4fbfa
 ’
 bapp/src/main/java/ru/faimizufarov/simbirtraining/java/presentation/ui/activities/SplashActivity.kt,5\e\5e5e0cfe5cedf6a3764b801f5d4f83fa71e8622e
+™
+iapp/src/main/java/ru/faimizufarov/simbirtraining/java/presentation/ui/fragments/ProfilePhotoEditDialog.kt,8\6\86fe05fee748c896fbe61be1437fa6dd745337aa
