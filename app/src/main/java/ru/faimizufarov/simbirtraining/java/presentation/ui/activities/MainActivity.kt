@@ -1,9 +1,15 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.activities
 
 import android.os.Bundle
+import android.view.MenuItem
+import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import com.google.android.material.navigation.NavigationBarView
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.ActivityMainBinding
+import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.HelpCategoriesFragment
+import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.ProfileFragment
 
 @Suppress("ktlint:standard:no-empty-first-line-in-class-body")
 class MainActivity : AppCompatActivity() {
@@ -14,7 +20,25 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
+        viewBinding.bottomNavView.selectedItemId = R.id.action_help
 
-        viewBinding.bottomNavView.selectedItemId = R.id.action_profile
+        viewBinding.bottomNavView.setOnItemSelectedListener(
+            object : NavigationBarView.OnItemSelectedListener {
+                override fun onNavigationItemSelected(p0: MenuItem): Boolean {
+                    when (p0.itemId) {
+                        R.id.action_help -> setCurrentFragment(HelpCategoriesFragment())
+                        R.id.action_profile -> setCurrentFragment(ProfileFragment())
+                    }
+                    return true
+                }
+            },
+        )
+    }
+
+    private fun setCurrentFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction().apply {
+            replace(R.id.fragmentContainerView, fragment)
+            commit()
+        }
     }
 }

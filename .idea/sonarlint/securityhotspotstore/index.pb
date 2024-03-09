@@ -76,3 +76,11 @@ bapp/src/main/java/ru/faimizufarov/simbirtraining/java/presentation/ui/fragments
 bapp/src/main/java/ru/faimizufarov/simbirtraining/java/presentation/ui/activities/SplashActivity.kt,5\e\5e5e0cfe5cedf6a3764b801f5d4f83fa71e8622e
 ™
 iapp/src/main/java/ru/faimizufarov/simbirtraining/java/presentation/ui/fragments/ProfilePhotoEditDialog.kt,8\6\86fe05fee748c896fbe61be1437fa6dd745337aa
+™
+iapp/src/main/java/ru/faimizufarov/simbirtraining/java/presentation/ui/fragments/HelpCategoriesFragment.kt,4\0\404acc03250aa77908c1f8f774a4f53746017270
+z
+Japp/src/main/java/ru/faimizufarov/simbirtraining/java/data/HelpCategory.kt,2\b\2b624ac1f74bfae1e6ea309efdf048cfbb66a9fb
+~
+Napp/src/main/java/ru/faimizufarov/simbirtraining/java/data/HelpCategoryList.kt,f\8\f85e577ae55393ae92713bff7a3483fb00b26f05
+—
+gapp/src/main/java/ru/faimizufarov/simbirtraining/java/presentation/ui/adapters/HelpCategoriesAdapter.kt,e\9\e9980d166423460164d829d675ace8bc7635b812

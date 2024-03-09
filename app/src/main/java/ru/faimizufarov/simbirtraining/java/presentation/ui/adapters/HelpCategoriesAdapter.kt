@@ -1,0 +1,38 @@
+package ru.faimizufarov.simbirtraining.java.presentation.ui.adapters
+
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
+import ru.faimizufarov.simbirtraining.R
+import ru.faimizufarov.simbirtraining.java.data.HelpCategory
+
+class HelpCategoriesAdapter(private val categories: List<HelpCategory>) :
+    RecyclerView.Adapter<HelpCategoriesAdapter.HelpCategoriesViewHolder> () {
+    class HelpCategoriesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val imageViewHelpCategory = itemView.findViewById<ImageView>(R.id.imageViewHelpCategory)
+        val textViewHelpCategory = itemView.findViewById<TextView>(R.id.textViewHelpCategory)
+    }
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int,
+    ): HelpCategoriesViewHolder {
+        val itemView =
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.item_help_category, parent, false)
+        return HelpCategoriesViewHolder(itemView)
+    }
+
+    override fun getItemCount() = categories.size
+
+    override fun onBindViewHolder(
+        holder: HelpCategoriesViewHolder,
+        position: Int,
+    ) {
+        holder.imageViewHelpCategory.setImageResource(categories[position].imageView)
+        holder.textViewHelpCategory.setText(categories[position].textView)
+    }
+}
