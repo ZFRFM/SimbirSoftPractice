@@ -28,10 +28,20 @@
         android:layout_marginStart="20dp"
         android:layout_marginBottom="20dp"/>
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/cool_grey" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewSearchResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/cool_grey" />
 
 </LinearLayout>
