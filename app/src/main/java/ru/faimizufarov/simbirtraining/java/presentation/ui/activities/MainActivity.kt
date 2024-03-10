@@ -2,7 +2,6 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.activities
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.AdapterView.OnItemSelectedListener
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationBarView
@@ -10,6 +9,7 @@ import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.ActivityMainBinding
 import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.HelpCategoriesFragment
 import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.ProfileFragment
+import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.SearchFragment
 
 @Suppress("ktlint:standard:no-empty-first-line-in-class-body")
 class MainActivity : AppCompatActivity() {
@@ -26,8 +26,9 @@ class MainActivity : AppCompatActivity() {
             object : NavigationBarView.OnItemSelectedListener {
                 override fun onNavigationItemSelected(p0: MenuItem): Boolean {
                     when (p0.itemId) {
-                        R.id.action_help -> setCurrentFragment(HelpCategoriesFragment())
-                        R.id.action_profile -> setCurrentFragment(ProfileFragment())
+                        R.id.action_help -> setCurrentFragment(HelpCategoriesFragment.newInstance())
+                        R.id.action_profile -> setCurrentFragment(ProfileFragment.newInstance())
+                        R.id.action_search -> setCurrentFragment(SearchFragment.newInstance())
                     }
                     return true
                 }

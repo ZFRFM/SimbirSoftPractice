@@ -24,10 +24,18 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        val dialog = ProfilePhotoEditDialog()
+        val dialog = ProfilePhotoEditDialog.newInstance()
 
         binding.included.imageViewMan.setOnClickListener {
             dialog.show(childFragmentManager, ProfilePhotoEditDialog.TAG)
+        }
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(): ProfileFragment {
+            val fragment = ProfileFragment()
+            return fragment
         }
     }
 }

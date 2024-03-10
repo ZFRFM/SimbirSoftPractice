@@ -84,3 +84,17 @@ Japp/src/main/java/ru/faimizufarov/simbirtraining/java/data/HelpCategory.kt,2\b
 Napp/src/main/java/ru/faimizufarov/simbirtraining/java/data/HelpCategoryList.kt,f\8\f85e577ae55393ae92713bff7a3483fb00b26f05
 —
 gapp/src/main/java/ru/faimizufarov/simbirtraining/java/presentation/ui/adapters/HelpCategoriesAdapter.kt,e\9\e9980d166423460164d829d675ace8bc7635b812
+‘
+aapp/src/main/java/ru/faimizufarov/simbirtraining/java/presentation/ui/fragments/SearchFragment.kt,c\c\ccdbcf692bcb08f6be46c4bc649691730af50152
+–
+fapp/src/main/java/ru/faimizufarov/simbirtraining/java/presentation/ui/activities/SearchableActivity.kt,b\7\b73cefd0c4fa53cdca37b1c1427ae377b6e1425c
+š
+japp/src/main/java/ru/faimizufarov/simbirtraining/java/presentation/ui/fragments/SearchViewPagerFragment.kt,d\f\dfc9d96a1fa6bbc1649a751e7c20260df9fc9465
+š
+japp/src/main/java/ru/faimizufarov/simbirtraining/java/presentation/ui/adapters/FragmentViewPagerAdapter.kt,a\3\a340570e5ce709b09ce08bc97fb3b16f6f06101c
+~
+Napp/src/main/java/ru/faimizufarov/simbirtraining/java/data/OrganizationName.kt,6\2\621eaa080bb52f39d69a1f83c0ef18dc90e99b3c
+‚
+Rapp/src/main/java/ru/faimizufarov/simbirtraining/java/data/OrganizationNameList.kt,1\d\1d72497b47369223f8d31c0be1936e821a16db40
+•
+eapp/src/main/java/ru/faimizufarov/simbirtraining/java/presentation/ui/adapters/SearchResultAdapter.kt,8\6\86169e0c53f5e24e7c68ef82f56b758e17098606

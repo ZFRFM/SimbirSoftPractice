@@ -95,5 +95,11 @@ class ProfilePhotoEditDialog : DialogFragment() {
 
     companion object {
         const val TAG = "ProfilePhotoEditDialog"
+
+        @JvmStatic
+        fun newInstance(): ProfilePhotoEditDialog {
+            val fragment = ProfilePhotoEditDialog()
+            return fragment
+        }
     }
 }

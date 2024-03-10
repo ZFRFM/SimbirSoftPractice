@@ -31,4 +31,11 @@ class HelpCategoriesFragment : Fragment() {
         val recyclerView = binding.included.recyclerViewHelpCategories
         recyclerView.adapter = HelpCategoriesAdapter(listOfCategories)
     }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(): HelpCategoriesFragment {
+            return HelpCategoriesFragment()
+        }
+    }
 }
