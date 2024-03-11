@@ -10,12 +10,12 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
 import ru.faimizufarov.simbirtraining.databinding.FragmentSearchBinding
-import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.FragmentViewPagerAdapter
+import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.SearchPagerAdapter
 
 class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
 
-    private lateinit var fragmentViewPagerAdapter: FragmentViewPagerAdapter
+    private lateinit var fragmentViewPagerAdapter: SearchPagerAdapter
     private lateinit var viewPager: ViewPager2
 
     override fun onCreateView(
@@ -40,7 +40,7 @@ class SearchFragment : Fragment() {
                 searchManager.getSearchableInfo(requireActivity().componentName),
             )
 
-        fragmentViewPagerAdapter = FragmentViewPagerAdapter(this)
+        fragmentViewPagerAdapter = SearchPagerAdapter(this)
         viewPager = binding.included.viewPager
         viewPager.adapter = fragmentViewPagerAdapter
 
