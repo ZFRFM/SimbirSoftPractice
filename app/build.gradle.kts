@@ -59,8 +59,9 @@ dependencies {
     implementation("androidx.compose.material3:material3")
     implementation("androidx.core:core-splashscreen:1.0.1")
 
-    // Retrofit
+    //region Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.7.1")
+    //endregion
     implementation("androidx.activity:activity:1.8.0")
 
     testImplementation("junit:junit:4.13.2")
