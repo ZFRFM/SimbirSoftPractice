@@ -1,6 +1,5 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.fragments
 
-import android.app.Activity
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
@@ -9,8 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.DialogFragment
@@ -20,15 +20,15 @@ import java.io.File
 
 class ProfilePhotoEditDialog : DialogFragment() {
     @Suppress("ktlint:standard:property-naming")
-    private val REQUEST_PERMISSION = 100
-
     private lateinit var binding: DialogFragmentProfilePhotoEditBinding
 
     private val imageView: ImageView by lazy {
         parentFragment?.view?.findViewById(R.id.imageViewMan) ?: ImageView(null)
     }
 
-    private var tempImageUri: Uri? = null
+    var tempImageUri: Uri? = null
+    lateinit var cameraLauncher: ActivityResultLauncher<Uri>
+    lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private var tempImageFilePath = ""
 
     override fun onCreateView(
@@ -45,26 +45,33 @@ class ProfilePhotoEditDialog : DialogFragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        val cameraLauncher =
+        cameraLauncher =
             registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
                 if (success) {
                     imageView.setImageURI(tempImageUri)
                 }
             }
 
+        requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+                if (isGranted) {
+                    takeAPhoto()
+                } else {
+                    Toast
+                        .makeText(
+                            requireContext(),
+                            "App is need permission for this option",
+                            Toast.LENGTH_SHORT,
+                        )
+                        .show()
+                }
+            }
+
         binding.linearLayoutTakeAPhoto.setOnClickListener {
             if (!checkCameraPermission()) {
-                checkCameraPermission()
+                requestPermissionLauncher.launch("android.permission.CAMERA")
             } else {
-                tempImageUri =
-                    FileProvider.getUriForFile(
-                        requireContext(),
-                        "ru.faimizufarov.simbirtraining.provider",
-                        createImageFile().also {
-                            tempImageFilePath = it.absolutePath
-                        },
-                    )
-                cameraLauncher.launch(tempImageUri)
+                takeAPhoto()
             }
         }
 
@@ -80,26 +87,25 @@ class ProfilePhotoEditDialog : DialogFragment() {
     }
 
     private fun checkCameraPermission(): Boolean {
-        if (ContextCompat.checkSelfPermission(requireContext(), "android.permission.CAMERA")
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                requireContext() as Activity,
-                arrayOf("android.permission.CAMERA"),
-                REQUEST_PERMISSION,
+        return ContextCompat.checkSelfPermission(requireContext(), "android.permission.CAMERA") == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun takeAPhoto() {
+        tempImageUri =
+            FileProvider.getUriForFile(
+                requireContext(),
+                "ru.faimizufarov.simbirtraining.provider",
+                createImageFile().also {
+                    tempImageFilePath = it.absolutePath
+                },
             )
-            return false
-        }
-        return true
+        cameraLauncher.launch(tempImageUri)
     }
 
     companion object {
         const val TAG = "ProfilePhotoEditDialog"
 
         @JvmStatic
-        fun newInstance(): ProfilePhotoEditDialog {
-            val fragment = ProfilePhotoEditDialog()
-            return fragment
-        }
+        fun newInstance(): ProfilePhotoEditDialog = ProfilePhotoEditDialog()
     }
 }

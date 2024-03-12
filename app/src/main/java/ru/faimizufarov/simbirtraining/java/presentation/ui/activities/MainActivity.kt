@@ -13,7 +13,6 @@ import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.SearchFragm
 
 @Suppress("ktlint:standard:no-empty-first-line-in-class-body")
 class MainActivity : AppCompatActivity() {
-
     private lateinit var viewBinding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
