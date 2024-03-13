@@ -2,6 +2,7 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.fragments
 
 import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.DialogFragment
@@ -38,6 +40,7 @@ class ProfilePhotoEditDialog(imageView: ImageView) : DialogFragment() {
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onViewCreated(
         view: View,
         savedInstanceState: Bundle?,
@@ -75,7 +78,11 @@ class ProfilePhotoEditDialog(imageView: ImageView) : DialogFragment() {
         }
 
         binding.linearLayoutDelete.setOnClickListener {
-            parentFragment?.view?.findViewById<ImageView>(R.id.imageViewMan)?.setImageResource(R.drawable.empty_drawable_foreground)
+            parentFragment
+                ?.requireView()
+                ?.requireViewById<ImageView>(imageView.id)
+                ?.setImageResource(R.drawable.empty_drawable_foreground)
+
             this.dismiss()
         }
     }
