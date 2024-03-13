@@ -18,13 +18,11 @@ import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.DialogFragmentProfilePhotoEditBinding
 import java.io.File
 
-class ProfilePhotoEditDialog : DialogFragment() {
+class ProfilePhotoEditDialog(imageView: ImageView) : DialogFragment() {
     @Suppress("ktlint:standard:property-naming")
     private lateinit var binding: DialogFragmentProfilePhotoEditBinding
 
-    private val imageView: ImageView by lazy {
-        parentFragment?.view?.findViewById(R.id.imageViewMan) ?: ImageView(null)
-    }
+    private val imageView by lazy { imageView }
 
     var tempImageUri: Uri? = null
     lateinit var cameraLauncher: ActivityResultLauncher<Uri>
@@ -35,7 +33,7 @@ class ProfilePhotoEditDialog : DialogFragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         binding = DialogFragmentProfilePhotoEditBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -106,6 +104,6 @@ class ProfilePhotoEditDialog : DialogFragment() {
         const val TAG = "ProfilePhotoEditDialog"
 
         @JvmStatic
-        fun newInstance(): ProfilePhotoEditDialog = ProfilePhotoEditDialog()
+        fun newInstance(imageView: ImageView): ProfilePhotoEditDialog = ProfilePhotoEditDialog(imageView)
     }
 }

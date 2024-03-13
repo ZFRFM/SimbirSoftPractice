@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import ru.faimizufarov.simbirtraining.databinding.FragmentProfileBinding
 
@@ -24,18 +25,15 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        val dialog = ProfilePhotoEditDialog.newInstance()
 
         binding.included.imageViewMan.setOnClickListener {
+            val dialog = ProfilePhotoEditDialog.newInstance(it as ImageView)
             dialog.show(childFragmentManager, ProfilePhotoEditDialog.TAG)
         }
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(): ProfileFragment {
-            val fragment = ProfileFragment()
-            return fragment
-        }
+        fun newInstance() = ProfileFragment()
     }
 }
