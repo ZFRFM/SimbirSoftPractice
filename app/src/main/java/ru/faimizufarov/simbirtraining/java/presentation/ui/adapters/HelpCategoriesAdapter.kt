@@ -7,9 +7,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.faimizufarov.simbirtraining.R
-import ru.faimizufarov.simbirtraining.java.data.HelpCategory
+import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
+import kotlin.enums.EnumEntries
 
-class HelpCategoriesAdapter(private val categories: List<HelpCategory>) :
+class HelpCategoriesAdapter(private val categories: EnumEntries<HelpCategoryEnum>) :
     RecyclerView.Adapter<HelpCategoriesAdapter.HelpCategoriesViewHolder> () {
     class HelpCategoriesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageViewHelpCategory = itemView.findViewById<ImageView>(R.id.imageViewHelpCategory)
@@ -33,6 +34,6 @@ class HelpCategoriesAdapter(private val categories: List<HelpCategory>) :
         position: Int,
     ) {
         holder.imageViewHelpCategory.setImageResource(categories[position].imageView)
-        holder.textViewHelpCategory.setText(categories[position].textView)
+        holder.textViewHelpCategory.setText(categories[position].name)
     }
 }

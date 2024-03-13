@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import ru.faimizufarov.simbirtraining.databinding.FragmentHelpCategoriesBinding
-import ru.faimizufarov.simbirtraining.java.data.HelpCategoryList
+import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.HelpCategoriesAdapter
 
 class HelpCategoriesFragment : Fragment() {
@@ -27,7 +27,7 @@ class HelpCategoriesFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        val listOfCategories = HelpCategoryList().helpCategoryList
+        val listOfCategories = HelpCategoryEnum.entries
         val recyclerView = binding.included.recyclerViewHelpCategories
         recyclerView.adapter = HelpCategoriesAdapter(listOfCategories)
     }
