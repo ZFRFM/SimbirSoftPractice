@@ -48,6 +48,7 @@ class ProfilePhotoEditDialog(imageView: ImageView) : DialogFragment() {
                 if (success) {
                     imageView.setImageURI(tempImageUri)
                 }
+                this.dismiss()
             }
 
         requestPermissionLauncher =
@@ -75,7 +76,7 @@ class ProfilePhotoEditDialog(imageView: ImageView) : DialogFragment() {
 
         binding.linearLayoutDelete.setOnClickListener {
             parentFragment?.view?.findViewById<ImageView>(R.id.imageViewMan)?.setImageResource(R.drawable.empty_drawable_foreground)
-            parentFragmentManager.beginTransaction().remove(this).commit()
+            this.dismiss()
         }
     }
 
