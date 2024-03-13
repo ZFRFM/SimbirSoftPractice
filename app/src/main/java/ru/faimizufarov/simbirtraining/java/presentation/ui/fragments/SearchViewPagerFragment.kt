@@ -9,10 +9,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentSearchViewPagerBinding
 import ru.faimizufarov.simbirtraining.java.data.OrganizationName
-import ru.faimizufarov.simbirtraining.java.data.OrganizationNameList
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.SearchResultAdapter
 
-class SearchViewPagerFragment : Fragment() {
+class SearchViewPagerFragment(val listSize: Int) : Fragment() {
     private lateinit var binding: FragmentSearchViewPagerBinding
 
     override fun onCreateView(
@@ -30,23 +29,41 @@ class SearchViewPagerFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        val recyclerView = binding.recyclerViewSearchResult
         val listOfSearchResult = mutableListOf<OrganizationName>()
 
-        while (listOfSearchResult.size < 9) {
-            val random = OrganizationNameList().organizationNameList.random()
+        while (listOfSearchResult.size < listSize) {
+            val random = organizationNameList.random()
             if (!listOfSearchResult.contains(random)) listOfSearchResult.add(random)
         }
 
         val itemDecoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         itemDecoration.setDrawable(resources.getDrawable(R.drawable.divider_layer_search_result, null))
-        recyclerView.addItemDecoration(itemDecoration)
 
-        recyclerView.adapter = SearchResultAdapter(listOfSearchResult)
+        with(binding) {
+            recyclerViewSearchResult.addItemDecoration(itemDecoration)
+            recyclerViewSearchResult.adapter = SearchResultAdapter(listOfSearchResult)
+        }
     }
 
     companion object {
         @JvmStatic
-        fun newInstance() = SearchViewPagerFragment()
+        fun newInstance(listSize: Int) = SearchViewPagerFragment(listSize)
+
+        val organizationNameList =
+            listOf(
+                OrganizationName("Благотворительный Фонд Ф. Зуфарова"),
+                OrganizationName("Благотворительный фонд Алины Кабаевой"),
+                OrganizationName("«Во имя жизни»"),
+                OrganizationName("Благотворительный Фонд В. Потанина"),
+                OrganizationName("«Детские домики»"),
+                OrganizationName("«Мозаика счастья»"),
+                OrganizationName("«Я помогу»"),
+                OrganizationName("«Детские мечты»"),
+                OrganizationName("«Добро в мир»"),
+                OrganizationName("«Старикам тут место»"),
+                OrganizationName("Фонд помощи «Газпром»"),
+                OrganizationName("«Сбербанк» рядом"),
+                OrganizationName("Фонд помощи «Тинькофф»"),
+            )
     }
 }

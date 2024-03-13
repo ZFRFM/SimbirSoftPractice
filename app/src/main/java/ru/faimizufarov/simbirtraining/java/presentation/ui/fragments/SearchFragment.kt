@@ -52,9 +52,6 @@ class SearchFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(): SearchFragment {
-            val fragment = SearchFragment()
-            return fragment
-        }
+        fun newInstance() = SearchFragment()
     }
 }

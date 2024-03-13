@@ -3,6 +3,7 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.activities
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import com.google.android.material.navigation.NavigationBarView
 import ru.faimizufarov.simbirtraining.R
@@ -18,6 +19,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setContentView(viewBinding.root)
         viewBinding.bottomNavView.selectedItemId = R.id.action_help
 
