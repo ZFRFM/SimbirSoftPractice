@@ -15,6 +15,9 @@ import kotlin.random.Random
 class SearchViewPagerFragment() : Fragment() {
     private lateinit var binding: FragmentSearchViewPagerBinding
 
+    private lateinit var itemDecoration: DividerItemDecoration
+    private lateinit var searchResultAdapter: SearchResultAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -22,6 +25,16 @@ class SearchViewPagerFragment() : Fragment() {
     ): View? {
         binding = FragmentSearchViewPagerBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
+        super.onViewCreated(view, savedInstanceState)
+        itemDecoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+        itemDecoration.setDrawable(resources.getDrawable(R.drawable.divider_layer_search_result, null))
+        binding.recyclerViewSearchResult.addItemDecoration(itemDecoration)
     }
 
     override fun onResume() {
@@ -34,13 +47,7 @@ class SearchViewPagerFragment() : Fragment() {
             if (!listOfSearchResult.contains(random)) listOfSearchResult.add(random)
         }
 
-        val itemDecoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
-        itemDecoration.setDrawable(resources.getDrawable(R.drawable.divider_layer_search_result, null))
-
-        with(binding) {
-            recyclerViewSearchResult.addItemDecoration(itemDecoration)
-            recyclerViewSearchResult.adapter = SearchResultAdapter(listOfSearchResult)
-        }
+        binding.recyclerViewSearchResult.adapter = SearchResultAdapter(listOfSearchResult)
     }
 
     companion object {
