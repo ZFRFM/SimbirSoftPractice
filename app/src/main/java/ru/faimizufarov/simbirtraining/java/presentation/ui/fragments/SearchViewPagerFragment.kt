@@ -10,8 +10,9 @@ import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentSearchViewPagerBinding
 import ru.faimizufarov.simbirtraining.java.data.OrganizationName
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.SearchResultAdapter
+import kotlin.random.Random
 
-class SearchViewPagerFragment(val listSize: Int) : Fragment() {
+class SearchViewPagerFragment() : Fragment() {
     private lateinit var binding: FragmentSearchViewPagerBinding
 
     override fun onCreateView(
@@ -23,15 +24,12 @@ class SearchViewPagerFragment(val listSize: Int) : Fragment() {
         return binding.root
     }
 
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun onResume() {
+        super.onResume()
         val listOfSearchResult = mutableListOf<OrganizationName>()
+        val randomListSize = Random.nextInt(1, SearchViewPagerFragment.organizationNameList.size)
 
-        while (listOfSearchResult.size < listSize) {
+        while (listOfSearchResult.size < randomListSize) {
             val random = organizationNameList.random()
             if (!listOfSearchResult.contains(random)) listOfSearchResult.add(random)
         }
@@ -47,7 +45,7 @@ class SearchViewPagerFragment(val listSize: Int) : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(listSize: Int) = SearchViewPagerFragment(listSize)
+        fun newInstance() = SearchViewPagerFragment()
 
         val organizationNameList =
             listOf(

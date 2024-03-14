@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
@@ -40,12 +41,13 @@ class SearchFragment : Fragment() {
                 searchManager.getSearchableInfo(requireActivity().componentName),
             )
 
-        fragmentViewPagerAdapter = SearchPagerAdapter(this)
+        fragmentViewPagerAdapter = SearchPagerAdapter(this, requireContext())
         viewPager = binding.included.viewPager
         viewPager.adapter = fragmentViewPagerAdapter
 
         val tabLayout = binding.included.tabLayout
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            viewPager.adapter = fragmentViewPagerAdapter
             tab.text = if (position == 0) "По мероприятиям" else "По НКО"
         }.attach()
     }
