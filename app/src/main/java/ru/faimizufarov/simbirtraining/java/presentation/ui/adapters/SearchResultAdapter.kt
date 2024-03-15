@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.java.data.OrganizationName
 
-class SearchResultAdapter(private val searchResults: List<OrganizationName>) : RecyclerView.Adapter<SearchResultAdapter.SearchResultViewHolder>() {
+class SearchResultAdapter() : RecyclerView.Adapter<SearchResultAdapter.SearchResultViewHolder>() {
+    private var list: List<OrganizationName> = listOf()
+
     class SearchResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val textViewSearchResult = itemView.findViewById<TextView>(R.id.textViewItemSearchResult)
     }
@@ -23,12 +25,17 @@ class SearchResultAdapter(private val searchResults: List<OrganizationName>) : R
         return SearchResultViewHolder(itemView)
     }
 
-    override fun getItemCount() = searchResults.size
+    override fun getItemCount() = list.size
 
     override fun onBindViewHolder(
         holder: SearchResultViewHolder,
         position: Int,
     ) {
-        holder.textViewSearchResult.setText(searchResults[position].name)
+        holder.textViewSearchResult.setText(list[position].name)
+    }
+
+    fun addItems(inputList: List<OrganizationName>) {
+        list = inputList
+        notifyDataSetChanged()
     }
 }
