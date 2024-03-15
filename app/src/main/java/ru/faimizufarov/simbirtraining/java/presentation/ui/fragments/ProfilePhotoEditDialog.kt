@@ -29,6 +29,7 @@ class ProfilePhotoEditDialog(imageView: ImageView) : DialogFragment() {
     var tempImageUri: Uri? = null
     lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    lateinit var getContentLauncher: ActivityResultLauncher<String>
     private var tempImageFilePath = ""
 
     override fun onCreateView(
@@ -68,6 +69,15 @@ class ProfilePhotoEditDialog(imageView: ImageView) : DialogFragment() {
                         .show()
                 }
             }
+
+        getContentLauncher =
+            registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+                imageView.setImageURI(uri)
+            }
+
+        binding.linearLayoutChoosePhoto.setOnClickListener {
+            getContentLauncher.launch("image/*")
+        }
 
         binding.linearLayoutTakeAPhoto.setOnClickListener {
             if (!checkCameraPermission()) {
