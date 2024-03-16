@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
+    android:background="@color/light_grey_two"
     tools:context=".java.presentation.ui.activities.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -34,7 +35,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/officina_sans_extra_bold_c"
-                    android:text="@string/profile"
+                    android:text="@string/news"
                     android:textColor="@color/white"
                     android:textSize="21sp"
                     android:textStyle="bold"
@@ -45,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end|center_vertical"
-                    android:src="@drawable/baseline_create_24"
+                    android:src="@drawable/baseline_filter_24"
                     android:layout_marginEnd="@dimen/image_view_edit_margin_end"
                     android:contentDescription="@string/edit" />
 
@@ -57,6 +58,6 @@
 
     <include
         android:id="@+id/included"
-        layout="@layout/scrolling_profile_info_fragment" />
+        layout="@layout/scrolling_news_fragment" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

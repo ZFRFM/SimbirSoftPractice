@@ -73,6 +73,7 @@ class ProfilePhotoEditDialog(imageView: ImageView) : DialogFragment() {
         getContentLauncher =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
                 imageView.setImageURI(uri)
+                this.dismiss()
             }
 
         binding.linearLayoutChoosePhoto.setOnClickListener {
