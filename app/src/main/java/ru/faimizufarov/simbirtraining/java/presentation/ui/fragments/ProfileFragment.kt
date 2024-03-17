@@ -1,11 +1,14 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.fragments
 
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
+import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentProfileBinding
 
 class ProfileFragment : Fragment() {
@@ -26,8 +29,28 @@ class ProfileFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
+        setFragmentResultListener(
+            ProfilePhotoEditDialog.USER_PICTURE_RESULT_KEY,
+        ) { key, bundle ->
+            val uri =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    bundle.getParcelable(ProfilePhotoEditDialog.USER_PICTURE_KEY, Uri::class.java)
+                } else {
+                    bundle.getParcelable(ProfilePhotoEditDialog.USER_PICTURE_KEY)
+                }
+            binding.included.imageViewMan.setImageURI(uri)
+        }
+
+        setFragmentResultListener(
+            ProfilePhotoEditDialog.DELETE_USER_PICTURE_RESULT_KEY,
+        ) { key, bundle ->
+            if (bundle.containsKey(ProfilePhotoEditDialog.DELETE_USER_PICTURE_FLAG_KEY)) {
+                binding.included.imageViewMan.setImageResource(R.drawable.empty_drawable_foreground)
+            }
+        }
+
         binding.included.imageViewMan.setOnClickListener {
-            val dialog = ProfilePhotoEditDialog.newInstance(it as ImageView)
+            val dialog = ProfilePhotoEditDialog.newInstance()
             dialog.show(childFragmentManager, ProfilePhotoEditDialog.TAG)
         }
     }

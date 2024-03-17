@@ -8,49 +8,25 @@ import android.os.Environment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
-import ru.faimizufarov.simbirtraining.R
+import androidx.fragment.app.setFragmentResult
 import ru.faimizufarov.simbirtraining.databinding.DialogFragmentProfilePhotoEditBinding
 import java.io.File
 
-class ProfilePhotoEditDialog(imageView: ImageView) : DialogFragment() {
+class ProfilePhotoEditDialog() : DialogFragment() {
     @Suppress("ktlint:standard:property-naming")
     private lateinit var binding: DialogFragmentProfilePhotoEditBinding
 
-    private val imageView by lazy { imageView }
-
     private var tempImageUri: Uri? = null
-    private val cameraLauncher =
-        lazy {
-            registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-                if (success) {
-                    imageView.setImageURI(tempImageUri)
-                }
-                this.dismiss()
-            }
-        }
-    private val requestPermissionLauncher =
-        lazy {
-            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
-                if (isGranted) {
-                    takeAPhoto()
-                } else {
-                    Toast
-                        .makeText(
-                            requireContext(),
-                            "App is need permission for this option",
-                            Toast.LENGTH_SHORT,
-                        )
-                        .show()
-                }
-            }
-        }
+    private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private var tempImageFilePath = ""
 
     override fun onCreateView(
@@ -71,20 +47,41 @@ class ProfilePhotoEditDialog(imageView: ImageView) : DialogFragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
+        cameraLauncher =
+            registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+                if (success) {
+                    val bundle = bundleOf(USER_PICTURE_KEY to tempImageUri)
+                    setFragmentResult(USER_PICTURE_RESULT_KEY, bundle)
+                }
+                this.dismiss()
+            }
+
+        requestPermissionLauncher =
+            registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+                if (isGranted) {
+                    takeAPhoto()
+                } else {
+                    Toast
+                        .makeText(
+                            requireContext(),
+                            "App is need permission for this option",
+                            Toast.LENGTH_SHORT,
+                        )
+                        .show()
+                }
+            }
+
         binding.linearLayoutTakeAPhoto.setOnClickListener {
             if (!checkCameraPermission()) {
-                requestPermissionLauncher.value.launch("android.permission.CAMERA")
+                requestPermissionLauncher.launch("android.permission.CAMERA")
             } else {
                 takeAPhoto()
             }
         }
 
         binding.linearLayoutDelete.setOnClickListener {
-            parentFragment
-                ?.requireView()
-                ?.requireViewById<ImageView>(imageView.id)
-                ?.setImageResource(R.drawable.empty_drawable_foreground)
-
+            val bundle = bundleOf(DELETE_USER_PICTURE_FLAG_KEY to true)
+            setFragmentResult(DELETE_USER_PICTURE_RESULT_KEY, bundle)
             this.dismiss()
         }
     }
@@ -110,13 +107,19 @@ class ProfilePhotoEditDialog(imageView: ImageView) : DialogFragment() {
                     tempImageFilePath = it.absolutePath
                 },
             )
-        cameraLauncher.value.launch(tempImageUri)
+        cameraLauncher.launch(tempImageUri)
     }
 
     companion object {
         const val TAG = "ProfilePhotoEditDialog"
 
+        const val USER_PICTURE_RESULT_KEY = "USER_PICTURE_RESULT_KEY"
+        const val USER_PICTURE_KEY = "USER_PICTURE_KEY"
+
+        const val DELETE_USER_PICTURE_RESULT_KEY = "DELETE_USER_PICTURE_RESULT_KEY"
+        const val DELETE_USER_PICTURE_FLAG_KEY = "DELETE_USER_PICTURE_FLAG_KEY"
+
         @JvmStatic
-        fun newInstance(imageView: ImageView) = ProfilePhotoEditDialog(imageView)
+        fun newInstance() = ProfilePhotoEditDialog()
     }
 }
