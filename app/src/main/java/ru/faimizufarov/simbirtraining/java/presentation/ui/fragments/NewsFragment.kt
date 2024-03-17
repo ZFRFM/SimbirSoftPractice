@@ -31,6 +31,13 @@ class NewsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.included.recyclerViewNewsFragment.adapter = NewsAdapter(listOfNews)
+
+        binding.imageViewFilter.setOnClickListener {
+            parentFragmentManager.beginTransaction().replace(
+                R.id.fragmentContainerView,
+                NewsFilterFragment.newInstance(),
+            ).commit()
+        }
     }
 
     companion object {
@@ -44,7 +51,16 @@ class NewsFragment : Fragment() {
                     textViewDescription = R.string.news_1_description,
                     textViewRemainingTime = R.string.news_remaining_time,
                     helpCategory = listOf(HelpCategoryEnum.CHILDREN),
-                    startDate = LocalDateTime(2024, 3, 1, 10, 0, 0, 0),
+                    startDate =
+                        LocalDateTime(
+                            2024,
+                            3,
+                            1,
+                            10,
+                            0,
+                            0,
+                            0,
+                        ),
                     finishDate = LocalDateTime(2024, 3, 29, 20, 0, 0, 0),
                 ),
                 News(

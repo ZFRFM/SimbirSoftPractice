@@ -37,7 +37,9 @@ class ProfilePhotoEditDialog(imageView: ImageView) : DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = DialogFragmentProfilePhotoEditBinding.inflate(inflater, container, false)
+        binding =
+            DialogFragmentProfilePhotoEditBinding
+                .inflate(inflater, container, false)
         return binding.root
     }
 
@@ -60,12 +62,11 @@ class ProfilePhotoEditDialog(imageView: ImageView) : DialogFragment() {
                 if (isGranted) {
                     takeAPhoto()
                 } else {
-                    Toast
-                        .makeText(
-                            requireContext(),
-                            "App is need permission for this option",
-                            Toast.LENGTH_SHORT,
-                        )
+                    Toast.makeText(
+                        requireContext(),
+                        "App is need permission for this option",
+                        Toast.LENGTH_SHORT,
+                    )
                         .show()
                 }
             }
@@ -104,7 +105,10 @@ class ProfilePhotoEditDialog(imageView: ImageView) : DialogFragment() {
     }
 
     private fun checkCameraPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(requireContext(), "android.permission.CAMERA") == PackageManager.PERMISSION_GRANTED
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            "android.permission.CAMERA",
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun takeAPhoto() {
