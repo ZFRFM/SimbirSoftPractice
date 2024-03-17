@@ -25,8 +25,11 @@ class ProfilePhotoEditDialog() : DialogFragment() {
     private lateinit var binding: DialogFragmentProfilePhotoEditBinding
 
     private var tempImageUri: Uri? = null
+
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    private lateinit var getContentLauncher: ActivityResultLauncher<String>
+
     private var tempImageFilePath = ""
 
     override fun onCreateView(
@@ -61,15 +64,24 @@ class ProfilePhotoEditDialog() : DialogFragment() {
                 if (isGranted) {
                     takeAPhoto()
                 } else {
-                    Toast
-                        .makeText(
-                            requireContext(),
-                            "App is need permission for this option",
-                            Toast.LENGTH_SHORT,
-                        )
+                    Toast.makeText(
+                        requireContext(),
+                        "App is need permission for this option",
+                        Toast.LENGTH_SHORT,
+                    )
                         .show()
                 }
             }
+
+        getContentLauncher =
+            registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+                TODO()
+                this.dismiss()
+            }
+
+        binding.linearLayoutChoosePhoto.setOnClickListener {
+            getContentLauncher.launch("image/*")
+        }
 
         binding.linearLayoutTakeAPhoto.setOnClickListener {
             if (!checkCameraPermission()) {

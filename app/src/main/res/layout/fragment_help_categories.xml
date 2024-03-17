@@ -46,6 +46,6 @@
 
     <include
         android:id="@+id/included"
-        layout="@layout/help_categories_fragment_scrolling" />
+        layout="@layout/scrolling_help_categories_fragment" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -48,6 +48,8 @@
     </string>
     <string name="splash_text_view">Загрузка...</string>
     <string name="profile">Профиль</string>
+    <string name="news">Новости</string>
+    <string name="filter">Фильтр</string>
     <string name="name">Константинов Денис</string>
     <string name="date_of_birth">Дата рождения</string>
     <string name="job">Сфера деятельности</string>
@@ -165,9 +167,15 @@
     <string name="elderly">Пожилые</string>
     <string name="animals">Животные</string>
     <string name="events">Мероприятия</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="writeNameOfOrganization">Введите название организации</string>
     <string name="key_words">Ключевые слова: мастер-класс, помощь</string>
     <string name="search_results">Результаты поиска: 109 мероприятий</string>
+    <string name="news_1_name">Спонсоры отремонтируют школу-интернат</string>
+    <string name="news_1_description">"Дубовская школа-интернат для детей с ограниченными возможностями здоровья стала первой в области …"</string>
+    <string name="news_remaining_time">Осталось %d дней (%d.%d - %d.%d)</string>
+    <string name="news_date">%d %d, %d</string>
+    <string name="news_2_name">Конкурс по вокальному пению в детском доме №6</string>
+    <string name="news_2_description">"Дубовская школа-интернат для детей с ограниченными возможностями здоровья стала первой в области …"</string>
+    <string name="back">back</string>
+    <string name="help_categories">Категории помощи</string>
 </resources>

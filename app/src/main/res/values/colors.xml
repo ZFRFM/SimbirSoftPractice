@@ -16,5 +16,9 @@
     <color name="cheese">#f2b630</color>
     <color name="black_54">#8a000000</color>
     <color name="cool_grey">#aabbbb</color>
+    <color name="light_grey_two">#e8eded</color>
+    <color name="blue_grey">#627f8f</color>
+    <color name="transient_white">#00FFFFFF</color>
+    <color name="switch_track_green">#b2d29a</color>
 
 </resources>

@@ -34,6 +34,6 @@ class HelpCategoriesAdapter(private val categories: EnumEntries<HelpCategoryEnum
         position: Int,
     ) {
         holder.imageViewHelpCategory.setImageResource(categories[position].imageView)
-        holder.textViewHelpCategory.text = categories[position].name
+        holder.textViewHelpCategory.setText(categories[position].nameCategory)
     }
 }
