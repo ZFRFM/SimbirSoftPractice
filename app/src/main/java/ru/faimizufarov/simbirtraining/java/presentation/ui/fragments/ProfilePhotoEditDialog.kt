@@ -25,12 +25,11 @@ class ProfilePhotoEditDialog() : DialogFragment() {
     private lateinit var binding: DialogFragmentProfilePhotoEditBinding
 
     private var tempImageUri: Uri? = null
+    private var tempImageFilePath = ""
 
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var getContentLauncher: ActivityResultLauncher<String>
-
-    private var tempImageFilePath = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,7 +74,8 @@ class ProfilePhotoEditDialog() : DialogFragment() {
 
         getContentLauncher =
             registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-                TODO()
+                val bundle = bundleOf(USER_GALLERY_PICTURE_KEY to uri)
+                parentFragment?.setFragmentResult(USER_GALLERY_PICTURE_RESULT_KEY, bundle)
                 this.dismiss()
             }
 
@@ -124,6 +124,9 @@ class ProfilePhotoEditDialog() : DialogFragment() {
 
     companion object {
         const val TAG = "ProfilePhotoEditDialog"
+
+        const val USER_GALLERY_PICTURE_RESULT_KEY = "USER_GALLERY_PICTURE_RESULT_KEY"
+        const val USER_GALLERY_PICTURE_KEY = "USER_GALLERY_PICTURE_KEY"
 
         const val USER_PICTURE_RESULT_KEY = "USER_PICTURE_RESULT_KEY"
         const val USER_PICTURE_KEY = "USER_PICTURE_KEY"

@@ -45,8 +45,24 @@ class ProfileFragment : Fragment() {
             ProfilePhotoEditDialog.DELETE_USER_PICTURE_RESULT_KEY,
         ) { key, bundle ->
             if (bundle.containsKey(ProfilePhotoEditDialog.DELETE_USER_PICTURE_FLAG_KEY)) {
-                binding.included.imageViewMan.setImageResource(R.drawable.empty_drawable_foreground)
+                binding.included.imageViewMan
+                    .setImageResource(R.drawable.empty_drawable_foreground)
             }
+        }
+
+        setFragmentResultListener(
+            ProfilePhotoEditDialog.USER_GALLERY_PICTURE_RESULT_KEY,
+        ) { key, bundle ->
+            val uri =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    bundle.getParcelable(
+                        ProfilePhotoEditDialog.USER_GALLERY_PICTURE_KEY,
+                        Uri::class.java,
+                    )
+                } else {
+                    bundle.getParcelable(ProfilePhotoEditDialog.USER_GALLERY_PICTURE_KEY)
+                }
+            binding.included.imageViewMan.setImageURI(uri)
         }
 
         binding.included.imageViewMan.setOnClickListener {
