@@ -51,7 +51,7 @@ class ProfilePhotoEditDialog() : DialogFragment() {
             registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
                 if (success) {
                     val bundle = bundleOf(USER_PICTURE_KEY to tempImageUri)
-                    setFragmentResult(USER_PICTURE_RESULT_KEY, bundle)
+                    parentFragment?.setFragmentResult(USER_PICTURE_RESULT_KEY, bundle)
                 }
                 this.dismiss()
             }
@@ -81,7 +81,7 @@ class ProfilePhotoEditDialog() : DialogFragment() {
 
         binding.linearLayoutDelete.setOnClickListener {
             val bundle = bundleOf(DELETE_USER_PICTURE_FLAG_KEY to true)
-            setFragmentResult(DELETE_USER_PICTURE_RESULT_KEY, bundle)
+            parentFragment?.setFragmentResult(DELETE_USER_PICTURE_RESULT_KEY, bundle)
             this.dismiss()
         }
     }
