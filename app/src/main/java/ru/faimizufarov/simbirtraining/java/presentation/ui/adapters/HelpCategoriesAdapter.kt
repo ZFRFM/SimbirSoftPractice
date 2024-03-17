@@ -13,8 +13,8 @@ import kotlin.enums.EnumEntries
 class HelpCategoriesAdapter(private val categories: EnumEntries<HelpCategoryEnum>) :
     RecyclerView.Adapter<HelpCategoriesAdapter.HelpCategoriesViewHolder> () {
     class HelpCategoriesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageViewHelpCategory = itemView.findViewById<ImageView>(R.id.imageViewHelpCategory)
-        val textViewHelpCategory = itemView.findViewById<TextView>(R.id.textViewHelpCategory)
+        val imageViewHelpCategory: ImageView = itemView.findViewById(R.id.imageViewHelpCategory)
+        val textViewHelpCategory: TextView = itemView.findViewById(R.id.textViewHelpCategory)
     }
 
     override fun onCreateViewHolder(
@@ -34,6 +34,6 @@ class HelpCategoriesAdapter(private val categories: EnumEntries<HelpCategoryEnum
         position: Int,
     ) {
         holder.imageViewHelpCategory.setImageResource(categories[position].imageView)
-        holder.textViewHelpCategory.setText(categories[position].name)
+        holder.textViewHelpCategory.text = categories[position].name
     }
 }

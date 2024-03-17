@@ -16,7 +16,7 @@ class HelpCategoriesFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         binding = FragmentHelpCategoriesBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -34,8 +34,6 @@ class HelpCategoriesFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(): HelpCategoriesFragment {
-            return HelpCategoriesFragment()
-        }
+        fun newInstance() = HelpCategoriesFragment()
     }
 }

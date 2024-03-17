@@ -16,13 +16,13 @@ class SearchViewPagerFragment() : Fragment() {
     private lateinit var binding: FragmentSearchViewPagerBinding
 
     private lateinit var itemDecoration: DividerItemDecoration
-    val searchResultAdapter = SearchResultAdapter()
+    private val searchResultAdapter = SearchResultAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         binding = FragmentSearchViewPagerBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -34,14 +34,17 @@ class SearchViewPagerFragment() : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.recyclerViewSearchResult.adapter = searchResultAdapter
         itemDecoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
-        itemDecoration.setDrawable(resources.getDrawable(R.drawable.divider_layer_search_result, null))
+        itemDecoration.setDrawable(
+            resources.getDrawable(R.drawable.divider_layer_search_result, null),
+        )
         binding.recyclerViewSearchResult.addItemDecoration(itemDecoration)
     }
 
     override fun onResume() {
         super.onResume()
         val listOfSearchResult = mutableListOf<OrganizationName>()
-        val randomListSize = Random.nextInt(1, SearchViewPagerFragment.organizationNameList.size)
+        val randomListSize =
+            Random.nextInt(1, organizationNameList.size)
 
         while (listOfSearchResult.size < randomListSize) {
             val random = organizationNameList.random()

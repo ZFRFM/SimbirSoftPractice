@@ -12,7 +12,7 @@ class SearchResultAdapter() : RecyclerView.Adapter<SearchResultAdapter.SearchRes
     private var list: List<OrganizationName> = listOf()
 
     class SearchResultViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val textViewSearchResult = itemView.findViewById<TextView>(R.id.textViewItemSearchResult)
+        val textViewSearchResult: TextView = itemView.findViewById(R.id.textViewItemSearchResult)
     }
 
     override fun onCreateViewHolder(
@@ -31,7 +31,7 @@ class SearchResultAdapter() : RecyclerView.Adapter<SearchResultAdapter.SearchRes
         holder: SearchResultViewHolder,
         position: Int,
     ) {
-        holder.textViewSearchResult.setText(list[position].name)
+        holder.textViewSearchResult.text = list[position].name
     }
 
     fun addItems(inputList: List<OrganizationName>) {

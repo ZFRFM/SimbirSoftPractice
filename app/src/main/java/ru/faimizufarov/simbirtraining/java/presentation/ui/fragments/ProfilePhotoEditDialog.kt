@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
@@ -26,35 +25,18 @@ class ProfilePhotoEditDialog(imageView: ImageView) : DialogFragment() {
 
     private val imageView by lazy { imageView }
 
-    var tempImageUri: Uri? = null
-    lateinit var cameraLauncher: ActivityResultLauncher<Uri>
-    lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
-    private var tempImageFilePath = ""
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?,
-    ): View {
-        binding = DialogFragmentProfilePhotoEditBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    @RequiresApi(Build.VERSION_CODES.P)
-    override fun onViewCreated(
-        view: View,
-        savedInstanceState: Bundle?,
-    ) {
-        super.onViewCreated(view, savedInstanceState)
-        cameraLauncher =
+    private var tempImageUri: Uri? = null
+    private val cameraLauncher =
+        lazy {
             registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
                 if (success) {
                     imageView.setImageURI(tempImageUri)
                 }
                 this.dismiss()
             }
-
-        requestPermissionLauncher =
+        }
+    private val requestPermissionLauncher =
+        lazy {
             registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
                 if (isGranted) {
                     takeAPhoto()
@@ -68,10 +50,30 @@ class ProfilePhotoEditDialog(imageView: ImageView) : DialogFragment() {
                         .show()
                 }
             }
+        }
+    private var tempImageFilePath = ""
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
+    ): View {
+        binding =
+            DialogFragmentProfilePhotoEditBinding
+                .inflate(inflater, container, false)
+        return binding.root
+    }
+
+    @RequiresApi(Build.VERSION_CODES.P)
+    override fun onViewCreated(
+        view: View,
+        savedInstanceState: Bundle?,
+    ) {
+        super.onViewCreated(view, savedInstanceState)
 
         binding.linearLayoutTakeAPhoto.setOnClickListener {
             if (!checkCameraPermission()) {
-                requestPermissionLauncher.launch("android.permission.CAMERA")
+                requestPermissionLauncher.value.launch("android.permission.CAMERA")
             } else {
                 takeAPhoto()
             }
@@ -93,7 +95,10 @@ class ProfilePhotoEditDialog(imageView: ImageView) : DialogFragment() {
     }
 
     private fun checkCameraPermission(): Boolean {
-        return ContextCompat.checkSelfPermission(requireContext(), "android.permission.CAMERA") == PackageManager.PERMISSION_GRANTED
+        return ContextCompat.checkSelfPermission(
+            requireContext(),
+            "android.permission.CAMERA",
+        ) == PackageManager.PERMISSION_GRANTED
     }
 
     private fun takeAPhoto() {
@@ -105,13 +110,13 @@ class ProfilePhotoEditDialog(imageView: ImageView) : DialogFragment() {
                     tempImageFilePath = it.absolutePath
                 },
             )
-        cameraLauncher.launch(tempImageUri)
+        cameraLauncher.value.launch(tempImageUri)
     }
 
     companion object {
         const val TAG = "ProfilePhotoEditDialog"
 
         @JvmStatic
-        fun newInstance(imageView: ImageView): ProfilePhotoEditDialog = ProfilePhotoEditDialog(imageView)
+        fun newInstance(imageView: ImageView) = ProfilePhotoEditDialog(imageView)
     }
 }
