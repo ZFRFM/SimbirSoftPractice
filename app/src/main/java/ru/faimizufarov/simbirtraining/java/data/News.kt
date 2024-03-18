@@ -7,7 +7,7 @@ data class News(
     val textViewName: Int,
     val textViewDescription: Int,
     val textViewRemainingTime: Int,
-    val helpCategory: List<HelpCategoryEnum>,
+    val helpCategory: List<Category>,
     val startDate: LocalDateTime,
     val finishDate: LocalDateTime,
 )

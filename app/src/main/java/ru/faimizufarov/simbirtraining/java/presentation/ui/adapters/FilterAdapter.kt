@@ -4,14 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.faimizufarov.simbirtraining.databinding.ItemNewsFilterFragmentBinding
-import ru.faimizufarov.simbirtraining.java.data.FilterCriteria
+import ru.faimizufarov.simbirtraining.java.data.Category
+import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.NewsFilterFragment
 
-class FilterAdapter(private val filterList: List<FilterCriteria>) : RecyclerView.Adapter<FilterAdapter.FilterViewHolder>() {
-    class FilterViewHolder(private val itemBinding: ItemNewsFilterFragmentBinding) :
+class FilterAdapter(private val filterList: List<Category>) : RecyclerView.Adapter<FilterAdapter.FilterViewHolder>() {
+    class FilterViewHolder(val itemBinding: ItemNewsFilterFragmentBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
-        fun bind(filterCriteria: FilterCriteria) {
-            itemBinding.textViewFilterItem.setText(filterCriteria.name)
-            itemBinding.switchFilterItem.isChecked = filterCriteria.checked
+        fun bind(category: Category) {
+            itemBinding.textViewFilterItem.setText(category.enumValue.nameCategory)
+            itemBinding.switchFilterItem.isChecked = category.checked
         }
     }
 
@@ -33,5 +34,11 @@ class FilterAdapter(private val filterList: List<FilterCriteria>) : RecyclerView
     ) {
         val filter = filterList[position]
         holder.bind(filter)
+        holder.itemView.setOnClickListener {
+            holder.itemBinding.switchFilterItem.isChecked =
+                !holder.itemBinding.switchFilterItem.isChecked
+            NewsFilterFragment.listFilters[position].checked =
+                holder.itemBinding.switchFilterItem.isChecked
+        }
     }
 }

@@ -1,6 +1,6 @@
 package ru.faimizufarov.simbirtraining.java.data
 
-data class FilterCriteria(
-    val name: Int,
+data class Category(
+    val enumValue: HelpCategoryEnum,
     var checked: Boolean = true,
 )

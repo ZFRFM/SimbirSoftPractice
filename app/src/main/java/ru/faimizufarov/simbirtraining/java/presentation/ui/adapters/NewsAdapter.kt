@@ -2,6 +2,8 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
@@ -9,7 +11,7 @@ import kotlinx.datetime.todayIn
 import ru.faimizufarov.simbirtraining.databinding.ItemNewsFragmentBinding
 import ru.faimizufarov.simbirtraining.java.data.News
 
-class NewsAdapter(private val newsList: List<News>) :
+class NewsAdapter() :
     RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
     class NewsViewHolder(private val itemBinding: ItemNewsFragmentBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
@@ -34,6 +36,25 @@ class NewsAdapter(private val newsList: List<News>) :
         }
     }
 
+    private val diffUtilCallback: DiffUtil.ItemCallback<News> =
+        object : DiffUtil.ItemCallback<News>() {
+            override fun areItemsTheSame(
+                oldItem: News,
+                newItem: News,
+            ) = oldItem === newItem
+
+            override fun areContentsTheSame(
+                oldItem: News,
+                newItem: News,
+            ) = oldItem == newItem
+        }
+
+    private val asyncListDiffer = AsyncListDiffer(this, diffUtilCallback)
+
+    fun setData(newsList: List<News>) {
+        asyncListDiffer.submitList(newsList)
+    }
+
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
@@ -44,13 +65,13 @@ class NewsAdapter(private val newsList: List<News>) :
         return NewsViewHolder(itemBinding)
     }
 
-    override fun getItemCount() = newsList.size
+    override fun getItemCount() = asyncListDiffer.currentList.size
 
     override fun onBindViewHolder(
         holder: NewsViewHolder,
         position: Int,
     ) {
-        val news = newsList[position]
+        val news = asyncListDiffer.currentList[position]
         holder.bind(news)
     }
 }
