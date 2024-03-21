@@ -10,11 +10,24 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import ru.faimizufarov.simbirtraining.databinding.ItemNewsFragmentBinding
 import ru.faimizufarov.simbirtraining.java.data.News
+import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.DetailDescFragment
 
 class NewsAdapter() :
     RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
-    class NewsViewHolder(private val itemBinding: ItemNewsFragmentBinding) :
+    var onItemClick: ((News) -> Unit)? = null
+    var newsListClickable: List<News> = emptyList()
+
+    inner class NewsViewHolder(val itemBinding: ItemNewsFragmentBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
+        init {
+            itemBinding.root.setOnClickListener {
+                onItemClick?.invoke(newsListClickable[adapterPosition])
+            }
+            itemBinding.imageViewNewsFade.setOnClickListener {
+                onItemClick?.invoke(newsListClickable[adapterPosition])
+            }
+        }
+
         fun bind(news: News) {
             itemBinding.imageViewNews.setImageResource(news.imageViewNews)
             itemBinding.textViewNewsName.setText(news.textViewName)
@@ -53,6 +66,7 @@ class NewsAdapter() :
 
     fun setData(newsList: List<News>) {
         asyncListDiffer.submitList(newsList)
+        newsListClickable = newsList
     }
 
     override fun onCreateViewHolder(
@@ -73,5 +87,8 @@ class NewsAdapter() :
     ) {
         val news = asyncListDiffer.currentList[position]
         holder.bind(news)
+        holder.itemBinding.imageViewNews.setOnClickListener {
+            DetailDescFragment.newInstance()
+        }
     }
 }

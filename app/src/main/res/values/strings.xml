@@ -178,4 +178,26 @@
     <string name="news_2_description">"Дубовская школа-интернат для детей с ограниченными возможностями здоровья стала первой в области …"</string>
     <string name="back">back</string>
     <string name="help_categories">Категории помощи</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="ok">ok</string>
+    <string name="share">share</string>
+    <string name="sponsors">Спонсоры отремонтируют</string>
+    <string name="sponsor_repair">Спонсоры отремонтируют школу-интернат</string>
+    <string name="fund_name">Благотворительный Фонд «Счастливый Мир»</string>
+    <string name="navigation">navigation</string>
+    <string name="phone">phone</string>
+    <string name="mail">mail</string>
+    <string name="address">Санкт-Петербург, Кирочная улица, д. 50А, каб. 208</string>
+    <string name="phone_number">+7 (937) 037 37-73\n+7 (937) 016 16-16</string>
+    <string name="question">У вас есть вопросы?</string>
+    <string name="write_us"><u>Напишите нам</u></string>
+    <string name="description_top">Участники и болельщики смогли весело и активно провести время на «Петербургском благотворительном марафоне» и при этом финансово поучаствовать в помощи детям.</string>
+    <string name="description_bottom">При этом финансово поучаствовать в помощи детям. При этом финансово поучаствовать в помощи детям.</string>
+    <string name="go_to_org_site"><u>Перейти на сайт организаии</u></string>
+    <string name="shirt">Помочь вещами</string>
+    <string name="hands">Стать волонтером</string>
+    <string name="tools">Проф. помощь</string>
+    <string name="coins">Помочь деньгами</string>
+    <string name="friends_count">+102</string>
 </resources>

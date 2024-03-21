@@ -20,5 +20,6 @@
     <color name="blue_grey">#627f8f</color>
     <color name="transient_white">#00FFFFFF</color>
     <color name="switch_track_green">#b2d29a</color>
+    <color name="black_60">#99000000</color>
 
 </resources>
