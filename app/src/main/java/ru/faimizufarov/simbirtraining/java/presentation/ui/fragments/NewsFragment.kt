@@ -1,13 +1,10 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.fragments
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import kotlinx.datetime.LocalDateTime
 import ru.faimizufarov.simbirtraining.R
@@ -20,8 +17,8 @@ import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.NewsAdapter
 class NewsFragment : Fragment() {
     private lateinit var binding: FragmentNewsBinding
 
-    lateinit var filters: List<Category>
-    lateinit var appliedFilters: List<News>
+    var filters: String = ""
+    var appliedFiltersNews = mutableListOf<News>()
 
     val newsAdapter = NewsAdapter()
 
@@ -40,32 +37,30 @@ class NewsFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        appliedFilters = listOfNews
-
         setFragmentResultListener(NewsFilterFragment.APPLIED_FILTERS_RESULT) { key, bundle ->
-            filters =
-                (
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                        bundle.getParcelable(
-                            NewsFilterFragment.APPLIED_FILTERS,
-                            List::class.java,
-                        )
-                    } else {
-                        bundle.getParcelable(NewsFilterFragment.APPLIED_FILTERS)
-                    }
-                ) as List<Category>
+            filters = bundle.getString(NewsFilterFragment.APPLIED_FILTERS).toString()
 
-            filters.filter { !it.checked }.forEach {
-                val category = it
-                appliedFilters = listOfNews.filter { !it.helpCategory.contains(category) }
+            for (i in 0 until NewsFilterHolder.listFilters.size) {
+                if (filters.contains(
+                        getString(NewsFilterHolder.listFilters[i].enumValue.nameCategory),
+                    )
+                ) {
+                    appliedFiltersNews.addAll(
+                        listOfNews.filter {
+                            it.helpCategory.contains(NewsFilterHolder.listFilters[i])
+                        },
+                    )
+                }
             }
+
+            updateAdapter(appliedFiltersNews)
         }
 
-        newsAdapter.setData(appliedFilters)
-        newsAdapter.onItemClick = { news: News ->
-            val bundle = bundleOf(DetailDescFragment.NEWS_POSITION to news)
-            setFragmentResult(DetailDescFragment.NEWS_POSITION_RESULT, bundle)
-        }
+        updateAdapter(listOfNews)
+    }
+
+    private fun updateAdapter(list: List<News>) {
+        newsAdapter.setData(list.toSet().toList())
         binding.included.recyclerViewNewsFragment.adapter = newsAdapter
 
         binding.imageViewFilter.setOnClickListener {
@@ -74,6 +69,8 @@ class NewsFragment : Fragment() {
                 NewsFilterFragment.newInstance(),
             ).commit()
         }
+
+        appliedFiltersNews = mutableListOf()
     }
 
     companion object {

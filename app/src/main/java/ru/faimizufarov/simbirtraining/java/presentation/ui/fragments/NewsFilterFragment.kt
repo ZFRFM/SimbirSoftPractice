@@ -22,7 +22,7 @@ class NewsFilterFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
-    ): View? {
+    ): View {
         binding = FragmentNewsFilterBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -36,29 +36,43 @@ class NewsFilterFragment : Fragment() {
         itemDecoration.setDrawable(resources.getDrawable(R.drawable.divider_layer_search_result, null))
         binding.included.recyclerViewNewsFilterFragment.addItemDecoration(itemDecoration)
 
-        binding.included.recyclerViewNewsFilterFragment.adapter = FilterAdapter(listFilters)
+        binding.included.recyclerViewNewsFilterFragment.adapter =
+            FilterAdapter(requireContext(), NewsFilterHolder.listFilters)
 
         binding.imageViewOk.setOnClickListener {
+            var filtersNumberKey: String = ""
+            NewsFilterHolder.listFilters.forEach {
+                if (it.checked) {
+                    filtersNumberKey += getString(it.enumValue.nameCategory)
+                }
+            }
+            val bundle = bundleOf(APPLIED_FILTERS to filtersNumberKey)
+            setFragmentResult(APPLIED_FILTERS_RESULT, bundle)
             parentFragmentManager.beginTransaction().remove(this).commit()
         }
 
-        val bundle = bundleOf(APPLIED_FILTERS to listFilters)
-        parentFragment?.setFragmentResult(APPLIED_FILTERS_RESULT, bundle)
+        binding.imageViewBack.setOnClickListener {
+            parentFragmentManager.beginTransaction().remove(this).commit()
+        }
     }
 
     companion object {
         const val APPLIED_FILTERS = "APPLIED_FILTERS"
         const val APPLIED_FILTERS_RESULT = "APPLIED_FILTERS_RESULT"
 
-        fun newInstance() = NewsFilterFragment()
-
-        val listFilters =
-            listOf(
-                Category(enumValue = HelpCategoryEnum.CHILDREN, checked = false),
-                Category(enumValue = HelpCategoryEnum.ADULTS, checked = true),
-                Category(enumValue = HelpCategoryEnum.ELDERLY, checked = true),
-                Category(enumValue = HelpCategoryEnum.ANIMALS, checked = true),
-                Category(enumValue = HelpCategoryEnum.EVENTS, checked = true),
-            )
+        fun newInstance(): NewsFilterFragment {
+            return NewsFilterFragment()
+        }
     }
+}
+
+object NewsFilterHolder {
+    val listFilters =
+        listOf(
+            Category(enumValue = HelpCategoryEnum.CHILDREN, checked = true),
+            Category(enumValue = HelpCategoryEnum.ADULTS, checked = true),
+            Category(enumValue = HelpCategoryEnum.ELDERLY, checked = true),
+            Category(enumValue = HelpCategoryEnum.ANIMALS, checked = true),
+            Category(enumValue = HelpCategoryEnum.EVENTS, checked = true),
+        )
 }
