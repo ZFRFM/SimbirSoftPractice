@@ -1,5 +1,6 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.fragments
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,10 +20,10 @@ import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.NewsAdapter
 class NewsFragment : Fragment() {
     private lateinit var binding: FragmentNewsBinding
 
-    var filters: String = ""
-    var appliedFiltersNews = mutableListOf<News>()
+    private var listAppliedFilters: MutableList<Category>? = mutableListOf()
+    private var appliedFiltersNews = mutableListOf<News>()
 
-    val newsAdapter = NewsAdapter()
+    private val newsAdapter = NewsAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,11 +41,22 @@ class NewsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setFragmentResultListener(NewsFilterFragment.APPLIED_FILTERS_RESULT) { key, bundle ->
-            filters = bundle.getString(NewsFilterFragment.APPLIED_FILTERS).toString()
+
+            listAppliedFilters =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    bundle.getParcelable(
+                        NewsFilterFragment.APPLIED_FILTERS,
+                        MutableList::class.java,
+                    )
+                } else {
+                    bundle.getParcelable(NewsFilterFragment.APPLIED_FILTERS)
+                } as MutableList<Category>
 
             for (i in 0 until NewsFilterHolder.listFilters.size) {
-                if (filters.contains(
-                        getString(NewsFilterHolder.listFilters[i].enumValue.nameCategory),
+                if (listAppliedFilters!!.contains(
+                        Category(
+                            NewsFilterHolder.listFilters[i].enumValue,
+                        ),
                     )
                 ) {
                     appliedFiltersNews.addAll(

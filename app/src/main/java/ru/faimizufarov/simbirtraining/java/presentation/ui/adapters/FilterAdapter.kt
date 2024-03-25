@@ -11,7 +11,7 @@ class FilterAdapter(private val filterList: List<Category>) : RecyclerView.Adapt
     class FilterViewHolder(val itemBinding: ItemNewsFilterFragmentBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(category: Category) {
-            itemBinding.textViewFilterItem.setText(category.enumValue.nameCategory)
+            itemBinding.textViewFilterItem.setText(category.enumValue?.nameCategory ?: 0)
             itemBinding.switchFilterItem.isChecked = category.checked
         }
     }

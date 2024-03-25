@@ -40,13 +40,13 @@ class NewsFilterFragment : Fragment() {
             FilterAdapter(NewsFilterHolder.listFilters)
 
         binding.imageViewOk.setOnClickListener {
-            var filtersNumberKey: String = ""
+            val listAppliedFilters = mutableListOf<Category>()
             NewsFilterHolder.listFilters.forEach {
                 if (it.checked) {
-                    filtersNumberKey += getString(it.enumValue.nameCategory)
+                    listAppliedFilters.add(it)
                 }
             }
-            val bundle = bundleOf(APPLIED_FILTERS to filtersNumberKey)
+            val bundle = bundleOf(APPLIED_FILTERS to listAppliedFilters)
             setFragmentResult(APPLIED_FILTERS_RESULT, bundle)
             parentFragmentManager.beginTransaction().remove(this).commit()
         }
