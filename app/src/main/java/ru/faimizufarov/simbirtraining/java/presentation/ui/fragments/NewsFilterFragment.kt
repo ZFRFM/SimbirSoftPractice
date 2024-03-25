@@ -37,7 +37,7 @@ class NewsFilterFragment : Fragment() {
         binding.included.recyclerViewNewsFilterFragment.addItemDecoration(itemDecoration)
 
         binding.included.recyclerViewNewsFilterFragment.adapter =
-            FilterAdapter(requireContext(), NewsFilterHolder.listFilters)
+            FilterAdapter(NewsFilterHolder.listFilters)
 
         binding.imageViewOk.setOnClickListener {
             var filtersNumberKey: String = ""

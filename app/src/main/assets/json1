@@ -1,0 +1,38 @@
+"categoryList": [
+    {
+        "id": 0
+        "enumValue": {
+            "imageView": "R.drawable.children_category",
+            "nameCategory": "R.string.children"
+        },
+        "checked": true
+    },
+    {
+        "enumValue": {
+            "imageView": "R.drawable.adults_category",
+            "nameCategory": "R.string.adults"
+        },
+        "checked": true
+    },
+    {
+        "enumValue": {
+            "imageView": "R.drawable.elderly_category",
+            "nameCategory": "R.string.elderly"
+        },
+        "checked": true
+    },
+    {
+        "enumValue": {
+            "imageView": "R.drawable.animals_category",
+            "nameCategory": "R.string.animals"
+        },
+        "checked": true
+    },
+    {
+        "enumValue": {
+            "imageView": "R.drawable.events_category",
+            "nameCategory": "R.string.events"
+        },
+        "checked": true
+    }
+]

@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.setFragmentResultListener
 import kotlinx.datetime.LocalDateTime
 import ru.faimizufarov.simbirtraining.R
@@ -70,6 +72,27 @@ class NewsFragment : Fragment() {
             ).commit()
         }
 
+        newsAdapter.onItemClick = { news: News ->
+            val startDate = news.startDate.toString()
+            val finishDate = news.finishDate.toString()
+
+            val bundle =
+                bundleOf(
+                    DetailDescFragment.IMAGE_VIEW_NEWS to news.imageViewNews,
+                    DetailDescFragment.TEXT_VIEW_NAME to news.textViewName,
+                    DetailDescFragment.TEXT_VIEW_DESCRIPTION to news.textViewDescription,
+                    DetailDescFragment.TEXT_VIEW_REMAINING_TIME to news.textViewRemainingTime,
+                    DetailDescFragment.START_DATE to startDate,
+                    DetailDescFragment.FINISH_DATE to finishDate,
+                )
+
+            setFragmentResult(DetailDescFragment.NEWS_POSITION_RESULT, bundle)
+            parentFragmentManager.beginTransaction().replace(
+                R.id.fragmentContainerView,
+                DetailDescFragment.newInstance(),
+            ).commit()
+        }
+
         appliedFiltersNews = mutableListOf()
     }
 
@@ -118,7 +141,7 @@ class NewsFragment : Fragment() {
                     startDate =
                         LocalDateTime(
                             2024,
-                            3,
+                            4,
                             20,
                             10,
                             0,
@@ -128,7 +151,7 @@ class NewsFragment : Fragment() {
                     finishDate =
                         LocalDateTime(
                             2024,
-                            3,
+                            4,
                             20,
                             20,
                             0,

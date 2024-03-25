@@ -64,6 +64,8 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.fragment:fragment-ktx:1.6.2")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation("com.google.code.gson:gson:2.10.1")
 
     //region Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.7.1")

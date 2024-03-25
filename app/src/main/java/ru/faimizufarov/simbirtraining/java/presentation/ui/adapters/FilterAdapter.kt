@@ -1,6 +1,5 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,7 +7,7 @@ import ru.faimizufarov.simbirtraining.databinding.ItemNewsFilterFragmentBinding
 import ru.faimizufarov.simbirtraining.java.data.Category
 import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.NewsFilterHolder
 
-class FilterAdapter(val context: Context, private val filterList: List<Category>) : RecyclerView.Adapter<FilterAdapter.FilterViewHolder>() {
+class FilterAdapter(private val filterList: List<Category>) : RecyclerView.Adapter<FilterAdapter.FilterViewHolder>() {
     class FilterViewHolder(val itemBinding: ItemNewsFilterFragmentBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(category: Category) {
