@@ -38,13 +38,17 @@ class FilterAdapter(private val filterList: List<Category>) : RecyclerView.Adapt
             holder.itemBinding.switchFilterItem.isChecked =
                 !holder.itemBinding.switchFilterItem.isChecked
 
-            NewsFilterHolder.listFilters[position].checked =
-                holder.itemBinding.switchFilterItem.isChecked
+            NewsFilterHolder.setFilter(
+                NewsFilterHolder.getFilterList()[position],
+                holder.itemBinding.switchFilterItem.isChecked,
+            )
         }
 
         holder.itemBinding.switchFilterItem.setOnClickListener {
-            NewsFilterHolder.listFilters[position].checked =
-                holder.itemBinding.switchFilterItem.isChecked
+            NewsFilterHolder.setFilter(
+                NewsFilterHolder.getFilterList()[position],
+                holder.itemBinding.switchFilterItem.isChecked,
+            )
         }
     }
 }
