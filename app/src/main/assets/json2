@@ -8,7 +8,7 @@
             "textViewRemainingTime": "Осталось %d дней (%d.%d - %d.%d)",
             "helpCategory": [
                 {
-                    "enumValue": "CHILDREN",
+                    "id": 0,
                     "checked": true
                 }
             ],
@@ -23,11 +23,11 @@
             "textViewRemainingTime": "Осталось %d дней (%d.%d - %d.%d)",
             "helpCategory": [
                 {
-                    "enumValue": "CHILDREN",
+                    "id": 0,
                     "checked": true
                 },
                 {
-                    "enumValue": "ADULTS",
+                    "id": 1,
                     "checked": true
                 }
             ],
