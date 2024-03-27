@@ -1,0 +1,38 @@
+{
+    "newsList": [
+        {
+            "id": 0,
+            "imageViewNews": "https://vk.com/im?sel=269941974&z=photo269941974_457253234%2Fmail649426",
+            "textViewName": "Спонсоры отремонтируют школу-интернат",
+            "textViewDescription": "Дубовская школа-интернат для детей с ограниченными возможностями здоровья стала первой в области …",
+            "textViewRemainingTime": "Осталось %d дней (%d.%d - %d.%d)",
+            "helpCategory": [
+                {
+                    "enumValue": "CHILDREN",
+                    "checked": true
+                }
+            ],
+            "startDate": "2024-03-01T10:00",
+            "finishDate": "2024-03-29T20:00"
+        },
+        {
+            "id": 1,
+            "imageViewNews": "https://vk.com/im?sel=269941974&z=photo269941974_457253235%2Fmail649426",
+            "textViewName": "Конкурс по вокальному пению в детском доме №6",
+            "textViewDescription": "Дубовская школа-интернат для детей с ограниченными возможностями здоровья стала первой в области …",
+            "textViewRemainingTime": "Осталось %d дней (%d.%d - %d.%d)",
+            "helpCategory": [
+                {
+                    "enumValue": "CHILDREN",
+                    "checked": true
+                },
+                {
+                    "enumValue": "ADULTS",
+                    "checked": true
+                }
+            ],
+            "startDate": "2024-04-20T10:00",
+            "finishDate": "2024-04-20T20:00"
+        }
+    ]
+}

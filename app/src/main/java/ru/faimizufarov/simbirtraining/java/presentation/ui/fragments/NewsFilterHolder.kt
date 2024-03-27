@@ -13,7 +13,7 @@ object NewsFilterHolder {
             Category(enumValue = HelpCategoryEnum.EVENTS, checked = true),
         )
 
-    private var onFiltersChangedListener: ((List<Category>) -> Unit)? = null
+    var onFiltersChangedListener: ((List<Category>) -> Unit)? = null
 
     fun getFilterList() = listFiltersHolder
 
@@ -22,7 +22,6 @@ object NewsFilterHolder {
         isFiltered: Boolean,
     ) {
         listFiltersHolder.firstOrNull { it == category }?.checked = isFiltered
-        onFiltersChangedListener?.invoke(listFiltersHolder)
     }
 
     fun setOnFilterChangedListener(listener: ((List<Category>) -> Unit)?) {

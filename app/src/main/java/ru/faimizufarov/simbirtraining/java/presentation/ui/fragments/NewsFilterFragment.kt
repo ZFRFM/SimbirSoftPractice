@@ -36,6 +36,7 @@ class NewsFilterFragment : Fragment() {
             FilterAdapter(NewsFilterHolder.getFilterList())
 
         binding.imageViewOk.setOnClickListener {
+            NewsFilterHolder.onFiltersChangedListener?.invoke(NewsFilterHolder.getFilterList())
             parentFragmentManager.beginTransaction().remove(this).commit()
         }
 
