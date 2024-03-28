@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import com.bumptech.glide.Glide
 import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
+import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentDetailDescBinding
 
 class DetailDescFragment : Fragment() {
@@ -36,12 +38,13 @@ class DetailDescFragment : Fragment() {
             val finishDay = LocalDateTime.parse(bundle.getString(FINISH_DATE) ?: "").dayOfYear
             val today = Clock.System.todayIn(TimeZone.currentSystemDefault()).dayOfYear
             with(binding.included) {
-                imageViewFirstPicture.setImageResource(bundle.getInt(IMAGE_VIEW_NEWS))
-                textViewNews.setText(bundle.getInt(TEXT_VIEW_NAME))
-                textViewDescTop.setText(bundle.getInt(TEXT_VIEW_DESCRIPTION))
+                val imageUrl = bundle.getString(IMAGE_VIEW_NEWS)
+                Glide.with(requireContext()).load(imageUrl).into(binding.included.imageViewFirstPicture)
+                textViewNews.setText(bundle.getString(TEXT_VIEW_NAME))
+                textViewDescTop.setText(bundle.getString(TEXT_VIEW_DESCRIPTION))
                 textViewRemainingTime.setText(
                     getString(
-                        bundle.getInt(TEXT_VIEW_REMAINING_TIME),
+                        R.string.news_remaining_time,
                         finishDay - today,
                         startDate.dayOfMonth,
                         startDate.monthNumber,

@@ -7,20 +7,21 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
-import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.toLocalDateTime
+import kotlinx.serialization.json.Json
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsBinding
 import ru.faimizufarov.simbirtraining.java.data.Category
 import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
 import ru.faimizufarov.simbirtraining.java.data.News
+import ru.faimizufarov.simbirtraining.java.data.NewsJsonRepresentation
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.NewsAdapter
 
 class NewsFragment : Fragment() {
     private lateinit var binding: FragmentNewsBinding
-
     private var appliedFiltersNews = mutableListOf<News>()
-
-    private val newsAdapter = NewsAdapter()
+    private lateinit var newsAdapter: NewsAdapter
+    private lateinit var listOfNewsJson: List<News>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +38,43 @@ class NewsFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
+        newsAdapter = NewsAdapter(requireContext())
+        val fileInString by lazy {
+            requireContext()
+                .applicationContext
+                .assets
+                .open("json2")
+                .bufferedReader()
+                .use { it.readText() }
+        }
+
+        listOfNewsJson =
+            Json
+                .decodeFromString<Array<NewsJsonRepresentation>>(fileInString)
+                .map { it ->
+                    News(
+                        imageViewNews = it.imageViewNews,
+                        textViewName = it.textViewName,
+                        textViewDescription = it.textViewDescription,
+                        helpCategory =
+                            it.helpCategory.map {
+                                Category(
+                                    enumValue =
+                                        when (it.id) {
+                                            0 -> HelpCategoryEnum.CHILDREN
+                                            1 -> HelpCategoryEnum.ADULTS
+                                            2 -> HelpCategoryEnum.ELDERLY
+                                            3 -> HelpCategoryEnum.ANIMALS
+                                            else -> HelpCategoryEnum.EVENTS
+                                        },
+                                    checked = it.checked,
+                                )
+                            },
+                        startDate = it.startDate.toLocalDateTime(),
+                        finishDate = it.finishDate.toLocalDateTime(),
+                    )
+                }
+
         NewsFilterHolder.setOnFilterChangedListener { listFilters ->
             for (i in 0 until NewsFilterHolder.getFilterList().size) {
                 if (listFilters.contains(
@@ -46,7 +84,7 @@ class NewsFragment : Fragment() {
                     )
                 ) {
                     appliedFiltersNews.addAll(
-                        listOfNews.filter {
+                        listOfNewsJson.filter {
                             it.helpCategory.contains(NewsFilterHolder.getFilterList()[i])
                         },
                     )
@@ -55,7 +93,7 @@ class NewsFragment : Fragment() {
             updateAdapter(appliedFiltersNews)
         }
 
-        updateAdapter(listOfNews)
+        updateAdapter(listOfNewsJson)
 
         binding.imageViewFilter.setOnClickListener {
             parentFragmentManager.beginTransaction().add(
@@ -95,67 +133,5 @@ class NewsFragment : Fragment() {
 
     companion object {
         fun newInstance() = NewsFragment()
-
-        val listOfNews =
-            listOf(
-                News(
-                    imageViewNews = R.drawable.news_1_image,
-                    textViewName = R.string.news_1_name,
-                    textViewDescription = R.string.news_1_description,
-                    textViewRemainingTime = R.string.news_remaining_time,
-                    helpCategory = listOf(Category(HelpCategoryEnum.CHILDREN, true)),
-                    startDate =
-                        LocalDateTime(
-                            2024,
-                            3,
-                            1,
-                            10,
-                            0,
-                            0,
-                            0,
-                        ),
-                    finishDate =
-                        LocalDateTime(
-                            2024,
-                            3,
-                            29,
-                            20,
-                            0,
-                            0,
-                            0,
-                        ),
-                ),
-                News(
-                    imageViewNews = R.drawable.news_2_image,
-                    textViewName = R.string.news_2_name,
-                    textViewDescription = R.string.news_1_description,
-                    textViewRemainingTime = R.string.news_remaining_time,
-                    helpCategory =
-                        listOf(
-                            Category(HelpCategoryEnum.CHILDREN, true),
-                            Category(HelpCategoryEnum.ADULTS, true),
-                        ),
-                    startDate =
-                        LocalDateTime(
-                            2024,
-                            4,
-                            20,
-                            10,
-                            0,
-                            0,
-                            0,
-                        ),
-                    finishDate =
-                        LocalDateTime(
-                            2024,
-                            4,
-                            20,
-                            20,
-                            0,
-                            0,
-                            0,
-                        ),
-                ),
-            )
     }
 }

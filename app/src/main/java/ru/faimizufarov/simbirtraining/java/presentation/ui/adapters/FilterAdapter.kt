@@ -8,7 +8,7 @@ import ru.faimizufarov.simbirtraining.java.data.Category
 import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.NewsFilterHolder
 
 class FilterAdapter(private val filterList: List<Category>) : RecyclerView.Adapter<FilterAdapter.FilterViewHolder>() {
-    class FilterViewHolder(val itemBinding: ItemNewsFilterFragmentBinding) :
+    inner class FilterViewHolder(val itemBinding: ItemNewsFilterFragmentBinding) :
         RecyclerView.ViewHolder(itemBinding.root) {
         fun bind(category: Category) {
             itemBinding.textViewFilterItem.setText(category.enumValue?.nameCategory ?: 0)

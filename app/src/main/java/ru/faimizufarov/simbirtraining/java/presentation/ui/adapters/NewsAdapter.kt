@@ -1,18 +1,19 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.adapters
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import kotlinx.datetime.Clock
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import ru.faimizufarov.simbirtraining.databinding.ItemNewsFragmentBinding
 import ru.faimizufarov.simbirtraining.java.data.News
-import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.DetailDescFragment
 
-class NewsAdapter() :
+class NewsAdapter(val context: Context) :
     RecyclerView.Adapter<NewsAdapter.NewsViewHolder>() {
     var onItemClick: ((News) -> Unit)? = null
     var newsListClickable: List<News> = emptyList()
@@ -29,22 +30,28 @@ class NewsAdapter() :
         }
 
         fun bind(news: News) {
-            itemBinding.imageViewNews.setImageResource(news.imageViewNews)
+            Glide.with(context).load(news.imageViewNews).into(itemBinding.imageViewNews)
             itemBinding.textViewNewsName.setText(news.textViewName)
             itemBinding.textViewNewsDescription.setText(news.textViewDescription)
             if (news.startDate.dayOfMonth == news.finishDate.dayOfMonth) {
-                itemBinding.textViewNewsRemainingTime
-                    .setText("${news.startDate.month} ${news.startDate.dayOfMonth}, ${news.startDate.year}")
+                val shortString =
+                    buildString {
+                        append("${news.startDate.month} ")
+                        append("${news.startDate.dayOfMonth}, ")
+                        append(news.startDate.year)
+                    }
+                itemBinding.textViewNewsRemainingTime.setText(shortString)
             } else {
                 val timeZone: TimeZone = TimeZone.currentSystemDefault()
                 val today = Clock.System.todayIn(timeZone).dayOfMonth
                 val remainingDays = news.finishDate.dayOfMonth - today
-                itemBinding.textViewNewsRemainingTime
-                    .setText(
-                        "Осталось $remainingDays дней " +
-                            "(${news.startDate.dayOfMonth}.${news.startDate.monthNumber} - " +
-                            "${news.finishDate.dayOfMonth}.${news.finishDate.monthNumber})",
-                    )
+                val longString =
+                    buildString {
+                        append("Осталось $remainingDays дней ")
+                        append("(${news.startDate.dayOfMonth}.${news.startDate.monthNumber} - ")
+                        append("${news.finishDate.dayOfMonth}.${news.finishDate.monthNumber})")
+                    }
+                itemBinding.textViewNewsRemainingTime.setText(longString)
             }
         }
     }
@@ -87,8 +94,8 @@ class NewsAdapter() :
     ) {
         val news = asyncListDiffer.currentList[position]
         holder.bind(news)
-        holder.itemBinding.imageViewNews.setOnClickListener {
-            DetailDescFragment.newInstance()
+        holder.itemBinding.root.setOnClickListener {
+            onItemClick?.invoke(news)
         }
     }
 }

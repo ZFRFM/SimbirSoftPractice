@@ -8,9 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
-import kotlin.enums.EnumEntries
 
-class HelpCategoriesAdapter(private val categories: EnumEntries<HelpCategoryEnum>) :
+class HelpCategoriesAdapter(private val categories: List<HelpCategoryEnum>) :
     RecyclerView.Adapter<HelpCategoriesAdapter.HelpCategoriesViewHolder> () {
     class HelpCategoriesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageViewHelpCategory: ImageView = itemView.findViewById(R.id.imageViewHelpCategory)

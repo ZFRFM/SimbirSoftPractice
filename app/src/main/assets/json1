@@ -1,24 +1,22 @@
-{
-    "categoriesList": [
-        {
-            "id": 0,
-            "checked": true
-        },
-        {
-            "id": 1,
-            "checked": true
-        },
-        {
-            "id": 2,
-            "checked": true
-        },
-        {
-            "id": 3,
-            "checked": true
-        },
-        {
-            "id": 4,
-            "checked": true
-        }
-    ]
-}
+[
+    {
+        "id": 0,
+        "checked": true
+    },
+    {
+        "id": 1,
+        "checked": true
+    },
+    {
+        "id": 2,
+        "checked": true
+    },
+    {
+        "id": 3,
+        "checked": true
+    },
+    {
+        "id": 4,
+        "checked": true
+    }
+]
