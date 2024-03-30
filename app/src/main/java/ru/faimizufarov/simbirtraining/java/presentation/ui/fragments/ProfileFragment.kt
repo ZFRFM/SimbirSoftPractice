@@ -38,14 +38,14 @@ class ProfileFragment : Fragment() {
                 } else {
                     bundle.getParcelable(ProfilePhotoEditDialog.USER_PICTURE_KEY)
                 }
-            binding.included.imageViewMan.setImageURI(uri)
+            binding.contentProfileInfo.imageViewMan.setImageURI(uri)
         }
 
         setFragmentResultListener(
             ProfilePhotoEditDialog.DELETE_USER_PICTURE_RESULT_KEY,
         ) { key, bundle ->
             if (bundle.containsKey(ProfilePhotoEditDialog.DELETE_USER_PICTURE_FLAG_KEY)) {
-                binding.included.imageViewMan
+                binding.contentProfileInfo.imageViewMan
                     .setImageResource(R.drawable.empty_drawable_foreground)
             }
         }
@@ -62,10 +62,10 @@ class ProfileFragment : Fragment() {
                 } else {
                     bundle.getParcelable(ProfilePhotoEditDialog.USER_GALLERY_PICTURE_KEY)
                 }
-            binding.included.imageViewMan.setImageURI(uri)
+            binding.contentProfileInfo.imageViewMan.setImageURI(uri)
         }
 
-        binding.included.imageViewMan.setOnClickListener {
+        binding.contentProfileInfo.imageViewMan.setOnClickListener {
             val dialog = ProfilePhotoEditDialog.newInstance()
             dialog.show(childFragmentManager, ProfilePhotoEditDialog.TAG)
         }

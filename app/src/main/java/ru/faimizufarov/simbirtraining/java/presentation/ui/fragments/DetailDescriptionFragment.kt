@@ -14,7 +14,7 @@ import kotlinx.datetime.todayIn
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentDetailDescBinding
 
-class DetailDescFragment : Fragment() {
+class DetailDescriptionFragment : Fragment() {
     private lateinit var binding: FragmentDetailDescBinding
 
     override fun onCreateView(
@@ -69,8 +69,8 @@ class DetailDescFragment : Fragment() {
         const val FINISH_DATE = "FINISH_DATE"
         const val NEWS_POSITION_RESULT = "NEWS_POSITION_RESULT"
 
-        fun newInstance(): DetailDescFragment {
-            return DetailDescFragment()
+        fun newInstance(): DetailDescriptionFragment {
+            return DetailDescriptionFragment()
         }
     }
 }

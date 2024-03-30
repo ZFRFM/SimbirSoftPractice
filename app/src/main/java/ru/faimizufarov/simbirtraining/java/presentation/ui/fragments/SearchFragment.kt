@@ -42,17 +42,17 @@ class SearchFragment : Fragment() {
             )
 
         fragmentViewPagerAdapter = SearchPagerAdapter(this, requireContext())
-        viewPager = binding.included.viewPager
+        viewPager = binding.contentSearch.viewPager
         viewPager.adapter = fragmentViewPagerAdapter
 
-        val tabLayout = binding.included.tabLayout
+        val tabLayout = binding.contentSearch.tabLayout
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             viewPager.adapter = fragmentViewPagerAdapter
             tab.text =
                 if (position == 0) {
                     getString(R.string.by_events)
                 } else {
-                    getString(R.string.by_NKO)
+                    getString(R.string.by_NGO)
                 }
         }.attach()
     }

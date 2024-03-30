@@ -43,7 +43,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <include
-        android:id="@+id/included"
+        android:id="@+id/contentSearch"
         layout="@layout/scrolling_search_fragment" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

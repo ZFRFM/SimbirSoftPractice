@@ -45,7 +45,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <include
-        android:id="@+id/included"
+        android:id="@+id/contentHelpCategories"
         layout="@layout/scrolling_help_categories_fragment" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

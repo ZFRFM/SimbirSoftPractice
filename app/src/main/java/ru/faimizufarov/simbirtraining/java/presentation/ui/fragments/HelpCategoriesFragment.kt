@@ -50,7 +50,7 @@ class HelpCategoriesFragment : Fragment() {
                     }
                 }
 
-        val recyclerView = binding.included.recyclerViewHelpCategories
+        val recyclerView = binding.contentHelpCategories.recyclerViewHelpCategories
         recyclerView.adapter = HelpCategoriesAdapter(listOfCategories)
     }
 

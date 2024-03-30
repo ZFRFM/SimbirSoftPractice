@@ -105,7 +105,7 @@ class NewsFragment : Fragment() {
 
     private fun updateAdapter(list: List<News>) {
         newsAdapter.setData(list.toSet().toList())
-        binding.included.recyclerViewNewsFragment.adapter = newsAdapter
+        binding.contentNews.recyclerViewNewsFragment.adapter = newsAdapter
 
         newsAdapter.onItemClick = { news: News ->
             val startDate = news.startDate.toString()
@@ -113,18 +113,24 @@ class NewsFragment : Fragment() {
 
             val bundle =
                 bundleOf(
-                    DetailDescFragment.IMAGE_VIEW_NEWS to news.imageViewNews,
-                    DetailDescFragment.TEXT_VIEW_NAME to news.textViewName,
-                    DetailDescFragment.TEXT_VIEW_DESCRIPTION to news.textViewDescription,
-                    DetailDescFragment.TEXT_VIEW_REMAINING_TIME to news.textViewRemainingTime,
-                    DetailDescFragment.START_DATE to startDate,
-                    DetailDescFragment.FINISH_DATE to finishDate,
+                    DetailDescriptionFragment.IMAGE_VIEW_NEWS
+                        to news.imageViewNews,
+                    DetailDescriptionFragment.TEXT_VIEW_NAME
+                        to news.textViewName,
+                    DetailDescriptionFragment.TEXT_VIEW_DESCRIPTION
+                        to news.textViewDescription,
+                    DetailDescriptionFragment.TEXT_VIEW_REMAINING_TIME
+                        to news.textViewRemainingTime,
+                    DetailDescriptionFragment.START_DATE
+                        to startDate,
+                    DetailDescriptionFragment.FINISH_DATE
+                        to finishDate,
                 )
 
-            setFragmentResult(DetailDescFragment.NEWS_POSITION_RESULT, bundle)
+            setFragmentResult(DetailDescriptionFragment.NEWS_POSITION_RESULT, bundle)
             parentFragmentManager.beginTransaction().replace(
                 R.id.fragmentContainerView,
-                DetailDescFragment.newInstance(),
+                DetailDescriptionFragment.newInstance(),
             ).commit()
         }
 

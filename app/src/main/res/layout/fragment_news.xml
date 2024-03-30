@@ -57,7 +57,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <include
-        android:id="@+id/included"
+        android:id="@+id/contentNews"
         layout="@layout/scrolling_news_fragment" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
