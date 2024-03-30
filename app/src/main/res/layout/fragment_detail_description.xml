@@ -65,7 +65,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <include
-        android:id="@+id/included"
+        android:id="@+id/contentDetailDescription"
         layout="@layout/scrolling_detail_desc" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

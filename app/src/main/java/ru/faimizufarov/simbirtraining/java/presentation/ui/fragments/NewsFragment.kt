@@ -53,9 +53,10 @@ class NewsFragment : Fragment() {
                 .decodeFromString<Array<NewsJsonRepresentation>>(fileInString)
                 .map { it ->
                     News(
-                        imageViewNews = it.imageViewNews,
-                        textViewName = it.textViewName,
-                        textViewDescription = it.textViewDescription,
+                        newsImage = it.newsImage,
+                        nameText = it.nameText,
+                        descriptionText = it.textViewDescription,
+                        remainingTimeText = R.string.news_remaining_time,
                         helpCategory =
                             it.helpCategory.map {
                                 Category(
@@ -114,13 +115,13 @@ class NewsFragment : Fragment() {
             val bundle =
                 bundleOf(
                     DetailDescriptionFragment.IMAGE_VIEW_NEWS
-                        to news.imageViewNews,
+                        to news.newsImage,
                     DetailDescriptionFragment.TEXT_VIEW_NAME
-                        to news.textViewName,
+                        to news.nameText,
                     DetailDescriptionFragment.TEXT_VIEW_DESCRIPTION
-                        to news.textViewDescription,
+                        to news.descriptionText,
                     DetailDescriptionFragment.TEXT_VIEW_REMAINING_TIME
-                        to news.textViewRemainingTime,
+                        to news.remainingTimeText,
                     DetailDescriptionFragment.START_DATE
                         to startDate,
                     DetailDescriptionFragment.FINISH_DATE

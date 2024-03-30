@@ -7,11 +7,11 @@ import kotlinx.serialization.Serializable
 data class NewsJsonRepresentation(
     val id: Int,
     @SerialName("event_image")
-    val imageViewNews: String,
+    val newsImage: String,
     @SerialName("event_name_text")
-    val textViewName: String,
+    val nameText: String,
     @SerialName("event_description_text")
-    val textViewDescription: String,
+    val descriptionText: String,
     @SerialName("help_category")
     val helpCategory: List<HelpCategoryEnumJsonRepresentation>,
     @SerialName("start_date")

@@ -40,10 +40,10 @@ class DetailDescriptionFragment : Fragment() {
                     bundle.getString(FINISH_DATE) ?: "",
                 ).dayOfYear
             val today = Clock.System.todayIn(TimeZone.currentSystemDefault()).dayOfYear
-            with(binding.included) {
+            with(binding.contentDetailDescription) {
                 val imageUrl = bundle.getString(IMAGE_VIEW_NEWS)
                 Glide.with(requireContext()).load(imageUrl)
-                    .into(binding.included.imageViewFirstPicture)
+                    .into(binding.contentDetailDescription.imageViewFirstPicture)
                 textViewNews.setText(bundle.getString(TEXT_VIEW_NAME))
                 textViewDescTop.setText(bundle.getString(TEXT_VIEW_DESCRIPTION))
                 textViewRemainingTime.setText(
