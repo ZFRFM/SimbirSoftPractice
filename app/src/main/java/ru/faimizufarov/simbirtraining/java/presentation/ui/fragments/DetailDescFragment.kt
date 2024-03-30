@@ -35,11 +35,15 @@ class DetailDescFragment : Fragment() {
         setFragmentResultListener(NEWS_POSITION_RESULT) { key, bundle ->
             val startDate = LocalDateTime.parse(bundle.getString(START_DATE) ?: "")
             val finishDate = LocalDateTime.parse(bundle.getString(FINISH_DATE) ?: "")
-            val finishDay = LocalDateTime.parse(bundle.getString(FINISH_DATE) ?: "").dayOfYear
+            val finishDay =
+                LocalDateTime.parse(
+                    bundle.getString(FINISH_DATE) ?: "",
+                ).dayOfYear
             val today = Clock.System.todayIn(TimeZone.currentSystemDefault()).dayOfYear
             with(binding.included) {
                 val imageUrl = bundle.getString(IMAGE_VIEW_NEWS)
-                Glide.with(requireContext()).load(imageUrl).into(binding.included.imageViewFirstPicture)
+                Glide.with(requireContext()).load(imageUrl)
+                    .into(binding.included.imageViewFirstPicture)
                 textViewNews.setText(bundle.getString(TEXT_VIEW_NAME))
                 textViewDescTop.setText(bundle.getString(TEXT_VIEW_DESCRIPTION))
                 textViewRemainingTime.setText(

@@ -29,7 +29,9 @@ class NewsFilterFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         itemDecoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
-        itemDecoration.setDrawable(resources.getDrawable(R.drawable.divider_layer_search_result, null))
+        itemDecoration.setDrawable(
+            resources.getDrawable(R.drawable.divider_layer_search_result, null),
+        )
         binding.included.recyclerViewNewsFilterFragment.addItemDecoration(itemDecoration)
 
         binding.included.recyclerViewNewsFilterFragment.adapter =

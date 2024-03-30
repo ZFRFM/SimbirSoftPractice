@@ -200,4 +200,6 @@
     <string name="tools">Проф. помощь</string>
     <string name="coins">Помочь деньгами</string>
     <string name="friends_count">+102</string>
+    <string name="by_events">По мероприятиям</string>
+    <string name="by_NKO">По НКО</string>
 </resources>

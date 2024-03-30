@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayoutMediator
+import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentSearchBinding
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.SearchPagerAdapter
 
@@ -47,7 +48,12 @@ class SearchFragment : Fragment() {
         val tabLayout = binding.included.tabLayout
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             viewPager.adapter = fragmentViewPagerAdapter
-            tab.text = if (position == 0) "По мероприятиям" else "По НКО"
+            tab.text =
+                if (position == 0) {
+                    getString(R.string.by_events)
+                } else {
+                    getString(R.string.by_NKO)
+                }
         }.attach()
     }
 
