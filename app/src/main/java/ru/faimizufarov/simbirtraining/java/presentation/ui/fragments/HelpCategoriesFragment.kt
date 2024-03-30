@@ -33,7 +33,7 @@ class HelpCategoriesFragment : Fragment() {
             requireContext()
                 .applicationContext
                 .assets
-                .open("json1")
+                .open("JsonCategory")
                 .bufferedReader()
                 .use { it.readText() }
         }

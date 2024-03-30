@@ -43,7 +43,7 @@ class NewsFragment : Fragment() {
             requireContext()
                 .applicationContext
                 .assets
-                .open("json2")
+                .open("JsonNews")
                 .bufferedReader()
                 .use { it.readText() }
         }
