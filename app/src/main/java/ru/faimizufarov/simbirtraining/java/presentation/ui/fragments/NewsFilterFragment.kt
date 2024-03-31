@@ -32,18 +32,26 @@ class NewsFilterFragment : Fragment() {
         itemDecoration.setDrawable(
             resources.getDrawable(R.drawable.divider_layer_search_result, null),
         )
-        binding.included.recyclerViewNewsFilterFragment.addItemDecoration(itemDecoration)
 
-        binding.included.recyclerViewNewsFilterFragment.adapter =
-            FilterAdapter(NewsFilterHolder.getFilterList())
+        with(binding) {
+            contentDetailDescription.recyclerViewNewsFilterFragment
+                .addItemDecoration(itemDecoration)
 
-        binding.imageViewOk.setOnClickListener {
-            NewsFilterHolder.onFiltersChangedListener?.invoke(NewsFilterHolder.getFilterList())
-            parentFragmentManager.beginTransaction().remove(this).commit()
-        }
+            contentDetailDescription.recyclerViewNewsFilterFragment.adapter =
+                FilterAdapter(NewsFilterHolder.getFilterList())
 
-        binding.imageViewBack.setOnClickListener {
-            parentFragmentManager.beginTransaction().remove(this).commit()
+            imageViewOk.setOnClickListener {
+                NewsFilterHolder.onFiltersChangedListener?.invoke(NewsFilterHolder.getFilterList())
+                parentFragmentManager
+                    .beginTransaction()
+                    .remove(this@NewsFilterFragment).commit()
+            }
+
+            imageViewBack.setOnClickListener {
+                parentFragmentManager
+                    .beginTransaction()
+                    .remove(this@NewsFilterFragment).commit()
+            }
         }
     }
 

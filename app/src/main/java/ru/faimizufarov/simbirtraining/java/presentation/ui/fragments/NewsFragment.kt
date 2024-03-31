@@ -39,69 +39,71 @@ class NewsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         newsAdapter = NewsAdapter(requireContext())
-        val fileInString by lazy {
-            requireContext()
-                .applicationContext
-                .assets
-                .open("JsonNews")
-                .bufferedReader()
-                .use { it.readText() }
-        }
-
-        listOfNewsJson =
-            Json
-                .decodeFromString<Array<NewsJsonRepresentation>>(fileInString)
-                .map { it ->
-                    News(
-                        newsImage = it.newsImage,
-                        nameText = it.nameText,
-                        descriptionText = it.textViewDescription,
-                        remainingTimeText = R.string.news_remaining_time,
-                        helpCategory =
-                            it.helpCategory.map {
-                                Category(
-                                    enumValue =
-                                        when (it.id) {
-                                            0 -> HelpCategoryEnum.CHILDREN
-                                            1 -> HelpCategoryEnum.ADULTS
-                                            2 -> HelpCategoryEnum.ELDERLY
-                                            3 -> HelpCategoryEnum.ANIMALS
-                                            else -> HelpCategoryEnum.EVENTS
-                                        },
-                                    checked = it.checked,
-                                )
-                            },
-                        startDate = it.startDate.toLocalDateTime(),
-                        finishDate = it.finishDate.toLocalDateTime(),
-                    )
-                }
+        val fileInString = getNewsJson()
+        listOfNewsJson = getNewsListFromJson(fileInString)
 
         NewsFilterHolder.setOnFilterChangedListener { listFilters ->
-            for (i in 0 until NewsFilterHolder.getFilterList().size) {
-                if (listFilters.contains(
-                        Category(
-                            NewsFilterHolder.getFilterList()[i].enumValue,
-                        ),
-                    )
-                ) {
-                    appliedFiltersNews.addAll(
-                        listOfNewsJson.filter {
-                            it.helpCategory.contains(NewsFilterHolder.getFilterList()[i])
-                        },
-                    )
+            NewsFilterHolder.getFilterList().forEach { filteredCategory ->
+                if (listFilters.contains(filteredCategory)) {
+                    val filteredNews = listOfNewsJson.filterByCategory(filteredCategory)
+                    appliedFiltersNews.addAll(filteredNews)
                 }
             }
             updateAdapter(appliedFiltersNews)
         }
-
         updateAdapter(listOfNewsJson)
 
         binding.imageViewFilter.setOnClickListener {
-            parentFragmentManager.beginTransaction().add(
-                R.id.fragmentContainerView,
-                NewsFilterFragment.newInstance(),
-            ).commit()
+            openFilterFragment()
         }
+    }
+
+    private fun getNewsJson() =
+        requireContext()
+            .applicationContext
+            .assets
+            .open("JsonNews")
+            .bufferedReader()
+            .use { it.readText() }
+
+    private fun getNewsListFromJson(json: String) =
+        Json
+            .decodeFromString<Array<NewsJsonRepresentation>>(json)
+            .map { it ->
+                News(
+                    newsImage = it.newsImage,
+                    nameText = it.nameText,
+                    descriptionText = it.descriptionText,
+                    remainingTimeText = R.string.news_remaining_time,
+                    helpCategory =
+                        it.helpCategory.map {
+                            Category(
+                                enumValue =
+                                    when (it.id) {
+                                        0 -> HelpCategoryEnum.CHILDREN
+                                        1 -> HelpCategoryEnum.ADULTS
+                                        2 -> HelpCategoryEnum.ELDERLY
+                                        3 -> HelpCategoryEnum.ANIMALS
+                                        else -> HelpCategoryEnum.EVENTS
+                                    },
+                                checked = it.checked,
+                            )
+                        },
+                    startDate = it.startDate.toLocalDateTime(),
+                    finishDate = it.finishDate.toLocalDateTime(),
+                )
+            }
+
+    private fun List<News>.filterByCategory(category: Category) =
+        filter { news ->
+            news.helpCategory.any { it.enumValue == category.enumValue }
+        }
+
+    private fun openFilterFragment() {
+        parentFragmentManager.beginTransaction().add(
+            R.id.fragmentContainerView,
+            NewsFilterFragment.newInstance(),
+        ).commit()
     }
 
     private fun updateAdapter(list: List<News>) {

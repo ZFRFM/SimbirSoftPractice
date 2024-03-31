@@ -12,17 +12,17 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
 import ru.faimizufarov.simbirtraining.R
-import ru.faimizufarov.simbirtraining.databinding.FragmentDetailDescBinding
+import ru.faimizufarov.simbirtraining.databinding.FragmentDetailDescriptionBinding
 
 class DetailDescriptionFragment : Fragment() {
-    private lateinit var binding: FragmentDetailDescBinding
+    private lateinit var binding: FragmentDetailDescriptionBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentDetailDescBinding.inflate(inflater, container, false)
+        binding = FragmentDetailDescriptionBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -38,8 +38,8 @@ class DetailDescriptionFragment : Fragment() {
             val finishDay =
                 LocalDateTime.parse(
                     bundle.getString(FINISH_DATE) ?: "",
-                ).dayOfYear
-            val today = Clock.System.todayIn(TimeZone.currentSystemDefault()).dayOfYear
+                ).date.toEpochDays()
+            val today = Clock.System.todayIn(TimeZone.currentSystemDefault()).toEpochDays()
             with(binding.contentDetailDescription) {
                 val imageUrl = bundle.getString(IMAGE_VIEW_NEWS)
                 Glide.with(requireContext()).load(imageUrl)
@@ -47,14 +47,18 @@ class DetailDescriptionFragment : Fragment() {
                 textViewNews.setText(bundle.getString(TEXT_VIEW_NAME))
                 textViewDescTop.setText(bundle.getString(TEXT_VIEW_DESCRIPTION))
                 textViewRemainingTime.setText(
-                    getString(
-                        R.string.news_remaining_time,
-                        finishDay - today,
-                        startDate.dayOfMonth,
-                        startDate.monthNumber,
-                        finishDate.dayOfMonth,
-                        finishDate.monthNumber,
-                    ),
+                    if (finishDay - today >= 0) {
+                        getString(
+                            R.string.news_remaining_time_with_args,
+                            finishDay - today,
+                            startDate.dayOfMonth,
+                            startDate.monthNumber,
+                            finishDate.dayOfMonth,
+                            finishDate.monthNumber,
+                        )
+                    } else {
+                        getString(R.string.news_event_finished)
+                    },
                 )
             }
         }
