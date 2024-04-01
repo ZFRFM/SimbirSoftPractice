@@ -14,7 +14,7 @@ import ru.faimizufarov.simbirtraining.databinding.FragmentNewsBinding
 import ru.faimizufarov.simbirtraining.java.data.Category
 import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
 import ru.faimizufarov.simbirtraining.java.data.News
-import ru.faimizufarov.simbirtraining.java.data.NewsJsonRepresentation
+import ru.faimizufarov.simbirtraining.java.data.NewsResponse
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.NewsAdapter
 
 class NewsFragment : Fragment() {
@@ -64,17 +64,17 @@ class NewsFragment : Fragment() {
         requireContext()
             .applicationContext
             .assets
-            .open("JsonNews")
+            .open("news_list.json")
             .bufferedReader()
             .use { it.readText() }
 
     private fun getNewsListFromJson(json: String) =
         Json
-            .decodeFromString<Array<NewsJsonRepresentation>>(json)
+            .decodeFromString<Array<NewsResponse>>(json)
             .map { it ->
                 News(
                     id = it.id,
-                    newsImage = it.newsImage,
+                    newsImageUrl = it.newsImage,
                     nameText = it.nameText,
                     descriptionText = it.descriptionText,
                     remainingTimeText = R.string.news_remaining_time,
@@ -117,7 +117,7 @@ class NewsFragment : Fragment() {
             val bundle =
                 bundleOf(
                     DetailDescriptionFragment.IMAGE_VIEW_NEWS
-                        to news.newsImage,
+                        to news.newsImageUrl,
                     DetailDescriptionFragment.TEXT_VIEW_NAME
                         to news.nameText,
                     DetailDescriptionFragment.TEXT_VIEW_DESCRIPTION

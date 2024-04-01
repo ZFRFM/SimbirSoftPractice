@@ -29,7 +29,7 @@ class NewsViewHolder(
     }
 
     fun bind(news: News) {
-        Glide.with(context).load(news.newsImage).into(itemBinding.imageViewNews)
+        Glide.with(context).load(news.newsImageUrl).into(itemBinding.imageViewNews)
         with(itemBinding) {
             textViewNewsName.setText(news.nameText)
             textViewNewsDescription.setText(news.descriptionText)

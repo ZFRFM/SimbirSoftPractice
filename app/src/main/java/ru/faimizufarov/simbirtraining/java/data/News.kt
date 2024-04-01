@@ -4,7 +4,7 @@ import kotlinx.datetime.LocalDateTime
 
 data class News(
     val id: Int,
-    val newsImage: String,
+    val newsImageUrl: String,
     val nameText: String,
     val descriptionText: String,
     val remainingTimeText: Int,

@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class NewsJsonRepresentation(
+data class NewsResponse(
     val id: Int,
     @SerialName("event_image")
     val newsImage: String,

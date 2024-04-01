@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import kotlinx.serialization.json.Json
 import ru.faimizufarov.simbirtraining.databinding.FragmentHelpCategoriesBinding
-import ru.faimizufarov.simbirtraining.java.data.CategoryJsonRepresentation
+import ru.faimizufarov.simbirtraining.java.data.CategoryResponse
 import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.HelpCategoriesAdapter
 
@@ -33,14 +33,14 @@ class HelpCategoriesFragment : Fragment() {
             requireContext()
                 .applicationContext
                 .assets
-                .open("JsonCategory")
+                .open("categories_list.json")
                 .bufferedReader()
                 .use { it.readText() }
         }
 
         val listOfCategories =
             Json
-                .decodeFromString<Array<CategoryJsonRepresentation>>(fileInString).map {
+                .decodeFromString<Array<CategoryResponse>>(fileInString).map {
                     when (it.id) {
                         0 -> HelpCategoryEnum.CHILDREN
                         1 -> HelpCategoryEnum.ADULTS
