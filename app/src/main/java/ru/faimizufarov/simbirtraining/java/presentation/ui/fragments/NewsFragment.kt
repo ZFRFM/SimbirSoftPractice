@@ -38,7 +38,8 @@ class NewsFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        newsAdapter = NewsAdapter(requireContext())
+        newsAdapter = getAdapterInstallation()
+
         val fileInString = getNewsJson()
         listOfNewsJson = getNewsListFromJson(fileInString)
 
@@ -71,6 +72,7 @@ class NewsFragment : Fragment() {
             .decodeFromString<Array<NewsJsonRepresentation>>(json)
             .map { it ->
                 News(
+                    id = it.id,
                     newsImage = it.newsImage,
                     nameText = it.nameText,
                     descriptionText = it.descriptionText,
@@ -106,11 +108,8 @@ class NewsFragment : Fragment() {
         ).commit()
     }
 
-    private fun updateAdapter(list: List<News>) {
-        newsAdapter.setData(list.toSet().toList())
-        binding.contentNews.recyclerViewNewsFragment.adapter = newsAdapter
-
-        newsAdapter.onItemClick = { news: News ->
+    private fun getAdapterInstallation(): NewsAdapter {
+        return NewsAdapter(requireContext()) { news: News ->
             val startDate = news.startDate.toString()
             val finishDate = news.finishDate.toString()
 
@@ -136,7 +135,11 @@ class NewsFragment : Fragment() {
                 DetailDescriptionFragment.newInstance(),
             ).commit()
         }
+    }
 
+    private fun updateAdapter(list: List<News>) {
+        newsAdapter.setData(list.toSet().toList())
+        binding.contentNews.recyclerViewNewsFragment.adapter = newsAdapter
         appliedFiltersNews = mutableListOf()
     }
 

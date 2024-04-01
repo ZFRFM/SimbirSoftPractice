@@ -7,17 +7,12 @@ import ru.faimizufarov.simbirtraining.databinding.ItemNewsFilterFragmentBinding
 import ru.faimizufarov.simbirtraining.java.data.Category
 import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.NewsFilterHolder
 
-class FilterAdapter(private val filterList: List<Category>) :
-    RecyclerView.Adapter<FilterAdapter.FilterViewHolder>() {
-    inner class FilterViewHolder(val itemBinding: ItemNewsFilterFragmentBinding) :
-        RecyclerView.ViewHolder(itemBinding.root) {
-        fun bind(category: Category) {
-            with(itemBinding) {
-                textViewFilterItem.setText(category.enumValue?.nameCategory ?: 0)
-                switchFilterItem.isChecked = category.checked
-            }
-        }
-    }
+class FilterAdapter(
+    private val filterList: List<Category>,
+    private val onItemClick: (Category, Boolean) -> Unit,
+) :
+    RecyclerView.Adapter<FilterViewHolder>() {
+    private var categoryListClickable: List<Category> = NewsFilterHolder.getFilterList()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -26,7 +21,9 @@ class FilterAdapter(private val filterList: List<Category>) :
         val itemBinding =
             ItemNewsFilterFragmentBinding
                 .inflate(LayoutInflater.from(parent.context), parent, false)
-        return FilterViewHolder(itemBinding)
+        return FilterViewHolder(itemBinding) {
+            onItemClick(categoryListClickable[it], !categoryListClickable[it].checked)
+        }
     }
 
     override fun getItemCount() = filterList.size
@@ -37,21 +34,5 @@ class FilterAdapter(private val filterList: List<Category>) :
     ) {
         val filter = filterList[position]
         holder.bind(filter)
-        holder.itemBinding.root.setOnClickListener {
-            holder.itemBinding.switchFilterItem.isChecked =
-                !holder.itemBinding.switchFilterItem.isChecked
-
-            NewsFilterHolder.setFilter(
-                NewsFilterHolder.getFilterList()[position],
-                holder.itemBinding.switchFilterItem.isChecked,
-            )
-        }
-
-        holder.itemBinding.switchFilterItem.setOnClickListener {
-            NewsFilterHolder.setFilter(
-                NewsFilterHolder.getFilterList()[position],
-                holder.itemBinding.switchFilterItem.isChecked,
-            )
-        }
     }
 }

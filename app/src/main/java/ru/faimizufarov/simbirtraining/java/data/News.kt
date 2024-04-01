@@ -3,6 +3,7 @@ package ru.faimizufarov.simbirtraining.java.data
 import kotlinx.datetime.LocalDateTime
 
 data class News(
+    val id: Int,
     val newsImage: String,
     val nameText: String,
     val descriptionText: String,

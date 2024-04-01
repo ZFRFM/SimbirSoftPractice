@@ -38,7 +38,9 @@ class NewsFilterFragment : Fragment() {
                 .addItemDecoration(itemDecoration)
 
             contentDetailDescription.recyclerViewNewsFilterFragment.adapter =
-                FilterAdapter(NewsFilterHolder.getFilterList())
+                FilterAdapter(NewsFilterHolder.getFilterList()) { category, isFiltered ->
+                    NewsFilterHolder.setFilter(category, isFiltered)
+                }
 
             imageViewOk.setOnClickListener {
                 NewsFilterHolder.onFiltersChangedListener?.invoke(NewsFilterHolder.getFilterList())
