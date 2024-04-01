@@ -56,7 +56,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <include
-        android:id="@+id/included"
-        layout="@layout/profile_info_fragment_scrolling" />
+        android:id="@+id/contentProfileInfo"
+        layout="@layout/scrolling_profile_info_fragment" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".java.presentation.ui.activities.MainActivity">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
+        android:theme="@style/Theme.SimbirSoftPractice.AppBarOverlay">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/leaf"
+            app:layout_collapseMode="pin"
+            app:layout_scrollFlags="scroll|enterAlways"
+            app:popupTheme="@style/Theme.SimbirSoftPractice.PopupOverlay">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imageViewBack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start|center_vertical"
+                    android:src="@drawable/icon_back"
+                    android:layout_marginStart="8dp"
+                    android:contentDescription="@string/back" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/officina_sans_extra_bold_c"
+                    android:text="@string/sponsors"
+                    android:textColor="@color/white"
+                    android:textSize="21sp"
+                    android:textStyle="bold"
+                    android:gravity="center" />
+
+                <ImageView
+                    android:id="@+id/imageViewOk"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end|center_vertical"
+                    android:src="@drawable/share"
+                    android:layout_marginEnd="@dimen/image_view_edit_margin_end"
+                    android:contentDescription="@string/share" />
+
+            </FrameLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <include
+        android:id="@+id/contentDetailDescription"
+        layout="@layout/scrolling_detail_desc" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

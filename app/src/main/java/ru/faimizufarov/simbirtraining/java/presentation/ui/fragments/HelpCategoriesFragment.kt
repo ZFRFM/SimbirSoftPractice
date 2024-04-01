@@ -5,7 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import kotlinx.serialization.json.Json
 import ru.faimizufarov.simbirtraining.databinding.FragmentHelpCategoriesBinding
+import ru.faimizufarov.simbirtraining.java.data.CategoryResponse
 import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.HelpCategoriesAdapter
 
@@ -27,8 +29,28 @@ class HelpCategoriesFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        val listOfCategories = HelpCategoryEnum.entries
-        val recyclerView = binding.included.recyclerViewHelpCategories
+        val fileInString by lazy {
+            requireContext()
+                .applicationContext
+                .assets
+                .open("categories_list.json")
+                .bufferedReader()
+                .use { it.readText() }
+        }
+
+        val listOfCategories =
+            Json
+                .decodeFromString<Array<CategoryResponse>>(fileInString).map {
+                    when (it.id) {
+                        0 -> HelpCategoryEnum.CHILDREN
+                        1 -> HelpCategoryEnum.ADULTS
+                        2 -> HelpCategoryEnum.ELDERLY
+                        3 -> HelpCategoryEnum.ANIMALS
+                        else -> HelpCategoryEnum.EVENTS
+                    }
+                }
+
+        val recyclerView = binding.contentHelpCategories.recyclerViewHelpCategories
         recyclerView.adapter = HelpCategoriesAdapter(listOfCategories)
     }
 

@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-parcelize")
+    id("kotlinx-serialization")
 }
 
 android {
@@ -13,6 +15,7 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+        multiDexEnabled = true
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -32,8 +35,13 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_17
-        targetCompatibility = JavaVersion.VERSION_17
+        isCoreLibraryDesugaringEnabled = true
+
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
     }
     buildFeatures {
         viewBinding = true
@@ -45,6 +53,7 @@ android {
 }
 
 dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -52,13 +61,20 @@ dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.7.0")
     implementation("androidx.activity:activity-compose:1.8.2")
-    implementation(platform("androidx.compose:compose-bom:2024.02.01"))
+    implementation(platform("androidx.compose:compose-bom:2024.02.02"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.fragment:fragment-ktx:1.6.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+    //region Kotlin Serialization
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    //endregion
 
     //region Retrofit
     implementation("com.squareup.retrofit2:retrofit:2.7.1")

@@ -9,6 +9,7 @@ import com.google.android.material.navigation.NavigationBarView
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.ActivityMainBinding
 import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.HelpCategoriesFragment
+import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.NewsFragment
 import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.ProfileFragment
 import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.SearchFragment
 
@@ -30,6 +31,7 @@ class MainActivity : AppCompatActivity() {
                         R.id.action_help -> setCurrentFragment(HelpCategoriesFragment.newInstance())
                         R.id.action_profile -> setCurrentFragment(ProfileFragment.newInstance())
                         R.id.action_search -> setCurrentFragment(SearchFragment.newInstance())
+                        R.id.action_news -> setCurrentFragment(NewsFragment.newInstance())
                     }
                     return true
                 }

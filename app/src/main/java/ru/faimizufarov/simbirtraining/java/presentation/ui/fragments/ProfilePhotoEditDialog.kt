@@ -25,9 +25,11 @@ class ProfilePhotoEditDialog() : DialogFragment() {
     private lateinit var binding: DialogFragmentProfilePhotoEditBinding
 
     private var tempImageUri: Uri? = null
+    private var tempImageFilePath = ""
+
     private lateinit var cameraLauncher: ActivityResultLauncher<Uri>
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
-    private var tempImageFilePath = ""
+    private lateinit var getContentLauncher: ActivityResultLauncher<String>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -61,15 +63,25 @@ class ProfilePhotoEditDialog() : DialogFragment() {
                 if (isGranted) {
                     takeAPhoto()
                 } else {
-                    Toast
-                        .makeText(
-                            requireContext(),
-                            "App is need permission for this option",
-                            Toast.LENGTH_SHORT,
-                        )
+                    Toast.makeText(
+                        requireContext(),
+                        "App is need permission for this option",
+                        Toast.LENGTH_SHORT,
+                    )
                         .show()
                 }
             }
+
+        getContentLauncher =
+            registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+                val bundle = bundleOf(USER_GALLERY_PICTURE_KEY to uri)
+                parentFragment?.setFragmentResult(USER_GALLERY_PICTURE_RESULT_KEY, bundle)
+                this.dismiss()
+            }
+
+        binding.linearLayoutChoosePhoto.setOnClickListener {
+            getContentLauncher.launch("image/*")
+        }
 
         binding.linearLayoutTakeAPhoto.setOnClickListener {
             if (!checkCameraPermission()) {
@@ -112,6 +124,9 @@ class ProfilePhotoEditDialog() : DialogFragment() {
 
     companion object {
         const val TAG = "ProfilePhotoEditDialog"
+
+        const val USER_GALLERY_PICTURE_RESULT_KEY = "USER_GALLERY_PICTURE_RESULT_KEY"
+        const val USER_GALLERY_PICTURE_KEY = "USER_GALLERY_PICTURE_KEY"
 
         const val USER_PICTURE_RESULT_KEY = "USER_PICTURE_RESULT_KEY"
         const val USER_PICTURE_KEY = "USER_PICTURE_KEY"
