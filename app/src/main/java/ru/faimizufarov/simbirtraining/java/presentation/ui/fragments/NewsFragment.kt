@@ -52,6 +52,7 @@ class NewsFragment : Fragment() {
             }
             updateAdapter(appliedFiltersNews)
         }
+
         updateAdapter(listOfNewsJson)
 
         binding.imageViewFilter.setOnClickListener {
@@ -98,7 +99,7 @@ class NewsFragment : Fragment() {
 
     private fun List<News>.filterByCategory(category: Category) =
         filter { news ->
-            news.helpCategory.any { it.enumValue == category.enumValue }
+            news.helpCategory.any { it == category }
         }
 
     private fun openFilterFragment() {
