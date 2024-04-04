@@ -16,12 +16,13 @@ import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
 import ru.faimizufarov.simbirtraining.java.data.News
 import ru.faimizufarov.simbirtraining.java.data.NewsResponse
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.NewsAdapter
+import java.util.concurrent.Executors
 
 class NewsFragment : Fragment() {
     private lateinit var binding: FragmentNewsBinding
     private var appliedFiltersNews = mutableListOf<News>()
     private lateinit var newsAdapter: NewsAdapter
-    private lateinit var listOfNewsJson: List<News>
+    private var listOfNewsJson = listOf<News>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,8 +41,14 @@ class NewsFragment : Fragment() {
 
         newsAdapter = getAdapterInstallation()
 
-        val fileInString = getNewsJson()
-        listOfNewsJson = getNewsListFromJson(fileInString)
+        val executor = Executors.newSingleThreadExecutor()
+        executor.execute {
+            Thread.sleep(2000)
+            val fileInString = getNewsJson()
+            listOfNewsJson = getNewsListFromJson(fileInString)
+            newsAdapter.setData(listOfNewsJson)
+            executor.shutdown()
+        }
 
         NewsFilterHolder.setOnFilterChangedListener { listFilters ->
             NewsFilterHolder.getFilterList().forEach { filteredCategory ->
