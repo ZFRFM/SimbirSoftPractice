@@ -23,6 +23,7 @@ class NewsFragment : Fragment() {
     private var appliedFiltersNews = mutableListOf<News>()
     private lateinit var newsAdapter: NewsAdapter
     private var listOfNewsJson = listOf<News>()
+    private var fileInString = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -38,16 +39,14 @@ class NewsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-
         newsAdapter = getAdapterInstallation()
 
-        val executor = Executors.newSingleThreadExecutor()
-        executor.execute {
-            Thread.sleep(2000)
-            val fileInString = getNewsJson()
+        if (savedInstanceState != null) {
+            fileInString = savedInstanceState.getString(JSON_KEY) ?: ""
             listOfNewsJson = getNewsListFromJson(fileInString)
             newsAdapter.setData(listOfNewsJson)
-            executor.shutdown()
+        } else {
+            executeJsonReading()
         }
 
         NewsFilterHolder.setOnFilterChangedListener { listFilters ->
@@ -64,6 +63,22 @@ class NewsFragment : Fragment() {
 
         binding.imageViewFilter.setOnClickListener {
             openFilterFragment()
+        }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(JSON_KEY, fileInString)
+    }
+
+    private fun executeJsonReading() {
+        val executor = Executors.newSingleThreadExecutor()
+        executor.execute {
+            Thread.sleep(2000)
+            fileInString = getNewsJson()
+            listOfNewsJson = getNewsListFromJson(fileInString)
+            newsAdapter.setData(listOfNewsJson)
+            executor.shutdown()
         }
     }
 
@@ -153,5 +168,7 @@ class NewsFragment : Fragment() {
 
     companion object {
         fun newInstance() = NewsFragment()
+
+        const val JSON_KEY = "JSON_KEY"
     }
 }

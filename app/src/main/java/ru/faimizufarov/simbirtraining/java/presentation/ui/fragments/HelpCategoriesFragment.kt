@@ -29,29 +29,32 @@ class HelpCategoriesFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        val fileInString by lazy {
-            requireContext()
-                .applicationContext
-                .assets
-                .open("categories_list.json")
-                .bufferedReader()
-                .use { it.readText() }
-        }
-
-        val listOfCategories =
-            Json
-                .decodeFromString<Array<CategoryResponse>>(fileInString).map {
-                    when (it.id) {
-                        0 -> HelpCategoryEnum.CHILDREN
-                        1 -> HelpCategoryEnum.ADULTS
-                        2 -> HelpCategoryEnum.ELDERLY
-                        3 -> HelpCategoryEnum.ANIMALS
-                        else -> HelpCategoryEnum.EVENTS
-                    }
-                }
+        val fileInString = getCategoriesJson()
+        val listOfCategories = getListOfCategories(fileInString)
 
         val recyclerView = binding.contentHelpCategories.recyclerViewHelpCategories
         recyclerView.adapter = HelpCategoriesAdapter(listOfCategories)
+    }
+
+    private fun getCategoriesJson() =
+        requireContext()
+            .applicationContext
+            .assets
+            .open("categories_list.json")
+            .bufferedReader()
+            .use { it.readText() }
+
+    private fun getListOfCategories(json: String): List<HelpCategoryEnum> {
+        return Json
+            .decodeFromString<Array<CategoryResponse>>(json).map {
+                when (it.id) {
+                    0 -> HelpCategoryEnum.CHILDREN
+                    1 -> HelpCategoryEnum.ADULTS
+                    2 -> HelpCategoryEnum.ELDERLY
+                    3 -> HelpCategoryEnum.ANIMALS
+                    else -> HelpCategoryEnum.EVENTS
+                }
+            }
     }
 
     companion object {
