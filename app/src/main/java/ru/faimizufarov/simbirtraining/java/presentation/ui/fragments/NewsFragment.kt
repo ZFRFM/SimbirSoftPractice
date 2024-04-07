@@ -1,5 +1,6 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -22,6 +23,7 @@ class NewsFragment : Fragment() {
     private lateinit var binding: FragmentNewsBinding
     private var appliedFiltersNews = mutableListOf<News>()
     private lateinit var newsAdapter: NewsAdapter
+    private lateinit var fragmentContext: Context
     private var listOfNewsJson = listOf<News>()
     private var fileInString = ""
 
@@ -39,11 +41,18 @@ class NewsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        fragmentContext = requireContext()
         newsAdapter = getAdapterInstallation()
 
         if (savedInstanceState != null) {
             fileInString = savedInstanceState.getString(JSON_KEY) ?: ""
-            listOfNewsJson = getNewsListFromJson(fileInString)
+            listOfNewsJson =
+                if (fileInString == "") {
+                    listOfNewsJson
+                } else {
+                    getNewsListFromJson(fileInString)
+                }
+            executeJsonReading()
             newsAdapter.setData(listOfNewsJson)
         } else {
             executeJsonReading()
@@ -74,7 +83,7 @@ class NewsFragment : Fragment() {
     private fun executeJsonReading() {
         val executor = Executors.newSingleThreadExecutor()
         executor.execute {
-            Thread.sleep(2000)
+            Thread.sleep(5000)
             fileInString = getNewsJson()
             listOfNewsJson = getNewsListFromJson(fileInString)
             newsAdapter.setData(listOfNewsJson)
@@ -83,7 +92,7 @@ class NewsFragment : Fragment() {
     }
 
     private fun getNewsJson() =
-        requireContext()
+        fragmentContext
             .applicationContext
             .assets
             .open("news_list.json")
@@ -132,7 +141,7 @@ class NewsFragment : Fragment() {
     }
 
     private fun getAdapterInstallation(): NewsAdapter {
-        return NewsAdapter(requireContext()) { news: News ->
+        return NewsAdapter(fragmentContext) { news: News ->
             val startDate = news.startDate.toString()
             val finishDate = news.finishDate.toString()
 

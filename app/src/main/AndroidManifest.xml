@@ -20,33 +20,38 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SimbirSoftPractice"
         tools:targetApi="31">
+        <service
+            android:name=".java.services.JsonLoaderService"
+            android:enabled="true"
+            android:exported="true"></service>
 
-        <activity android:name=".java.presentation.ui.activities.SearchableActivity"
+        <activity
+            android:name=".java.presentation.ui.activities.SearchableActivity"
             android:exported="false"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
-        </activity>
 
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
         <activity
             android:name=".java.presentation.ui.activities.MainActivity"
-            android:launchMode="singleTop"
-            android:exported="false">
-
+            android:exported="false"
+            android:launchMode="singleTop">
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH"/>
+                <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-            <meta-data android:name="android.app.default_searchable"
+
+            <meta-data
+                android:name="android.app.default_searchable"
                 android:value=".java.presentation.ui.activities.MainActivity" />
-
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/searchable"/>
-
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
-
         <activity
             android:name=".java.presentation.ui.activities.SplashActivity"
             android:exported="true"
