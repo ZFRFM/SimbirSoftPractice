@@ -90,7 +90,6 @@ class HelpCategoriesFragment : Fragment() {
             startJsonLoaderService()
             binding.contentHelpCategories.progressBar.visibility = View.VISIBLE
             helpCategoriesAdapter.setData(listOfCategoriesJson)
-            recyclerView.adapter = helpCategoriesAdapter
         }
 
         setOnProgressBarChangedListener { progressBarIsVisible ->

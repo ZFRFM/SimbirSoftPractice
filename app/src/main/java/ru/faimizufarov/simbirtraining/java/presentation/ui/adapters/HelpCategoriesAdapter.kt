@@ -10,8 +10,6 @@ import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
 
 class HelpCategoriesAdapter() :
     RecyclerView.Adapter<HelpCategoriesViewHolder> () {
-    private var categoriesListClickable: List<HelpCategoryEnum> = emptyList()
-
     private val diffUtilCallback: DiffUtil.ItemCallback<HelpCategoryEnum> =
         object : DiffUtil.ItemCallback<HelpCategoryEnum>() {
             override fun areItemsTheSame(
@@ -29,7 +27,6 @@ class HelpCategoriesAdapter() :
 
     fun setData(helpCategoryList: List<HelpCategoryEnum>) {
         asyncListDiffer.submitList(helpCategoryList)
-        categoriesListClickable = helpCategoryList
     }
 
     override fun onCreateViewHolder(

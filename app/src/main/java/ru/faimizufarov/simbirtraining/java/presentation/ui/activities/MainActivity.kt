@@ -1,9 +1,6 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.activities
 
-import android.content.pm.ActivityInfo
-import android.content.res.Configuration
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
@@ -24,7 +21,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityMainBinding.inflate(layoutInflater)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
         setContentView(viewBinding.root)
         viewBinding.bottomNavView.selectedItemId = R.id.action_help
 
@@ -41,18 +37,6 @@ class MainActivity : AppCompatActivity() {
                 }
             },
         )
-    }
-
-    override fun onSaveInstanceState(
-        outState: Bundle,
-        outPersistentState: PersistableBundle,
-    ) {
-        super.onSaveInstanceState(outState, outPersistentState)
-        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-        } else {
-            ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-        }
     }
 
     private fun setCurrentFragment(fragment: Fragment) {
