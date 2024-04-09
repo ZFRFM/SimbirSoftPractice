@@ -1,7 +1,11 @@
 package ru.faimizufarov.simbirtraining.java.data
 
+import android.os.Parcelable
 import kotlinx.datetime.LocalDateTime
+import kotlinx.parcelize.Parcelize
+import kotlinx.parcelize.RawValue
 
+@Parcelize
 data class News(
     val id: Int,
     val newsImageUrl: String,
@@ -9,6 +13,6 @@ data class News(
     val descriptionText: String,
     val remainingTimeText: Int,
     val helpCategory: List<Category>,
-    val startDate: LocalDateTime,
-    val finishDate: LocalDateTime,
-)
+    val startDate: @RawValue LocalDateTime,
+    val finishDate: @RawValue LocalDateTime,
+) : Parcelable

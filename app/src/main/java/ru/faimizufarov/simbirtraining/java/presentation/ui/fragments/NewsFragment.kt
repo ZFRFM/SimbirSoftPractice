@@ -1,6 +1,6 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.fragments
 
-import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -23,9 +23,7 @@ class NewsFragment : Fragment() {
     private lateinit var binding: FragmentNewsBinding
     private var appliedFiltersNews = mutableListOf<News>()
     private lateinit var newsAdapter: NewsAdapter
-    private lateinit var fragmentContext: Context
-    private var listOfNewsJson = listOf<News>()
-    private var fileInString = ""
+    private var listOfNews = listOf<News>()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -41,19 +39,19 @@ class NewsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        fragmentContext = requireContext()
         newsAdapter = getAdapterInstallation()
 
         if (savedInstanceState != null) {
-            fileInString = savedInstanceState.getString(JSON_KEY) ?: ""
-            listOfNewsJson =
-                if (fileInString == "") {
-                    listOfNewsJson
+            val arrayList =
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                    savedInstanceState.getParcelable(LIST_OF_NEWS, ArrayList::class.java)
                 } else {
-                    getNewsListFromJson(fileInString)
+                    savedInstanceState.getParcelable(LIST_OF_NEWS)
                 }
+            listOfNews = arrayList?.map { it as News } ?: listOfNews
+
             executeJsonReading()
-            newsAdapter.setData(listOfNewsJson)
+            newsAdapter.setData(listOfNews)
         } else {
             executeJsonReading()
         }
@@ -61,14 +59,14 @@ class NewsFragment : Fragment() {
         NewsFilterHolder.setOnFilterChangedListener { listFilters ->
             NewsFilterHolder.getFilterList().forEach { filteredCategory ->
                 if (listFilters.contains(filteredCategory)) {
-                    val filteredNews = listOfNewsJson.filterByCategory(filteredCategory)
+                    val filteredNews = listOfNews.filterByCategory(filteredCategory)
                     appliedFiltersNews.addAll(filteredNews)
                 }
             }
             updateAdapter(appliedFiltersNews)
         }
 
-        updateAdapter(listOfNewsJson)
+        updateAdapter(listOfNews)
 
         binding.imageViewFilter.setOnClickListener {
             openFilterFragment()
@@ -77,22 +75,26 @@ class NewsFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(JSON_KEY, fileInString)
+        val arrayList = ArrayList<News>()
+        listOfNews.forEach {
+            arrayList.add(it)
+        }
+        outState.putParcelableArrayList(LIST_OF_NEWS, arrayList)
     }
 
     private fun executeJsonReading() {
         val executor = Executors.newSingleThreadExecutor()
         executor.execute {
             Thread.sleep(5000)
-            fileInString = getNewsJson()
-            listOfNewsJson = getNewsListFromJson(fileInString)
-            newsAdapter.setData(listOfNewsJson)
+            val fileInString = getNewsJson()
+            listOfNews = getNewsListFromJson(fileInString)
+            newsAdapter.setData(listOfNews)
             executor.shutdown()
         }
     }
 
     private fun getNewsJson() =
-        fragmentContext
+        requireContext()
             .applicationContext
             .assets
             .open("news_list.json")
@@ -141,7 +143,7 @@ class NewsFragment : Fragment() {
     }
 
     private fun getAdapterInstallation(): NewsAdapter {
-        return NewsAdapter(fragmentContext) { news: News ->
+        return NewsAdapter(requireContext()) { news: News ->
             val startDate = news.startDate.toString()
             val finishDate = news.finishDate.toString()
 
@@ -178,6 +180,6 @@ class NewsFragment : Fragment() {
     companion object {
         fun newInstance() = NewsFragment()
 
-        const val JSON_KEY = "JSON_KEY"
+        private const val LIST_OF_NEWS = "LIST_OF_NEWS"
     }
 }
