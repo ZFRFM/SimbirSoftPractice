@@ -7,16 +7,17 @@ import android.os.IBinder
 import kotlinx.serialization.json.Json
 import ru.faimizufarov.simbirtraining.java.data.CategoryResponse
 import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
+import ru.faimizufarov.simbirtraining.java.data.mapToHelpCategoryEnum
 
-class JsonLoaderService : Service() {
+class CategoryLoaderService : Service() {
     private val binder = LocalBinder()
 
     private var fileInString = ""
     private var listOfCategories = listOf<HelpCategoryEnum>()
-    var onListOfCategoryChanged: ((List<HelpCategoryEnum>) -> Unit)? = null
+    private var onListOfCategoryChanged: ((List<HelpCategoryEnum>) -> Unit)? = null
 
     inner class LocalBinder : Binder() {
-        fun getService(): JsonLoaderService = this@JsonLoaderService
+        fun getService(): CategoryLoaderService = this@CategoryLoaderService
     }
 
     override fun onBind(intent: Intent): IBinder {
@@ -32,33 +33,31 @@ class JsonLoaderService : Service() {
             Thread {
                 Thread.sleep(5000)
                 fileInString =
-                    this@JsonLoaderService
+                    this@CategoryLoaderService
                         .applicationContext
                         .assets
                         .open("categories_list.json")
                         .bufferedReader()
                         .use { it.readText() }
-                listOfCategories = convertInListOfCategories(fileInString)
+                listOfCategories = convertToListOfCategories(fileInString)
                 onListOfCategoryChanged?.invoke(listOfCategories)
             }
         workThread.start()
         return super.onStartCommand(intent, flags, startId)
     }
 
+    fun setOnListOfCategoryChangedListener(listener: ((List<HelpCategoryEnum>) -> Unit)?) {
+        onListOfCategoryChanged = listener
+    }
+
     fun getListOfCategories(): List<HelpCategoryEnum> {
         return this.listOfCategories
     }
 
-    private fun convertInListOfCategories(json: String): List<HelpCategoryEnum> {
+    private fun convertToListOfCategories(json: String): List<HelpCategoryEnum> {
         return Json
             .decodeFromString<Array<CategoryResponse>>(json).map {
-                when (it.id) {
-                    0 -> HelpCategoryEnum.CHILDREN
-                    1 -> HelpCategoryEnum.ADULTS
-                    2 -> HelpCategoryEnum.ELDERLY
-                    3 -> HelpCategoryEnum.ANIMALS
-                    else -> HelpCategoryEnum.EVENTS
-                }
+                it.mapToHelpCategoryEnum()
             }
     }
 }

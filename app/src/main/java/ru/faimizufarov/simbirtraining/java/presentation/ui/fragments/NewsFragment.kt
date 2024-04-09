@@ -1,5 +1,6 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.fragments
 
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -40,20 +41,12 @@ class NewsFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         newsAdapter = getAdapterInstallation()
+        val fragmentContext = requireContext()
 
         if (savedInstanceState != null) {
-            val arrayList =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    savedInstanceState.getParcelable(LIST_OF_NEWS, ArrayList::class.java)
-                } else {
-                    savedInstanceState.getParcelable(LIST_OF_NEWS)
-                }
-            listOfNews = arrayList?.map { it as News } ?: listOfNews
-
-            executeJsonReading()
-            newsAdapter.setData(listOfNews)
+            getFromSavedInstanceState(savedInstanceState, fragmentContext)
         } else {
-            executeJsonReading()
+            loadListOfNews(fragmentContext)
         }
 
         NewsFilterHolder.setOnFilterChangedListener { listFilters ->
@@ -82,19 +75,35 @@ class NewsFragment : Fragment() {
         outState.putParcelableArrayList(LIST_OF_NEWS, arrayList)
     }
 
-    private fun executeJsonReading() {
+    private fun getFromSavedInstanceState(
+        savedInstanceState: Bundle,
+        fragmentContext: Context,
+    ) {
+        val arrayList =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                savedInstanceState.getParcelable(LIST_OF_NEWS, ArrayList::class.java)
+            } else {
+                savedInstanceState.getParcelable(LIST_OF_NEWS)
+            }
+        listOfNews = arrayList?.map { it as News } ?: listOfNews
+
+        loadListOfNews(fragmentContext)
+        newsAdapter.submitList(listOfNews)
+    }
+
+    private fun loadListOfNews(context: Context) {
         val executor = Executors.newSingleThreadExecutor()
         executor.execute {
             Thread.sleep(5000)
-            val fileInString = getNewsJson()
+            val fileInString = getNewsJson(context)
             listOfNews = getNewsListFromJson(fileInString)
-            newsAdapter.setData(listOfNews)
+            newsAdapter.submitList(listOfNews)
             executor.shutdown()
         }
     }
 
-    private fun getNewsJson() =
-        requireContext()
+    private fun getNewsJson(context: Context) =
+        context
             .applicationContext
             .assets
             .open("news_list.json")
@@ -172,7 +181,7 @@ class NewsFragment : Fragment() {
     }
 
     private fun updateAdapter(list: List<News>) {
-        newsAdapter.setData(list.toSet().toList())
+        newsAdapter.submitList(list.toSet().toList())
         binding.contentNews.recyclerViewNewsFragment.adapter = newsAdapter
         appliedFiltersNews = mutableListOf()
     }

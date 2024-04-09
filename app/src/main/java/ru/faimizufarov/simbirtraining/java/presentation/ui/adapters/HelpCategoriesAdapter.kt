@@ -2,51 +2,42 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.RecyclerView
-import ru.faimizufarov.simbirtraining.R
+import androidx.recyclerview.widget.ListAdapter
+import ru.faimizufarov.simbirtraining.databinding.ItemHelpCategoryBinding
 import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
 
-class HelpCategoriesAdapter() :
-    RecyclerView.Adapter<HelpCategoriesViewHolder> () {
-    private val diffUtilCallback: DiffUtil.ItemCallback<HelpCategoryEnum> =
-        object : DiffUtil.ItemCallback<HelpCategoryEnum>() {
-            override fun areItemsTheSame(
-                oldItem: HelpCategoryEnum,
-                newItem: HelpCategoryEnum,
-            ) = oldItem.id == newItem.id
-
-            override fun areContentsTheSame(
-                oldItem: HelpCategoryEnum,
-                newItem: HelpCategoryEnum,
-            ) = oldItem == newItem
-        }
-
-    private val asyncListDiffer = AsyncListDiffer(this, diffUtilCallback)
-
-    fun setData(helpCategoryList: List<HelpCategoryEnum>) {
-        asyncListDiffer.submitList(helpCategoryList)
-    }
-
+class HelpCategoriesAdapter :
+    ListAdapter<HelpCategoryEnum, HelpCategoriesViewHolder>(ItemCallback) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
     ): HelpCategoriesViewHolder {
-        val itemView =
-            LayoutInflater.from(parent.context)
-                .inflate(R.layout.item_help_category, parent, false)
-        return HelpCategoriesViewHolder(itemView)
+        val itemBinding =
+            ItemHelpCategoryBinding
+                .inflate(LayoutInflater.from(parent.context), parent, false)
+        return HelpCategoriesViewHolder(itemBinding)
     }
 
-    override fun getItemCount() = asyncListDiffer.currentList.size
+    override fun getItemCount() = currentList.size
 
     override fun onBindViewHolder(
         holder: HelpCategoriesViewHolder,
         position: Int,
     ) {
-        val category = asyncListDiffer.currentList[position]
-        holder.imageViewHelpCategory.setImageResource(category.imageView)
-        holder.textViewHelpCategory.setText(category.nameCategory)
+        val category = currentList[position]
+        holder.bind(category)
+    }
+
+    companion object ItemCallback : DiffUtil.ItemCallback<HelpCategoryEnum>() {
+        override fun areItemsTheSame(
+            oldItem: HelpCategoryEnum,
+            newItem: HelpCategoryEnum,
+        ) = oldItem.id == newItem.id
+
+        override fun areContentsTheSame(
+            oldItem: HelpCategoryEnum,
+            newItem: HelpCategoryEnum,
+        ) = oldItem == newItem
     }
 }

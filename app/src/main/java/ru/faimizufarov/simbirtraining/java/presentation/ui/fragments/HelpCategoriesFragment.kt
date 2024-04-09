@@ -1,12 +1,9 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.fragments
 
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.content.ServiceConnection
 import android.os.Build
 import android.os.Bundle
-import android.os.IBinder
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,39 +12,20 @@ import androidx.fragment.app.Fragment
 import ru.faimizufarov.simbirtraining.databinding.FragmentHelpCategoriesBinding
 import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.HelpCategoriesAdapter
-import ru.faimizufarov.simbirtraining.java.services.JsonLoaderService
+import ru.faimizufarov.simbirtraining.java.services.CategoryLoaderService
+import ru.faimizufarov.simbirtraining.java.services.CategoryLoaderServiceConnection
 
 class HelpCategoriesFragment : Fragment() {
     private lateinit var binding: FragmentHelpCategoriesBinding
     private val helpCategoriesAdapter = HelpCategoriesAdapter()
     private var listOfCategories = listOf<HelpCategoryEnum>()
-    private lateinit var jsonLoaderService: JsonLoaderService
-    private var isProgressBarVisible = true
-    private var onProgressBarIsVisible: ((Boolean) -> Unit)? = null
+    private var categoryLoaderService = CategoryLoaderService()
 
     private val connection =
-        object : ServiceConnection {
-            override fun onServiceConnected(
-                className: ComponentName,
-                service: IBinder,
-            ) {
-                val binder = service as JsonLoaderService.LocalBinder
-                jsonLoaderService = binder.getService()
-
-                setOnFilterChangedListener { changedListOfCategory ->
-                    listOfCategories = jsonLoaderService.getListOfCategories()
-                    helpCategoriesAdapter.setData(listOfCategories)
-                    isProgressBarVisible = false
-                    activity?.runOnUiThread {
-                        onProgressBarIsVisible?.invoke(isProgressBarVisible)
-                    }
-                }
-            }
-
-            override fun onServiceDisconnected(name: ComponentName?) {
-                TODO("Not yet implemented")
-            }
-        }
+        CategoryLoaderServiceConnection(
+            showCategories(),
+            categoryLoaderService,
+        )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,31 +44,9 @@ class HelpCategoriesFragment : Fragment() {
         binding.contentHelpCategories.recyclerViewHelpCategories.adapter = helpCategoriesAdapter
 
         if (savedInstanceState != null) {
-            val arrayList =
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    savedInstanceState.getParcelable(
-                        LIST_OF_CATEGORIES_KEY,
-                        ArrayList::class.java,
-                    )
-                } else {
-                    savedInstanceState
-                        .getParcelable(LIST_OF_CATEGORIES_KEY)
-                }
-            listOfCategories = arrayList?.map {
-                it as HelpCategoryEnum
-            } ?: listOfCategories
-
-            helpCategoriesAdapter.setData(listOfCategories)
-            binding.contentHelpCategories.progressBar.visibility = View.GONE
-            startJsonLoaderService()
+            getFromSavedInstanceState(savedInstanceState)
         } else {
-            startJsonLoaderService()
-            binding.contentHelpCategories.progressBar.visibility = View.VISIBLE
-            helpCategoriesAdapter.setData(listOfCategories)
-        }
-
-        setOnProgressBarChangedListener { progressBarIsVisible ->
-            binding.contentHelpCategories.progressBar.isVisible = progressBarIsVisible
+            loadIfAbsentState()
         }
     }
 
@@ -109,19 +65,47 @@ class HelpCategoriesFragment : Fragment() {
     }
 
     private fun startJsonLoaderService() {
-        val serviceIntent = Intent(requireContext(), JsonLoaderService::class.java)
+        val serviceIntent = Intent(requireContext(), CategoryLoaderService::class.java)
         activity?.startService(serviceIntent)
-        Intent(requireContext(), JsonLoaderService::class.java).also { intent ->
+        Intent(requireContext(), CategoryLoaderService::class.java).also { intent ->
             activity?.bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
     }
 
-    fun setOnFilterChangedListener(listener: ((List<HelpCategoryEnum>) -> Unit)?) {
-        jsonLoaderService.onListOfCategoryChanged = listener
+    private fun showCategories() {
+        listOfCategories = categoryLoaderService.getListOfCategories()
+        helpCategoriesAdapter.submitList(listOfCategories)
+        activity?.runOnUiThread {
+            binding.contentHelpCategories.progressBar.isVisible = false
+        }
     }
 
-    private fun setOnProgressBarChangedListener(listener: ((Boolean) -> Unit)?) {
-        onProgressBarIsVisible = listener
+    private fun getFromSavedInstanceState(savedInstanceState: Bundle) {
+        val arrayList =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                savedInstanceState.getParcelable(
+                    LIST_OF_CATEGORIES_KEY,
+                    ArrayList::class.java,
+                )
+            } else {
+                savedInstanceState
+                    .getParcelable(LIST_OF_CATEGORIES_KEY)
+            }
+        listOfCategories = arrayList?.map {
+            it as HelpCategoryEnum
+        } ?: listOfCategories
+
+        helpCategoriesAdapter.submitList(listOfCategories)
+        binding.contentHelpCategories.progressBar.isVisible = false
+        startJsonLoaderService()
+    }
+
+    private fun loadIfAbsentState() {
+        startJsonLoaderService()
+        binding.contentHelpCategories.progressBar.isVisible = true
+        categoryLoaderService.setOnListOfCategoryChangedListener { listOfCategories ->
+            helpCategoriesAdapter.submitList(listOfCategories)
+        }
     }
 
     companion object {
