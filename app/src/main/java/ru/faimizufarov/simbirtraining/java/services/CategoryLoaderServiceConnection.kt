@@ -3,24 +3,27 @@ package ru.faimizufarov.simbirtraining.java.services
 import android.content.ComponentName
 import android.content.ServiceConnection
 import android.os.IBinder
+import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
 
 class CategoryLoaderServiceConnection(
-    private val showCategories: Unit,
-    private var categoryLoaderService: CategoryLoaderService,
+    private val showCategories: (List<HelpCategoryEnum>) -> Unit,
 ) : ServiceConnection {
+    private var connectedService: CategoryLoaderService? = null
+
     override fun onServiceConnected(
         name: ComponentName?,
         service: IBinder?,
     ) {
         val binder = service as CategoryLoaderService.LocalBinder
-        categoryLoaderService = binder.getService()
+        connectedService = binder.getService()
 
-        categoryLoaderService.setOnListOfCategoryChangedListener { changedListOfCategory ->
-            showCategories
-        }
+        connectedService?.setOnListOfCategoryChangedListener(showCategories)
     }
 
     override fun onServiceDisconnected(name: ComponentName?) {
-        categoryLoaderService.setOnListOfCategoryChangedListener {}
+        connectedService?.setOnListOfCategoryChangedListener {
+            // clearing callback
+        }
+        connectedService = null
     }
 }

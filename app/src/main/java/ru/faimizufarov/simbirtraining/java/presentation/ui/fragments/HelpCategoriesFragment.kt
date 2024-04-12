@@ -18,14 +18,14 @@ import ru.faimizufarov.simbirtraining.java.services.CategoryLoaderServiceConnect
 class HelpCategoriesFragment : Fragment() {
     private lateinit var binding: FragmentHelpCategoriesBinding
     private val helpCategoriesAdapter = HelpCategoriesAdapter()
-    private var listOfCategories = listOf<HelpCategoryEnum>()
-    private var categoryLoaderService = CategoryLoaderService()
 
+    private var listOfCategories: List<HelpCategoryEnum>? = null
+
+    private var isServiceBound = false
     private val connection =
-        CategoryLoaderServiceConnection(
-            showCategories(),
-            categoryLoaderService,
-        )
+        CategoryLoaderServiceConnection { categories ->
+            activity?.runOnUiThread { showCategories(categories) }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -42,42 +42,44 @@ class HelpCategoriesFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         binding.contentHelpCategories.recyclerViewHelpCategories.adapter = helpCategoriesAdapter
-
-        if (savedInstanceState != null) {
+        if (savedInstanceState != null && savedInstanceState.isCategoriesSaved) {
             getFromSavedInstanceState(savedInstanceState)
         } else {
             loadIfAbsentState()
         }
     }
 
+    private val Bundle.isCategoriesSaved: Boolean
+        get() = containsKey(LIST_OF_CATEGORIES_KEY)
+
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        val arrayList = ArrayList<HelpCategoryEnum>()
-        listOfCategories.forEach {
-            arrayList.add(it)
-        }
-        outState.putParcelableArrayList(LIST_OF_CATEGORIES_KEY, arrayList)
+        val categoriesArray = listOfCategories?.let(::ArrayList) ?: return
+        outState.putParcelableArrayList(LIST_OF_CATEGORIES_KEY, categoriesArray)
     }
 
     override fun onStop() {
         super.onStop()
-        activity?.unbindService(connection)
+        if (isServiceBound) {
+            activity?.unbindService(connection)
+            isServiceBound = false
+        }
     }
 
     private fun startJsonLoaderService() {
         val serviceIntent = Intent(requireContext(), CategoryLoaderService::class.java)
         activity?.startService(serviceIntent)
         Intent(requireContext(), CategoryLoaderService::class.java).also { intent ->
-            activity?.bindService(intent, connection, Context.BIND_AUTO_CREATE)
+            isServiceBound =
+                requireActivity()
+                    .bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
     }
 
-    private fun showCategories() {
-        listOfCategories = categoryLoaderService.getListOfCategories()
-        helpCategoriesAdapter.submitList(listOfCategories)
-        activity?.runOnUiThread {
-            binding.contentHelpCategories.progressBar.isVisible = false
-        }
+    private fun showCategories(categories: List<HelpCategoryEnum>) {
+        listOfCategories = categories
+        helpCategoriesAdapter.submitList(categories)
+        binding.contentHelpCategories.progressBar.isVisible = false
     }
 
     private fun getFromSavedInstanceState(savedInstanceState: Bundle) {
@@ -88,24 +90,24 @@ class HelpCategoriesFragment : Fragment() {
                     ArrayList::class.java,
                 )
             } else {
-                savedInstanceState
-                    .getParcelable(LIST_OF_CATEGORIES_KEY)
+                savedInstanceState.getParcelable(LIST_OF_CATEGORIES_KEY)
             }
         listOfCategories = arrayList?.map {
             it as HelpCategoryEnum
         } ?: listOfCategories
 
         helpCategoriesAdapter.submitList(listOfCategories)
-        binding.contentHelpCategories.progressBar.isVisible = false
+
+        if (listOfCategories != null) {
+            binding.contentHelpCategories.progressBar.isVisible = false
+        }
+
         startJsonLoaderService()
     }
 
     private fun loadIfAbsentState() {
-        startJsonLoaderService()
         binding.contentHelpCategories.progressBar.isVisible = true
-        categoryLoaderService.setOnListOfCategoryChangedListener { listOfCategories ->
-            helpCategoriesAdapter.submitList(listOfCategories)
-        }
+        startJsonLoaderService()
     }
 
     companion object {

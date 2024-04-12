@@ -12,8 +12,7 @@ import ru.faimizufarov.simbirtraining.java.data.mapToHelpCategoryEnum
 class CategoryLoaderService : Service() {
     private val binder = LocalBinder()
 
-    private var fileInString = ""
-    private var listOfCategories = listOf<HelpCategoryEnum>()
+    private var listOfCategories: List<HelpCategoryEnum>? = null
     private var onListOfCategoryChanged: ((List<HelpCategoryEnum>) -> Unit)? = null
 
     inner class LocalBinder : Binder() {
@@ -32,7 +31,7 @@ class CategoryLoaderService : Service() {
         val workThread =
             Thread {
                 Thread.sleep(5000)
-                fileInString =
+                val fileInString =
                     this@CategoryLoaderService
                         .applicationContext
                         .assets
@@ -40,17 +39,17 @@ class CategoryLoaderService : Service() {
                         .bufferedReader()
                         .use { it.readText() }
                 listOfCategories = convertToListOfCategories(fileInString)
-                onListOfCategoryChanged?.invoke(listOfCategories)
+                onListOfCategoryChanged?.invoke(listOfCategories ?: listOf())
             }
         workThread.start()
         return super.onStartCommand(intent, flags, startId)
     }
 
-    fun setOnListOfCategoryChangedListener(listener: ((List<HelpCategoryEnum>) -> Unit)?) {
+    fun setOnListOfCategoryChangedListener(listener: (List<HelpCategoryEnum>) -> Unit) {
         onListOfCategoryChanged = listener
     }
 
-    fun getListOfCategories(): List<HelpCategoryEnum> {
+    fun getListOfCategories(): List<HelpCategoryEnum>? {
         return this.listOfCategories
     }
 
