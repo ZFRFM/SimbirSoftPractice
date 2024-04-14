@@ -8,7 +8,7 @@ class HelpCategoriesViewHolder(
     private val itemBinding: ItemHelpCategoryBinding,
 ) : RecyclerView.ViewHolder(itemBinding.root) {
     fun bind(helpCategoryEnum: HelpCategoryEnum) {
-        itemBinding.imageViewHelpCategory.setImageResource(helpCategoryEnum.imageView)
-        itemBinding.textViewHelpCategory.setText(helpCategoryEnum.nameCategory)
+        itemBinding.imageViewHelpCategory.setImageResource(helpCategoryEnum.categoryData.imageView)
+        itemBinding.textViewHelpCategory.setText(helpCategoryEnum.categoryData.textView)
     }
 }

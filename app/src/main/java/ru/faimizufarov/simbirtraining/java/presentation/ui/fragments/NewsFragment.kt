@@ -41,12 +41,11 @@ class NewsFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
         newsAdapter = getAdapterInstallation()
-        val fragmentContext = requireContext()
 
         if (savedInstanceState != null) {
-            getFromSavedInstanceState(savedInstanceState, fragmentContext)
+            getFromSavedInstanceState(savedInstanceState)
         } else {
-            loadListOfNews(fragmentContext)
+            loadListOfNews()
         }
 
         NewsFilterHolder.setOnFilterChangedListener { listFilters ->
@@ -75,35 +74,33 @@ class NewsFragment : Fragment() {
         outState.putParcelableArrayList(LIST_OF_NEWS, arrayList)
     }
 
-    private fun getFromSavedInstanceState(
-        savedInstanceState: Bundle,
-        fragmentContext: Context,
-    ) {
-        val arrayList =
+    private fun getFromSavedInstanceState(savedInstanceState: Bundle) {
+        val newsArray =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 savedInstanceState.getParcelable(LIST_OF_NEWS, ArrayList::class.java)
             } else {
                 savedInstanceState.getParcelable(LIST_OF_NEWS)
             }
-        listOfNews = arrayList?.map { it as News } ?: listOfNews
+        listOfNews = newsArray?.map { it as News } ?: listOfNews
 
-        loadListOfNews(fragmentContext)
+        loadListOfNews()
         newsAdapter.submitList(listOfNews)
     }
 
-    private fun loadListOfNews(context: Context) {
+    private fun loadListOfNews() {
         val executor = Executors.newSingleThreadExecutor()
+        val fragmentContext = requireContext()
         executor.execute {
             Thread.sleep(5000)
-            val fileInString = getNewsJson(context)
-            listOfNews = getNewsListFromJson(fileInString)
+            val newsJsonInString = getNewsJson(fragmentContext)
+            listOfNews = getNewsListFromJson(newsJsonInString)
             newsAdapter.submitList(listOfNews)
             executor.shutdown()
         }
     }
 
-    private fun getNewsJson(context: Context) =
-        context
+    private fun getNewsJson(fragmentContext: Context) =
+        fragmentContext
             .applicationContext
             .assets
             .open("news_list.json")
@@ -129,7 +126,8 @@ class NewsFragment : Fragment() {
                                         1 -> HelpCategoryEnum.ADULTS
                                         2 -> HelpCategoryEnum.ELDERLY
                                         3 -> HelpCategoryEnum.ANIMALS
-                                        else -> HelpCategoryEnum.EVENTS
+                                        4 -> HelpCategoryEnum.EVENTS
+                                        else -> error("Unknown category")
                                     },
                                 checked = it.checked,
                             )

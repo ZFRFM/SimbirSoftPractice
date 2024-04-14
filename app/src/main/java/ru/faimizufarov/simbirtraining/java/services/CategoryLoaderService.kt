@@ -31,14 +31,14 @@ class CategoryLoaderService : Service() {
         val workThread =
             Thread {
                 Thread.sleep(5000)
-                val fileInString =
+                val categoryListJsonInString =
                     this@CategoryLoaderService
                         .applicationContext
                         .assets
                         .open("categories_list.json")
                         .bufferedReader()
                         .use { it.readText() }
-                listOfCategories = convertToListOfCategories(fileInString)
+                listOfCategories = convertToListOfCategories(categoryListJsonInString)
                 onListOfCategoryChanged?.invoke(listOfCategories ?: listOf())
             }
         workThread.start()

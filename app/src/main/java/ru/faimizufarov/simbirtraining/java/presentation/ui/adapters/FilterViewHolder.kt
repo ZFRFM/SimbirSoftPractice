@@ -23,7 +23,7 @@ class FilterViewHolder(
 
     fun bind(category: Category) {
         with(itemBinding) {
-            textViewFilterItem.setText(category.enumValue?.nameCategory ?: 0)
+            textViewFilterItem.setText(category.enumValue?.categoryData?.textView ?: 0)
             switchFilterItem.isChecked = category.checked
         }
     }

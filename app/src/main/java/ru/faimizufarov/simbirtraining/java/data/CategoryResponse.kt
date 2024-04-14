@@ -8,12 +8,10 @@ data class CategoryResponse(
     val checked: Boolean,
 )
 
-fun CategoryResponse.mapToHelpCategoryEnum(): HelpCategoryEnum {
-    return when (this.id) {
-        0 -> HelpCategoryEnum.CHILDREN
-        1 -> HelpCategoryEnum.ADULTS
-        2 -> HelpCategoryEnum.ELDERLY
-        3 -> HelpCategoryEnum.ANIMALS
-        else -> HelpCategoryEnum.EVENTS
-    }
-}
+fun CategoryResponse.mapToHelpCategoryEnum() =
+    HelpCategoryEnum
+        .entries
+        .firstOrNull {
+                enum ->
+            enum.id == id
+        } ?: error("Unknown category")
