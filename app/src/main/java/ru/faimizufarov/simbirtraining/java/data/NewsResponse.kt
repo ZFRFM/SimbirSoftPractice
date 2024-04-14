@@ -13,7 +13,7 @@ data class NewsResponse(
     @SerialName("event_description_text")
     val descriptionText: String,
     @SerialName("help_category")
-    val helpCategory: List<HelpCategoryEnumJsonRepresentation>,
+    val helpCategory: List<HelpCategoryEnumResponse>,
     @SerialName("start_date")
     val startDate: String,
     @SerialName("finish_date")

@@ -24,19 +24,15 @@ class MainActivity : AppCompatActivity() {
         setContentView(viewBinding.root)
         viewBinding.bottomNavView.selectedItemId = R.id.action_help
 
-        viewBinding.bottomNavView.setOnItemSelectedListener(
-            object : NavigationBarView.OnItemSelectedListener {
-                override fun onNavigationItemSelected(p0: MenuItem): Boolean {
-                    when (p0.itemId) {
-                        R.id.action_help -> setCurrentFragment(HelpCategoriesFragment.newInstance())
-                        R.id.action_profile -> setCurrentFragment(ProfileFragment.newInstance())
-                        R.id.action_search -> setCurrentFragment(SearchFragment.newInstance())
-                        R.id.action_news -> setCurrentFragment(NewsFragment.newInstance())
-                    }
-                    return true
-                }
-            },
-        )
+        viewBinding.bottomNavView.setOnItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_help -> setCurrentFragment(HelpCategoriesFragment.newInstance())
+                R.id.action_profile -> setCurrentFragment(ProfileFragment.newInstance())
+                R.id.action_search -> setCurrentFragment(SearchFragment.newInstance())
+                R.id.action_news -> setCurrentFragment(NewsFragment.newInstance())
+            }
+            true
+        }
     }
 
     private fun setCurrentFragment(fragment: Fragment) {
