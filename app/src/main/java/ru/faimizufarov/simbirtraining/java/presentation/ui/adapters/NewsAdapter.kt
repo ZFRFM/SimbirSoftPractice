@@ -9,7 +9,6 @@ import ru.faimizufarov.simbirtraining.databinding.ItemNewsFragmentBinding
 import ru.faimizufarov.simbirtraining.java.data.News
 
 class NewsAdapter(
-    val context: Context,
     private val onItemClick: (News) -> Unit,
 ) :
     ListAdapter<News, NewsViewHolder>(ItemCallback) {
@@ -19,11 +18,10 @@ class NewsAdapter(
         parent: ViewGroup,
         viewType: Int,
     ): NewsViewHolder {
-        val itemBinding =
-            ItemNewsFragmentBinding
-                .inflate(LayoutInflater.from(parent.context), parent, false)
-        return NewsViewHolder(itemBinding, context) {
-            onItemClick(newsListClickable[it])
+        val itemBinding = ItemNewsFragmentBinding
+            .inflate(LayoutInflater.from(parent.context), parent, false)
+        return NewsViewHolder(itemBinding) { index ->
+            onItemClick(newsListClickable[index])
         }
     }
 

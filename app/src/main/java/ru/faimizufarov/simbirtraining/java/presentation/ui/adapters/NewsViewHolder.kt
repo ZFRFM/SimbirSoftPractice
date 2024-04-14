@@ -13,7 +13,6 @@ import ru.faimizufarov.simbirtraining.java.data.News
 
 class NewsViewHolder(
     private val itemBinding: ItemNewsFragmentBinding,
-    val context: Context,
     onItemClicked: (Int) -> Unit,
 ) :
     RecyclerView.ViewHolder(itemBinding.root) {
@@ -29,11 +28,15 @@ class NewsViewHolder(
     }
 
     fun bind(news: News) {
+        val context = itemBinding.root.context
+
         Glide.with(context).load(news.newsImageUrl).into(itemBinding.imageViewNews)
+
         with(itemBinding) {
-            textViewNewsName.setText(news.nameText)
-            textViewNewsDescription.setText(news.descriptionText)
+            textViewNewsName.text = news.nameText
+            textViewNewsDescription.text = news.descriptionText
         }
+
         if (news.startDate.dayOfYear == news.finishDate.dayOfYear) {
             val shortString =
                 buildString {
@@ -46,17 +49,16 @@ class NewsViewHolder(
             val timeZone: TimeZone = TimeZone.currentSystemDefault()
             val today = Clock.System.todayIn(timeZone).toEpochDays()
             val remainingDays = news.finishDate.date.toEpochDays() - today
-            val longString =
-                buildString {
-                    if (remainingDays >= 0) {
-                        append(ContextCompat.getString(context, R.string.news_remaining_time))
-                        append(" $remainingDays")
-                        append(" (${news.startDate.dayOfMonth}.${news.startDate.monthNumber} - ")
-                        append("${news.finishDate.dayOfMonth}.${news.finishDate.monthNumber})")
-                    } else {
-                        append(ContextCompat.getString(context, R.string.news_event_finished))
-                    }
+            val longString = buildString {
+                if (remainingDays >= 0) {
+                    append(ContextCompat.getString(context, R.string.news_remaining_time))
+                    append(" $remainingDays")
+                    append(" (${news.startDate.dayOfMonth}.${news.startDate.monthNumber} - ")
+                    append("${news.finishDate.dayOfMonth}.${news.finishDate.monthNumber})")
+                } else {
+                    append(ContextCompat.getString(context, R.string.news_event_finished))
                 }
+            }
             itemBinding.textViewNewsRemainingTime.setText(longString)
         }
     }

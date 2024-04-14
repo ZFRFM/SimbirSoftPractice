@@ -21,9 +21,12 @@ import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.NewsAdapter
 import java.util.concurrent.Executors
 
 class NewsFragment : Fragment() {
+
     private lateinit var binding: FragmentNewsBinding
+
+    private val newsAdapter = NewsAdapter(onItemClick = ::updateFeed)
+
     private var appliedFiltersNews = mutableListOf<News>()
-    private lateinit var newsAdapter: NewsAdapter
     private var listOfNews = listOf<News>()
 
     override fun onCreateView(
@@ -40,7 +43,6 @@ class NewsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
-        newsAdapter = getAdapterInstallation()
 
         if (savedInstanceState != null) {
             getFromSavedInstanceState(savedInstanceState)
@@ -75,15 +77,13 @@ class NewsFragment : Fragment() {
     }
 
     private fun getFromSavedInstanceState(savedInstanceState: Bundle) {
-        val newsArray =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                savedInstanceState.getParcelable(LIST_OF_NEWS, ArrayList::class.java)
-            } else {
-                savedInstanceState.getParcelable(LIST_OF_NEWS)
-            }
-        listOfNews = newsArray?.map { it as News } ?: listOfNews
+        val newsArray = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            savedInstanceState.getParcelable(LIST_OF_NEWS, ArrayList::class.java)
+        } else {
+            savedInstanceState.getParcelable(LIST_OF_NEWS)
+        } ?: return
+        listOfNews = newsArray.filterIsInstance<News>()
 
-        loadListOfNews()
         newsAdapter.submitList(listOfNews)
     }
 
@@ -118,20 +118,20 @@ class NewsFragment : Fragment() {
                     descriptionText = it.descriptionText,
                     remainingTimeText = R.string.news_remaining_time,
                     helpCategory =
-                        it.helpCategory.map {
-                            Category(
-                                enumValue =
-                                    when (it.id) {
-                                        0 -> HelpCategoryEnum.CHILDREN
-                                        1 -> HelpCategoryEnum.ADULTS
-                                        2 -> HelpCategoryEnum.ELDERLY
-                                        3 -> HelpCategoryEnum.ANIMALS
-                                        4 -> HelpCategoryEnum.EVENTS
-                                        else -> error("Unknown category")
-                                    },
-                                checked = it.checked,
-                            )
-                        },
+                    it.helpCategory.map {
+                        Category(
+                            enumValue =
+                            when (it.id) {
+                                0 -> HelpCategoryEnum.CHILDREN
+                                1 -> HelpCategoryEnum.ADULTS
+                                2 -> HelpCategoryEnum.ELDERLY
+                                3 -> HelpCategoryEnum.ANIMALS
+                                4 -> HelpCategoryEnum.EVENTS
+                                else -> error("Unknown category")
+                            },
+                            checked = it.checked,
+                        )
+                    },
                     startDate = it.startDate.toLocalDateTime(),
                     finishDate = it.finishDate.toLocalDateTime(),
                 )
@@ -149,33 +149,30 @@ class NewsFragment : Fragment() {
         ).commit()
     }
 
-    private fun getAdapterInstallation(): NewsAdapter {
-        return NewsAdapter(requireContext()) { news: News ->
-            val startDate = news.startDate.toString()
-            val finishDate = news.finishDate.toString()
+    private fun updateFeed(news: News) {
+        val startDate = news.startDate.toString()
+        val finishDate = news.finishDate.toString()
 
-            val bundle =
-                bundleOf(
-                    DetailDescriptionFragment.IMAGE_VIEW_NEWS
-                        to news.newsImageUrl,
-                    DetailDescriptionFragment.TEXT_VIEW_NAME
-                        to news.nameText,
-                    DetailDescriptionFragment.TEXT_VIEW_DESCRIPTION
-                        to news.descriptionText,
-                    DetailDescriptionFragment.TEXT_VIEW_REMAINING_TIME
-                        to news.remainingTimeText,
-                    DetailDescriptionFragment.START_DATE
-                        to startDate,
-                    DetailDescriptionFragment.FINISH_DATE
-                        to finishDate,
-                )
+        val bundle = bundleOf(
+            DetailDescriptionFragment.IMAGE_VIEW_NEWS
+                    to news.newsImageUrl,
+            DetailDescriptionFragment.TEXT_VIEW_NAME
+                    to news.nameText,
+            DetailDescriptionFragment.TEXT_VIEW_DESCRIPTION
+                    to news.descriptionText,
+            DetailDescriptionFragment.TEXT_VIEW_REMAINING_TIME
+                    to news.remainingTimeText,
+            DetailDescriptionFragment.START_DATE
+                    to startDate,
+            DetailDescriptionFragment.FINISH_DATE
+                    to finishDate,
+        )
 
-            setFragmentResult(DetailDescriptionFragment.NEWS_POSITION_RESULT, bundle)
-            parentFragmentManager.beginTransaction().replace(
-                R.id.fragmentContainerView,
-                DetailDescriptionFragment.newInstance(),
-            ).commit()
-        }
+        setFragmentResult(DetailDescriptionFragment.NEWS_POSITION_RESULT, bundle)
+        parentFragmentManager.beginTransaction().replace(
+            R.id.fragmentContainerView,
+            DetailDescriptionFragment.newInstance(),
+        ).commit()
     }
 
     private fun updateAdapter(list: List<News>) {

@@ -11,7 +11,5 @@ data class CategoryResponse(
 fun CategoryResponse.mapToHelpCategoryEnum() =
     HelpCategoryEnum
         .entries
-        .firstOrNull {
-                enum ->
-            enum.id == id
-        } ?: error("Unknown category")
+        .firstOrNull { enum -> enum.id == id }
+        ?: error("Unknown category")
