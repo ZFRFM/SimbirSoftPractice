@@ -81,7 +81,11 @@ dependencies {
     //endregion
     implementation("androidx.activity:activity-ktx:1.9.0")
 
+    //region RxJava-RxAndroid-RxBinding
+    implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
     implementation("io.reactivex.rxjava3:rxjava:3.1.8")
+    implementation("com.jakewharton.rxbinding4:rxbinding:4.0.0")
+    //endregion
 
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.mockito:mockito-core:2.22.0")
