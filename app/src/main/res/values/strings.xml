@@ -213,4 +213,9 @@
     <string name="sign_in">ВОЙТИ</string>
     <string name="forgot_password"><u>Забыли пароль?</u></string>
     <string name="sign_up"><u>Регистрация</u></string>
+    <string name="write_key_words">Напишите в строке поиска название мероприятия или ключевые слова.</string>
+    <string name="example">"Например, "</string>
+    <string name="key_words_examples">мастер-класс, помощь</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

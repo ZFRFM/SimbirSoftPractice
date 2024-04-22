@@ -1,0 +1,13 @@
+package ru.faimizufarov.simbirtraining.java.presentation.ui.adapters
+
+import androidx.recyclerview.widget.RecyclerView
+import ru.faimizufarov.simbirtraining.databinding.ItemSearchResultBinding
+import ru.faimizufarov.simbirtraining.java.data.News
+
+class SearchResultEventsViewHolder(
+    private val itemBinding: ItemSearchResultBinding,
+) : RecyclerView.ViewHolder(itemBinding.root) {
+    fun bind(news: News) {
+        itemBinding.textViewItemSearchResult.text = news.nameText
+    }
+}
