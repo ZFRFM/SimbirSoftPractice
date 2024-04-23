@@ -62,6 +62,10 @@ class DetailDescriptionFragment : Fragment() {
                 )
             }
         }
+
+        binding.imageViewBack.setOnClickListener {
+            parentFragmentManager.beginTransaction().remove(this).commit()
+        }
     }
 
     companion object {

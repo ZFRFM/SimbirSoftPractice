@@ -8,19 +8,35 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsBinding
 import ru.faimizufarov.simbirtraining.java.data.Category
 import ru.faimizufarov.simbirtraining.java.data.News
+import ru.faimizufarov.simbirtraining.java.presentation.ui.activities.MainActivity
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.NewsAdapter
+import ru.faimizufarov.simbirtraining.java.presentation.ui.observers.ObservableNewsFragment
 import java.util.concurrent.Executors
 
-class NewsFragment : Fragment() {
+class NewsFragment() : Fragment(), ObservableNewsFragment {
     private lateinit var binding: FragmentNewsBinding
 
     private val newsAdapter = NewsAdapter(onItemClick = ::updateFeed)
-
     private var appliedFiltersNews = mutableListOf<News>()
+
+    private val disposables = CompositeDisposable()
+    private val unreadNewsCountSubject = PublishSubject.create<Int>()
+
+    /**
+     *
+     * Установил lateinit var на observer, т.к. если получать тут activity, то может вылетать
+     * исключение из-за того, что фрагмент не успевает прикрепиться к активности. Присвоил
+     * значение в onViewCreated, там activity уже точно есть
+     *
+     * */
+
+    override lateinit var observer: MainActivity
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +52,7 @@ class NewsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+        observer = activity as MainActivity
 
         if (savedInstanceState != null) {
             getFromSavedInstanceState(savedInstanceState)
@@ -43,18 +60,11 @@ class NewsFragment : Fragment() {
             loadListOfNews()
         }
 
-        NewsFilterHolder.setOnFilterChangedListener { listFilters ->
-            NewsFilterHolder.getFilterList().forEach { filteredCategory ->
-                if (listFilters.contains(filteredCategory)) {
-                    val filteredNews =
-                        NewsListHolder
-                            .getNewsList()
-                            .filterByCategory(filteredCategory)
-                    appliedFiltersNews.addAll(filteredNews)
-                }
-            }
-            updateAdapter(appliedFiltersNews)
-        }
+        val listOfReadNewsIds = mutableListOf<Int>()
+
+        updateBadgeCount(listOfReadNewsIds)
+
+        listenNewsFilterChanged(listOfReadNewsIds)
 
         updateAdapter(NewsListHolder.getNewsList())
 
@@ -70,6 +80,11 @@ class NewsFragment : Fragment() {
             arrayList.add(it)
         }
         outState.putParcelableArrayList(LIST_OF_NEWS, arrayList)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        disposables.clear()
     }
 
     private fun getFromSavedInstanceState(savedInstanceState: Bundle) {
@@ -91,6 +106,7 @@ class NewsFragment : Fragment() {
             Thread.sleep(5000)
             val newsJsonInString = NewsListHolder.getNewsJson(fragmentContext)
             NewsListHolder.setNewsList(NewsListHolder.getNewsListFromJson(newsJsonInString))
+            sendUpdateBadgeCountEvent(NewsListHolder.getNewsList().size)
             newsAdapter.submitList(NewsListHolder.getNewsList())
             executor.shutdown()
         }
@@ -109,6 +125,8 @@ class NewsFragment : Fragment() {
     }
 
     private fun updateFeed(news: News) {
+        unreadNewsCountSubject.onNext(news.id)
+
         val startDate = news.startDate.toString()
         val finishDate = news.finishDate.toString()
 
@@ -129,7 +147,7 @@ class NewsFragment : Fragment() {
             )
 
         setFragmentResult(DetailDescriptionFragment.NEWS_POSITION_RESULT, bundle)
-        parentFragmentManager.beginTransaction().replace(
+        parentFragmentManager.beginTransaction().add(
             R.id.fragmentContainerView,
             DetailDescriptionFragment.newInstance(),
         ).commit()
@@ -139,6 +157,47 @@ class NewsFragment : Fragment() {
         newsAdapter.submitList(list.toSet().toList())
         binding.contentNews.recyclerViewNewsFragment.adapter = newsAdapter
         appliedFiltersNews = mutableListOf()
+    }
+
+    private fun updateBadgeCount(listOfReadNewsIds: MutableList<Int>) {
+        disposables.add(
+            unreadNewsCountSubject.subscribe { id ->
+                listOfReadNewsIds.add(id)
+                val unreadNews =
+                    if (appliedFiltersNews.isEmpty()) {
+                        (
+                            NewsListHolder.getNewsList().filter { news: News ->
+                                !listOfReadNewsIds.contains(news.id)
+                            }
+                        )
+                    } else {
+                        appliedFiltersNews.filter { news: News ->
+                            !listOfReadNewsIds.contains(news.id)
+                        }
+                    }
+                sendUpdateBadgeCountEvent(unreadNews.size)
+            },
+        )
+    }
+
+    private fun listenNewsFilterChanged(listOfReadNewsIds: MutableList<Int>) {
+        NewsFilterHolder.setOnFilterChangedListener { listFilters ->
+            NewsFilterHolder.getFilterList().forEach { filteredCategory ->
+                if (listFilters.contains(filteredCategory)) {
+                    val filteredNews =
+                        NewsListHolder
+                            .getNewsList()
+                            .filterByCategory(filteredCategory)
+                    appliedFiltersNews.addAll(filteredNews)
+                }
+            }
+            val badgeUpdatedCount =
+                appliedFiltersNews.toSet().filter { news: News ->
+                    !listOfReadNewsIds.contains(news.id)
+                }.size
+            sendUpdateBadgeCountEvent(badgeUpdatedCount)
+            updateAdapter(appliedFiltersNews)
+        }
     }
 
     companion object {

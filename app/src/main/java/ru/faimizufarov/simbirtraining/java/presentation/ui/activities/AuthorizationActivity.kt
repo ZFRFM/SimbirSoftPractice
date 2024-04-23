@@ -3,7 +3,6 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.activities
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -19,7 +18,6 @@ class AuthorizationActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
         binding = ActivityAuthorizationBinding.inflate(layoutInflater)
         setContentView(binding.root)
         getFromSavedInstanceState(savedInstanceState)

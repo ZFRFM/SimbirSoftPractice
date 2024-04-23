@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:fitsSystemWindows="true"
     tools:context=".java.presentation.ui.activities.MainActivity">
 
@@ -16,7 +17,7 @@
         android:theme="@style/Theme.SimbirSoftPractice.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolBar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/leaf"
@@ -50,7 +51,7 @@
                     android:gravity="center" />
 
                 <ImageView
-                    android:id="@+id/imageViewOk"
+                    android:id="@+id/imageViewShare"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end|center_vertical"
