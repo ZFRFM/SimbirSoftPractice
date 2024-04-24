@@ -22,7 +22,9 @@ class DetailDescriptionFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentDetailDescriptionBinding.inflate(inflater, container, false)
+        binding =
+            FragmentDetailDescriptionBinding
+                .inflate(inflater, container, false)
         return binding.root
     }
 
@@ -33,13 +35,17 @@ class DetailDescriptionFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setFragmentResultListener(NEWS_POSITION_RESULT) { key, bundle ->
+
             val startDate = LocalDateTime.parse(bundle.getString(START_DATE) ?: "")
             val finishDate = LocalDateTime.parse(bundle.getString(FINISH_DATE) ?: "")
+
             val finishDay =
                 LocalDateTime.parse(
                     bundle.getString(FINISH_DATE) ?: "",
                 ).date.toEpochDays()
+
             val today = Clock.System.todayIn(TimeZone.currentSystemDefault()).toEpochDays()
+
             with(binding.contentDetailDescription) {
                 val imageUrl = bundle.getString(IMAGE_VIEW_NEWS)
                 Glide.with(requireContext()).load(imageUrl)

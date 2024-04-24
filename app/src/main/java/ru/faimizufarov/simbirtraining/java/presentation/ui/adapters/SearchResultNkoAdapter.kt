@@ -19,6 +19,7 @@ class SearchResultNkoAdapter :
                 parent,
                 false,
             )
+
         return SearchResultNkoViewHolder(itemBinding)
     }
 

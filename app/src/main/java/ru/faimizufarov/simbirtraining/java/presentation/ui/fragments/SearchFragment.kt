@@ -28,7 +28,12 @@ class SearchFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        binding =
+            FragmentSearchBinding.inflate(
+                inflater,
+                container,
+                false,
+            )
         return binding.root
     }
 
@@ -86,11 +91,14 @@ class SearchFragment : Fragment() {
     }
 
     private fun configureViewPager() {
-        val fragmentViewPagerAdapter = SearchPagerAdapter(this, requireContext())
+        val fragmentViewPagerAdapter =
+            SearchPagerAdapter(this, requireContext())
+
         val viewPager = binding.contentSearch.viewPager
         val tabLayout = binding.contentSearch.tabLayout
 
         viewPager.adapter = fragmentViewPagerAdapter
+
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             viewPager.adapter = fragmentViewPagerAdapter
             tab.text =
@@ -110,7 +118,10 @@ class SearchFragment : Fragment() {
     }
 
     private fun putInSavedInstanceState(outState: Bundle) {
-        outState.putString(QUERY_SAVE_INSTANCE_STATE_KEY, binding.searchView.query.toString())
+        outState.putString(
+            QUERY_SAVE_INSTANCE_STATE_KEY,
+            binding.searchView.query.toString(),
+        )
     }
 
     companion object {

@@ -19,7 +19,9 @@ class NewsFilterFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentNewsFilterBinding.inflate(inflater, container, false)
+        binding =
+            FragmentNewsFilterBinding
+                .inflate(inflater, container, false)
         return binding.root
     }
 
@@ -28,7 +30,9 @@ class NewsFilterFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+
         itemDecoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+
         itemDecoration.setDrawable(
             resources.getDrawable(R.drawable.divider_layer_search_result, null),
         )

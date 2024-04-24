@@ -10,13 +10,15 @@ class FilterViewHolder(
     private val itemBinding: ItemNewsFilterFragmentBinding,
     onItemClicked: (Int) -> Unit,
 ) : RecyclerView.ViewHolder(itemBinding.root) {
-
     init {
         with(itemBinding) {
             root.setOnClickListener {
                 onItemClicked(adapterPosition)
-                itemBinding.switchFilterItem.isChecked = !itemBinding.switchFilterItem.isChecked
+
+                itemBinding.switchFilterItem.isChecked =
+                    !itemBinding.switchFilterItem.isChecked
             }
+
             switchFilterItem.setOnClickListener {
                 onItemClicked(adapterPosition)
             }
@@ -25,14 +27,15 @@ class FilterViewHolder(
 
     fun bind(category: Category) {
         with(itemBinding) {
-            val titleRes = when (category.enumValue) {
-                HelpCategoryEnum.CHILDREN -> R.string.children
-                HelpCategoryEnum.ADULTS -> R.string.adults
-                HelpCategoryEnum.ELDERLY -> R.string.elderly
-                HelpCategoryEnum.ANIMALS -> R.string.animals
-                HelpCategoryEnum.EVENTS -> R.string.events
-                null -> error("Unknown category encountered, can't process it as a filter")
-            }
+            val titleRes =
+                when (category.enumValue) {
+                    HelpCategoryEnum.CHILDREN -> R.string.children
+                    HelpCategoryEnum.ADULTS -> R.string.adults
+                    HelpCategoryEnum.ELDERLY -> R.string.elderly
+                    HelpCategoryEnum.ANIMALS -> R.string.animals
+                    HelpCategoryEnum.EVENTS -> R.string.events
+                    null -> error("Unknown category encountered, can't process it as a filter")
+                }
             textViewFilterItem.setText(titleRes)
             switchFilterItem.isChecked = category.checked
         }

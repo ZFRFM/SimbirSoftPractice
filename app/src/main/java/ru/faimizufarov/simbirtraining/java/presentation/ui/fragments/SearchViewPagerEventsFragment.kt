@@ -31,37 +31,38 @@ class SearchViewPagerEventsFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        parentFragment?.setFragmentResultListener(SearchFragment.QUERY_KEY) { key, bundle ->
-            val query = bundle.getString(SearchFragment.QUERY_BUNDLE_KEY) as CharSequence
+        parentFragment
+            ?.setFragmentResultListener(SearchFragment.QUERY_KEY) { key, bundle ->
+                val query = bundle.getString(SearchFragment.QUERY_BUNDLE_KEY) as CharSequence
 
-            val filteredEventsList =
-                if (query == "") {
-                    with(binding) {
-                        imageViewZoom.isVisible = true
-                        textViewWriteKeyWords.isVisible = true
-                        linearLayoutKeyWords.isVisible = true
+                val filteredEventsList =
+                    if (query == "") {
+                        with(binding) {
+                            imageViewZoom.isVisible = true
+                            textViewWriteKeyWords.isVisible = true
+                            linearLayoutKeyWords.isVisible = true
+                        }
+
+                        listOf()
+                    } else {
+                        with(binding) {
+                            imageViewZoom.isVisible = false
+                            textViewWriteKeyWords.isVisible = false
+                            linearLayoutKeyWords.isVisible = false
+                        }
+
+                        NewsListHolder.getNewsList().filter { news: News ->
+                            news.nameText.contains(
+                                bundle.getString(SearchFragment.QUERY_BUNDLE_KEY) as CharSequence,
+                                ignoreCase = true,
+                            )
+                        }
                     }
 
-                    listOf()
-                } else {
-                    with(binding) {
-                        imageViewZoom.isVisible = false
-                        textViewWriteKeyWords.isVisible = false
-                        linearLayoutKeyWords.isVisible = false
-                    }
-
-                    NewsListHolder.getNewsList().filter { news: News ->
-                        news.nameText.contains(
-                            bundle.getString(SearchFragment.QUERY_BUNDLE_KEY) as CharSequence,
-                            ignoreCase = true,
-                        )
-                    }
-                }
-
-            val searchViewEventsAdapter = SearchResultEventsAdapter()
-            searchViewEventsAdapter.submitList(filteredEventsList)
-            binding.recyclerViewEventsViewPager.adapter = searchViewEventsAdapter
-        }
+                val searchViewEventsAdapter = SearchResultEventsAdapter()
+                searchViewEventsAdapter.submitList(filteredEventsList)
+                binding.recyclerViewEventsViewPager.adapter = searchViewEventsAdapter
+            }
     }
 
     companion object {

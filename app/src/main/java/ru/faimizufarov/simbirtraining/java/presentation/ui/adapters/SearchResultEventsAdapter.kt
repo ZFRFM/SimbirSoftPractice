@@ -16,6 +16,7 @@ class SearchResultEventsAdapter :
         val itemBinding =
             ItemSearchResultBinding
                 .inflate(LayoutInflater.from(parent.context), parent, false)
+
         return SearchResultEventsViewHolder(itemBinding)
     }
 

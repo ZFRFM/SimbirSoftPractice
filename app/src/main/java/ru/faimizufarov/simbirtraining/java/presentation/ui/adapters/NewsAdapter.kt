@@ -19,8 +19,12 @@ class NewsAdapter(
         viewType: Int,
     ): NewsViewHolder {
         val itemBinding =
-            ItemNewsFragmentBinding
-                .inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemNewsFragmentBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false,
+            )
+
         return NewsViewHolder(itemBinding) { index ->
             onItemClick(newsListClickable[index])
         }

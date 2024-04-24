@@ -19,10 +19,17 @@ class FilterAdapter(
         viewType: Int,
     ): FilterViewHolder {
         val itemBinding =
-            ItemNewsFilterFragmentBinding
-                .inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemNewsFilterFragmentBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false,
+            )
+
         return FilterViewHolder(itemBinding) {
-            onItemClick(categoryListClickable[it], !categoryListClickable[it].checked)
+            onItemClick(
+                categoryListClickable[it],
+                !categoryListClickable[it].checked,
+            )
         }
     }
 

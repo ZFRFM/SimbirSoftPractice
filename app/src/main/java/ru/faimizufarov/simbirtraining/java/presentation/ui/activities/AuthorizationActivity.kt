@@ -20,13 +20,14 @@ class AuthorizationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityAuthorizationBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
         getFromSavedInstanceState(savedInstanceState)
+
+        setButtonEnabledState()
 
         binding.imageViewBack.setOnClickListener {
             this.finish()
         }
-
-        setButtonEnabledState()
     }
 
     override fun onSaveInstanceState(
@@ -71,6 +72,7 @@ class AuthorizationActivity : AppCompatActivity() {
                         finish()
                     }
                 }
+
                 isEmailFilled && isPasswordFilled
             }
 

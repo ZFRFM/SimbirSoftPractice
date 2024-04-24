@@ -23,7 +23,9 @@ class SearchViewPagerNkoFragment() : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentSearchViewPagerNkoBinding.inflate(inflater, container, false)
+        binding =
+            FragmentSearchViewPagerNkoBinding
+                .inflate(inflater, container, false)
         return binding.root
     }
 
@@ -32,10 +34,20 @@ class SearchViewPagerNkoFragment() : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.recyclerViewSearchResult.adapter = searchResultAdapter
-        itemDecoration = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+
+        itemDecoration =
+            DividerItemDecoration(
+                requireContext(),
+                DividerItemDecoration.VERTICAL,
+            )
+
         itemDecoration.setDrawable(
-            resources.getDrawable(R.drawable.divider_layer_search_result, null),
+            resources.getDrawable(
+                R.drawable.divider_layer_search_result,
+                null,
+            ),
         )
         binding.recyclerViewSearchResult.addItemDecoration(itemDecoration)
     }
@@ -48,7 +60,9 @@ class SearchViewPagerNkoFragment() : Fragment() {
 
         while (listOfSearchResult.size < randomListSize) {
             val random = organizationNameList.random()
-            if (!listOfSearchResult.contains(random)) listOfSearchResult.add(random)
+            if (!listOfSearchResult.contains(random)) {
+                listOfSearchResult.add(random)
+            }
         }
         searchResultAdapter.submitList(listOfSearchResult.toList())
     }

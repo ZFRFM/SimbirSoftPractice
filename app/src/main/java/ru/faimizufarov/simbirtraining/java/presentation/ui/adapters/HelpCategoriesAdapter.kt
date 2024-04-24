@@ -14,8 +14,12 @@ class HelpCategoriesAdapter :
         viewType: Int,
     ): HelpCategoriesViewHolder {
         val itemBinding =
-            ItemHelpCategoryBinding
-                .inflate(LayoutInflater.from(parent.context), parent, false)
+            ItemHelpCategoryBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false,
+            )
+
         return HelpCategoriesViewHolder(itemBinding)
     }
 

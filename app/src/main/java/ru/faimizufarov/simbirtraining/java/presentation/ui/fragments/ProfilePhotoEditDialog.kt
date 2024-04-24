@@ -125,7 +125,9 @@ class ProfilePhotoEditDialog() : DialogFragment() {
             createImageFile().also {
                 tempImageFilePath = it.absolutePath
             }
-        val imageUri = FileProvider.getUriForFile(requireContext(), authority, imageFile)
+        val imageUri =
+            FileProvider
+                .getUriForFile(requireContext(), authority, imageFile)
 
         tempImageUri = imageUri
         cameraLauncher.launch(imageUri)

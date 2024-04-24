@@ -8,7 +8,10 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsBinding
@@ -18,6 +21,7 @@ import ru.faimizufarov.simbirtraining.java.presentation.ui.activities.MainActivi
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.NewsAdapter
 import ru.faimizufarov.simbirtraining.java.presentation.ui.observers.ObservableNewsFragment
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 class NewsFragment() : Fragment(), ObservableNewsFragment {
     private lateinit var binding: FragmentNewsBinding
@@ -75,11 +79,7 @@ class NewsFragment() : Fragment(), ObservableNewsFragment {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        val arrayList = ArrayList<News>()
-        NewsListHolder.getNewsList().forEach {
-            arrayList.add(it)
-        }
-        outState.putParcelableArrayList(LIST_OF_NEWS, arrayList)
+        putInSavedInstanceState(outState)
     }
 
     override fun onStop() {
@@ -99,15 +99,34 @@ class NewsFragment() : Fragment(), ObservableNewsFragment {
         newsAdapter.submitList(NewsListHolder.getNewsList())
     }
 
+    private fun putInSavedInstanceState(outState: Bundle) {
+        val arrayList = ArrayList<News>()
+        NewsListHolder.getNewsList().forEach {
+            arrayList.add(it)
+        }
+        outState.putParcelableArrayList(LIST_OF_NEWS, arrayList)
+    }
+
     private fun loadListOfNews() {
         val executor = Executors.newSingleThreadExecutor()
         val fragmentContext = requireContext()
+
+        val jsonObservable =
+            Observable.create { emitter ->
+                val newsJsonInString = NewsListHolder.getNewsJson(fragmentContext)
+                emitter.onNext(newsJsonInString)
+            }.delay(5000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+
         executor.execute {
-            Thread.sleep(5000)
-            val newsJsonInString = NewsListHolder.getNewsJson(fragmentContext)
-            NewsListHolder.setNewsList(NewsListHolder.getNewsListFromJson(newsJsonInString))
-            sendUpdateBadgeCountEvent(NewsListHolder.getNewsList().size)
-            newsAdapter.submitList(NewsListHolder.getNewsList())
+            disposables.add(
+                jsonObservable.subscribe { json ->
+                    NewsListHolder.setNewsList(NewsListHolder.getNewsListFromJson(json))
+                    sendUpdateBadgeCountEvent(NewsListHolder.getNewsList().size)
+                    newsAdapter.submitList(NewsListHolder.getNewsList())
+                },
+            )
             executor.shutdown()
         }
     }
