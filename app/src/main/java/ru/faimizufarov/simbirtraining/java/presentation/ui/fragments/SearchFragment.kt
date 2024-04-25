@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jakewharton.rxbinding4.widget.queryTextChanges
-import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentSearchBinding
@@ -20,7 +20,6 @@ import java.util.concurrent.TimeUnit
 
 class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
-    private val disposables = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,6 +48,7 @@ class SearchFragment : Fragment() {
         binding.searchView.queryTextChanges()
             .debounce(500, TimeUnit.MILLISECONDS)
             .map { it.toString() }
+            .observeOn(AndroidSchedulers.mainThread())
             .doOnEach { notification ->
                 notification.value?.let { query ->
                     val bundle = bundleOf(QUERY_BUNDLE_KEY to query)
@@ -64,11 +64,6 @@ class SearchFragment : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         putInSavedInstanceState(outState)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        disposables.clear()
     }
 
     private fun configureSearchView() {
