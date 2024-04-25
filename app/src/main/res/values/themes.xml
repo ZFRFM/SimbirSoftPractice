@@ -60,4 +60,9 @@
         <item name="android:textAllCaps">false</item>
     </style>
 
+    <style name="AccentButton" parent="ThemeOverlay.AppCompat.Dark">
+        <item name="colorButtonNormal">@color/grey</item>
+        <item name="colorAccent">@color/leaf</item>
+    </style>
+
 </resources>

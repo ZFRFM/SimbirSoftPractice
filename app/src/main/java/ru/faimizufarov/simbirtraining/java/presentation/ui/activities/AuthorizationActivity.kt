@@ -3,13 +3,13 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.activities
 import android.content.Intent
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.widget.EditText
 import androidx.appcompat.app.AppCompatActivity
 import com.jakewharton.rxbinding4.widget.textChanges
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.ActivityAuthorizationBinding
 
 class AuthorizationActivity : AppCompatActivity() {
@@ -27,6 +27,11 @@ class AuthorizationActivity : AppCompatActivity() {
 
         binding.imageViewBack.setOnClickListener {
             this.finish()
+        }
+
+        binding.contentAuthorizationActivity.buttonSignIn.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
         }
     }
 
@@ -48,52 +53,27 @@ class AuthorizationActivity : AppCompatActivity() {
             binding
                 .contentAuthorizationActivity
                 .editTextEmail
-                .textChanges()
-                .map(CharSequence::toString)
-                .map { text -> text.length >= 6 }
+                .toIsTextValidatedObservable()
 
         val isPasswordFilledObservable =
             binding
                 .contentAuthorizationActivity
                 .textInputLayoutPassword
                 .editText
-                ?.textChanges()
-                ?.map(CharSequence::toString)
-                ?.map { text -> text.length >= 6 }
+                .toIsTextValidatedObservable()
 
         val isButtonEnabledObservable =
             Observable.combineLatest(
-                isEmailFilledObservable,
+                isEmailFilledObservable ?: Observable.just(false),
                 isPasswordFilledObservable ?: Observable.just(false),
-            ) { isEmailFilled, isPasswordFilled ->
-                if (isEmailFilled && isPasswordFilled) {
-                    binding.contentAuthorizationActivity.buttonSignIn.setOnClickListener {
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finish()
-                    }
-                }
+            ) { isEmailFilled, isPasswordFilled -> isEmailFilled && isPasswordFilled }
 
-                isEmailFilled && isPasswordFilled
-            }
-
-        disposables.add(
-            isButtonEnabledObservable
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { enabled ->
-                    if (enabled) {
-                        binding
-                            .contentAuthorizationActivity
-                            .buttonSignIn
-                            .setBackgroundColor(getColor(R.color.leaf))
-                    } else {
-                        binding
-                            .contentAuthorizationActivity
-                            .buttonSignIn
-                            .setBackgroundColor(getColor(R.color.grey))
-                    }
-                },
-        )
+        isButtonEnabledObservable
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { enabled ->
+                binding.contentAuthorizationActivity.buttonSignIn.isEnabled = enabled
+            }.let { disposables.add(it) }
     }
 
     private fun getFromSavedInstanceState(savedInstanceState: Bundle?) {
@@ -109,27 +89,27 @@ class AuthorizationActivity : AppCompatActivity() {
     }
 
     private fun putInSavedInstanceState(outState: Bundle) {
-        outState.putString(
-            EMAIL_KEY,
-            binding
-                .contentAuthorizationActivity
-                .editTextEmail
-                .text
-                .toString(),
-        )
+        with(binding.contentAuthorizationActivity) {
+            outState.putString(
+                EMAIL_KEY,
+                editTextEmail.text.toString(),
+            )
 
-        outState.putString(
-            PASSWORD_KEY,
-            binding
-                .contentAuthorizationActivity
-                .editTextPassword
-                .text
-                .toString(),
-        )
+            outState.putString(
+                PASSWORD_KEY,
+                editTextPassword.text.toString(),
+            )
+        }
     }
 
     companion object {
         const val EMAIL_KEY = "EMAIL_KEY"
         const val PASSWORD_KEY = "PASSWORD_KEY"
     }
+}
+
+fun EditText?.toIsTextValidatedObservable(): Observable<Boolean>? {
+    return this?.textChanges()
+        ?.map(CharSequence::toString)
+        ?.map { text -> text.length >= 6 }
 }

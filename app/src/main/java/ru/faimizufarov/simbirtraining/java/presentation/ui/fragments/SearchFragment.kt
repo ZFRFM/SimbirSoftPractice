@@ -11,7 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import com.google.android.material.tabs.TabLayoutMediator
 import com.jakewharton.rxbinding4.widget.queryTextChanges
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.faimizufarov.simbirtraining.R
@@ -46,25 +45,17 @@ class SearchFragment : Fragment() {
         getFromSavedInstanceState(savedInstanceState)
 
         val searchSubject = PublishSubject.create<String>()
-        val searchViewObservable =
-            binding.searchView.queryTextChanges()
-                .debounce(500, TimeUnit.MILLISECONDS)
-                .map { it.toString() }
 
-        disposables.add(
-            searchViewObservable
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe { query ->
-                    searchSubject.onNext(query)
-                },
-        )
-
-        disposables.add(
-            searchSubject.subscribe { query ->
-                val bundle = bundleOf(QUERY_BUNDLE_KEY to query)
-                setFragmentResult(QUERY_KEY, bundle)
-            },
-        )
+        binding.searchView.queryTextChanges()
+            .debounce(500, TimeUnit.MILLISECONDS)
+            .map { it.toString() }
+            .doOnEach { notification ->
+                notification.value?.let { query ->
+                    val bundle = bundleOf(QUERY_BUNDLE_KEY to query)
+                    setFragmentResult(QUERY_KEY, bundle)
+                }
+            }
+            .subscribe(searchSubject)
 
         configureSearchView()
         configureViewPager()

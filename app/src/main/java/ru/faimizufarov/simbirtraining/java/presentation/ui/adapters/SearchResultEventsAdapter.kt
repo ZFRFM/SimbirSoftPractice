@@ -20,8 +20,6 @@ class SearchResultEventsAdapter :
         return SearchResultEventsViewHolder(itemBinding)
     }
 
-    override fun getItemCount() = currentList.size
-
     override fun onBindViewHolder(
         holder: SearchResultEventsViewHolder,
         position: Int,

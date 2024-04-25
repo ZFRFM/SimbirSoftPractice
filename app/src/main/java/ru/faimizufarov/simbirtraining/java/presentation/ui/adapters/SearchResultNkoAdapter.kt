@@ -23,8 +23,6 @@ class SearchResultNkoAdapter :
         return SearchResultNkoViewHolder(itemBinding)
     }
 
-    override fun getItemCount() = currentList.size
-
     override fun onBindViewHolder(
         holder: SearchResultNkoViewHolder,
         position: Int,

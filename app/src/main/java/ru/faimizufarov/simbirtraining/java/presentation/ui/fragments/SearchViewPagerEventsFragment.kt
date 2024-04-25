@@ -37,20 +37,10 @@ class SearchViewPagerEventsFragment : Fragment() {
 
                 val filteredEventsList =
                     if (query == "") {
-                        with(binding) {
-                            imageViewZoom.isVisible = true
-                            textViewWriteKeyWords.isVisible = true
-                            linearLayoutKeyWords.isVisible = true
-                        }
-
+                        setVisibilityOfLocalUi(true)
                         listOf()
                     } else {
-                        with(binding) {
-                            imageViewZoom.isVisible = false
-                            textViewWriteKeyWords.isVisible = false
-                            linearLayoutKeyWords.isVisible = false
-                        }
-
+                        setVisibilityOfLocalUi(false)
                         NewsListHolder.getNewsList().filter { news: News ->
                             news.nameText.contains(
                                 bundle.getString(SearchFragment.QUERY_BUNDLE_KEY) as CharSequence,
@@ -68,5 +58,13 @@ class SearchViewPagerEventsFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() = SearchViewPagerEventsFragment()
+    }
+
+    private fun setVisibilityOfLocalUi(isVisible: Boolean) {
+        with(binding) {
+            imageViewZoom.isVisible = isVisible
+            textViewWriteKeyWords.isVisible = isVisible
+            linearLayoutKeyWords.isVisible = isVisible
+        }
     }
 }
