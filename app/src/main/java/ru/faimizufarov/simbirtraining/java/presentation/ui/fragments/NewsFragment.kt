@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.faimizufarov.simbirtraining.R
@@ -27,7 +26,6 @@ class NewsFragment() : Fragment() {
     private val newsAdapter = NewsAdapter(onItemClick = ::updateFeed)
     private var appliedFiltersNews = mutableListOf<News>()
 
-    private val disposables = CompositeDisposable()
     private val unreadNewsCountSubject = PublishSubject.create<Int>()
 
     override fun onCreateView(
@@ -51,34 +49,32 @@ class NewsFragment() : Fragment() {
             loadListOfNews()
         }
 
+        val localNewsListKeeper = NewsListHolder.getNewsList()
         val listOfReadNewsIds = mutableListOf<Int>()
 
-        disposables.add(
-            unreadNewsCountSubject.subscribe { id ->
-                listOfReadNewsIds.add(id)
-                val unreadNews =
-                    if (appliedFiltersNews.isEmpty()) {
-                        (
-                            NewsListHolder.getNewsList().filter { news: News ->
-                                !listOfReadNewsIds.contains(news.id)
-                            }
-                        )
-                    } else {
-                        appliedFiltersNews.filter { news: News ->
-                            !listOfReadNewsIds.contains(news.id)
-                        }
+        unreadNewsCountSubject.subscribe { id ->
+            listOfReadNewsIds.add(id)
+
+            val unreadNews =
+                if (appliedFiltersNews.isEmpty()) {
+                    localNewsListKeeper.filter { news: News ->
+                        !listOfReadNewsIds.contains(news.id)
                     }
-                BadgeCountSubject.badgeCountSubject.onNext(unreadNews.size)
-            },
-        )
+                } else {
+                    appliedFiltersNews.filter { news: News ->
+                        !listOfReadNewsIds.contains(news.id)
+                    }
+                }
+
+            BadgeCounter.badgeCounter.onNext(unreadNews.size)
+        }
+
+        val localFiltersList = NewsFilterHolder.getFilterList()
 
         NewsFilterHolder.setOnFilterChangedListener { listFilters ->
-            NewsFilterHolder.getFilterList().forEach { filteredCategory ->
+            localFiltersList.forEach { filteredCategory ->
                 if (listFilters.contains(filteredCategory)) {
-                    val filteredNews =
-                        NewsListHolder
-                            .getNewsList()
-                            .filterByCategory(filteredCategory)
+                    val filteredNews = localNewsListKeeper.filterByCategory(filteredCategory)
                     appliedFiltersNews.addAll(filteredNews)
                 }
             }
@@ -86,11 +82,11 @@ class NewsFragment() : Fragment() {
                 appliedFiltersNews.toSet().filter { news: News ->
                     !listOfReadNewsIds.contains(news.id)
                 }.size
-            BadgeCountSubject.badgeCountSubject.onNext(badgeUpdatedCount)
+            BadgeCounter.badgeCounter.onNext(badgeUpdatedCount)
             updateAdapter(appliedFiltersNews)
         }
 
-        updateAdapter(NewsListHolder.getNewsList())
+        updateAdapter(localNewsListKeeper)
 
         binding.imageViewFilter.setOnClickListener {
             openFilterFragment()
@@ -100,11 +96,6 @@ class NewsFragment() : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         putInSavedInstanceState(outState)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        disposables.clear()
     }
 
     private fun getFromSavedInstanceState(savedInstanceState: Bundle) {
@@ -140,13 +131,12 @@ class NewsFragment() : Fragment() {
                 .observeOn(AndroidSchedulers.mainThread())
 
         executor.execute {
-            disposables.add(
-                jsonObservable.subscribe { json ->
-                    NewsListHolder.setNewsList(NewsListHolder.getNewsListFromJson(json))
-                    BadgeCountSubject.badgeCountSubject.onNext(NewsListHolder.getNewsList().size)
-                    newsAdapter.submitList(NewsListHolder.getNewsList())
-                },
-            )
+            jsonObservable.subscribe { json ->
+                val localNewsListKeeper = NewsListHolder.getNewsList()
+                NewsListHolder.setNewsList(NewsListHolder.getNewsListFromJson(json))
+                BadgeCounter.badgeCounter.onNext(localNewsListKeeper.size)
+                newsAdapter.submitList(localNewsListKeeper)
+            }
             executor.shutdown()
         }
     }

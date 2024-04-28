@@ -60,11 +60,11 @@ class AuthorizationActivity : AppCompatActivity() {
                 .contentAuthorizationActivity
                 .textInputLayoutPassword
                 .editText
-                .toIsTextValidatedObservable()
+                ?.toIsTextValidatedObservable()
 
         val isButtonEnabledObservable =
             Observable.combineLatest(
-                isEmailFilledObservable ?: Observable.just(false),
+                isEmailFilledObservable,
                 isPasswordFilledObservable ?: Observable.just(false),
             ) { isEmailFilled, isPasswordFilled -> isEmailFilled && isPasswordFilled }
 
@@ -108,8 +108,7 @@ class AuthorizationActivity : AppCompatActivity() {
     }
 }
 
-fun EditText?.toIsTextValidatedObservable(): Observable<Boolean>? {
-    return this?.textChanges()
-        ?.map(CharSequence::toString)
-        ?.map { text -> text.length >= 6 }
-}
+fun EditText.toIsTextValidatedObservable() =
+    textChanges()
+        .map(CharSequence::toString)
+        .map { text -> text.length >= 6 }

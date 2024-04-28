@@ -6,7 +6,7 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.ActivityMainBinding
-import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.BadgeCountSubject
+import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.BadgeCounter
 import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.HelpCategoriesFragment
 import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.NewsFragment
 import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.ProfileFragment
@@ -33,18 +33,16 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        BadgeCountSubject.badgeCountSubject.subscribe(this::update)
+        BadgeCounter.badgeCounter.subscribe(this::update)
     }
 
     private fun update(unreadNewsCount: Int) {
-        with(viewBinding.bottomNavView.getOrCreateBadge(R.id.action_news)) {
-            if (unreadNewsCount != 0) {
-                number = unreadNewsCount
-                isVisible = true
-            } else {
-                isVisible = false
-            }
+        val badge = viewBinding.bottomNavView.getOrCreateBadge(R.id.action_news)
+        val isNewsUnread = unreadNewsCount > 0
+        if (isNewsUnread) {
+            badge.number = unreadNewsCount
         }
+        badge.isVisible = isNewsUnread
     }
 
     private fun setCurrentFragment(fragment: Fragment) {
