@@ -49,7 +49,6 @@ class NewsFragment() : Fragment() {
             loadListOfNews()
         }
 
-        val localNewsListKeeper = NewsListHolder.getNewsList()
         val listOfReadNewsIds = mutableListOf<Int>()
 
         unreadNewsCountSubject.subscribe { id ->
@@ -57,7 +56,7 @@ class NewsFragment() : Fragment() {
 
             val unreadNews =
                 if (appliedFiltersNews.isEmpty()) {
-                    localNewsListKeeper.filter { news: News ->
+                    NewsListHolder.getNewsList().filter { news: News ->
                         !listOfReadNewsIds.contains(news.id)
                     }
                 } else {
@@ -69,12 +68,11 @@ class NewsFragment() : Fragment() {
             BadgeCounter.badgeCounter.onNext(unreadNews.size)
         }
 
-        val localFiltersList = NewsFilterHolder.getFilterList()
-
         NewsFilterHolder.setOnFilterChangedListener { listFilters ->
+            val localFiltersList = NewsFilterHolder.getFilterList()
             localFiltersList.forEach { filteredCategory ->
                 if (listFilters.contains(filteredCategory)) {
-                    val filteredNews = localNewsListKeeper.filterByCategory(filteredCategory)
+                    val filteredNews = NewsListHolder.getNewsList().filterByCategory(filteredCategory)
                     appliedFiltersNews.addAll(filteredNews)
                 }
             }
@@ -86,7 +84,7 @@ class NewsFragment() : Fragment() {
             updateAdapter(appliedFiltersNews)
         }
 
-        updateAdapter(localNewsListKeeper)
+        updateAdapter(NewsListHolder.getNewsList())
 
         binding.imageViewFilter.setOnClickListener {
             openFilterFragment()
@@ -132,8 +130,8 @@ class NewsFragment() : Fragment() {
 
         executor.execute {
             jsonObservable.subscribe { json ->
-                val localNewsListKeeper = NewsListHolder.getNewsList()
                 NewsListHolder.setNewsList(NewsListHolder.getNewsListFromJson(json))
+                val localNewsListKeeper = NewsListHolder.getNewsList()
                 BadgeCounter.badgeCounter.onNext(localNewsListKeeper.size)
                 newsAdapter.submitList(localNewsListKeeper)
             }
