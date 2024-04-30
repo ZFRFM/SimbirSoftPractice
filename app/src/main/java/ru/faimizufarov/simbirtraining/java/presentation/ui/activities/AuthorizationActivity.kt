@@ -45,7 +45,7 @@ class AuthorizationActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        disposables.clear()
+        disposables.dispose()
     }
 
     private fun setButtonEnabledState() {

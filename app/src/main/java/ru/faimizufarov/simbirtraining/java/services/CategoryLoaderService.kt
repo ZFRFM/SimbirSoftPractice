@@ -56,20 +56,14 @@ class CategoryLoaderService : Service() {
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
 
-        disposables.add(
-            jsonObservable.subscribe { categoryListJsonInString ->
-                listOfCategories = convertToListOfCategories(categoryListJsonInString)
-                onListOfCategoryChanged?.invoke(listOfCategories ?: listOf())
-            },
-        )
+        jsonObservable.subscribe { categoryListJsonInString ->
+            listOfCategories = convertToListOfCategories(categoryListJsonInString)
+            onListOfCategoryChanged?.invoke(listOfCategories ?: listOf())
+        }.let(disposables::add)
     }
 
     fun setOnListOfCategoryChangedListener(listener: (List<HelpCategoryEnum>) -> Unit) {
         onListOfCategoryChanged = listener
-    }
-
-    fun getListOfCategories(): List<HelpCategoryEnum>? {
-        return this.listOfCategories
     }
 
     private fun convertToListOfCategories(json: String): List<HelpCategoryEnum> {
@@ -81,6 +75,6 @@ class CategoryLoaderService : Service() {
 
     override fun onDestroy() {
         super.onDestroy()
-        disposables.clear()
+        disposables.dispose()
     }
 }

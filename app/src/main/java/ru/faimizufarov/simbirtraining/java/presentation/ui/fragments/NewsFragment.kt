@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.faimizufarov.simbirtraining.R
@@ -27,6 +28,7 @@ class NewsFragment() : Fragment() {
     private var appliedFiltersNews = mutableListOf<News>()
 
     private val unreadNewsCountSubject = PublishSubject.create<Int>()
+    private val disposables = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,13 +68,14 @@ class NewsFragment() : Fragment() {
                 }
 
             BadgeCounter.badgeCounter.onNext(unreadNews.size)
-        }
+        }.let(disposables::add)
 
         NewsFilterHolder.setOnFilterChangedListener { listFilters ->
             val localFiltersList = NewsFilterHolder.getFilterList()
             localFiltersList.forEach { filteredCategory ->
                 if (listFilters.contains(filteredCategory)) {
-                    val filteredNews = NewsListHolder.getNewsList().filterByCategory(filteredCategory)
+                    val filteredNews =
+                        NewsListHolder.getNewsList().filterByCategory(filteredCategory)
                     appliedFiltersNews.addAll(filteredNews)
                 }
             }
@@ -94,6 +97,11 @@ class NewsFragment() : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         putInSavedInstanceState(outState)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        disposables.dispose()
     }
 
     private fun getFromSavedInstanceState(savedInstanceState: Bundle) {
@@ -134,7 +142,7 @@ class NewsFragment() : Fragment() {
                 val localNewsListKeeper = NewsListHolder.getNewsList()
                 BadgeCounter.badgeCounter.onNext(localNewsListKeeper.size)
                 newsAdapter.submitList(localNewsListKeeper)
-            }
+            }.let(disposables::add)
             executor.shutdown()
         }
     }

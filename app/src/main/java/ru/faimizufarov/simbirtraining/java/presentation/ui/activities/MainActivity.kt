@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.ActivityMainBinding
 import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.BadgeCounter
@@ -15,6 +16,7 @@ import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.SearchFragm
 @Suppress("ktlint:standard:no-empty-first-line-in-class-body")
 class MainActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityMainBinding
+    private val disposables = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,10 +35,15 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        BadgeCounter.badgeCounter.subscribe(this::update)
+        BadgeCounter.badgeCounter.subscribe(this::updateBadgeCount).let(disposables::add)
     }
 
-    private fun update(unreadNewsCount: Int) {
+    override fun onStop() {
+        super.onStop()
+        disposables.dispose()
+    }
+
+    private fun updateBadgeCount(unreadNewsCount: Int) {
         val badge = viewBinding.bottomNavView.getOrCreateBadge(R.id.action_news)
         val isNewsUnread = unreadNewsCount > 0
         if (isNewsUnread) {
