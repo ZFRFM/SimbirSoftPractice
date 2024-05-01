@@ -43,8 +43,8 @@ class AuthorizationActivity : AppCompatActivity() {
         putInSavedInstanceState(outState)
     }
 
-    override fun onPause() {
-        super.onPause()
+    override fun onDestroy() {
+        super.onDestroy()
         disposables.dispose()
     }
 

@@ -99,8 +99,8 @@ class NewsFragment() : Fragment() {
         putInSavedInstanceState(outState)
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
         disposables.dispose()
     }
 

@@ -38,8 +38,8 @@ class MainActivity : AppCompatActivity() {
         BadgeCounter.badgeCounter.subscribe(this::updateBadgeCount).let(disposables::add)
     }
 
-    override fun onStop() {
-        super.onStop()
+    override fun onDestroy() {
+        super.onDestroy()
         disposables.dispose()
     }
 
