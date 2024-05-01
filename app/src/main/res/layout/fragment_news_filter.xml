@@ -55,7 +55,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="end|center_vertical"
-                    android:src="@drawable/ok"
+                    android:src="@drawable/image_ok"
                     android:layout_marginEnd="@dimen/image_view_edit_margin_end"
                     android:contentDescription="@string/ok" />
 

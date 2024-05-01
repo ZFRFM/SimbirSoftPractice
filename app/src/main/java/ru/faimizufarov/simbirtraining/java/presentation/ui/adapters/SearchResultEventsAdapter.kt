@@ -4,40 +4,28 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import ru.faimizufarov.simbirtraining.databinding.ItemNewsFragmentBinding
+import ru.faimizufarov.simbirtraining.databinding.ItemSearchResultBinding
 import ru.faimizufarov.simbirtraining.java.data.News
 
-class NewsAdapter(
-    private val onItemClick: (News) -> Unit,
-) :
-    ListAdapter<News, NewsViewHolder>(ItemCallback) {
-    private val newsListClickable
-        get() = currentList
-
+class SearchResultEventsAdapter :
+    ListAdapter<News, SearchResultEventsViewHolder>(ItemCallback) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): NewsViewHolder {
+    ): SearchResultEventsViewHolder {
         val itemBinding =
-            ItemNewsFragmentBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false,
-            )
+            ItemSearchResultBinding
+                .inflate(LayoutInflater.from(parent.context), parent, false)
 
-        return NewsViewHolder(itemBinding) { index ->
-            onItemClick(newsListClickable[index])
-        }
+        return SearchResultEventsViewHolder(itemBinding)
     }
 
-    override fun getItemCount() = currentList.size
-
     override fun onBindViewHolder(
-        holder: NewsViewHolder,
+        holder: SearchResultEventsViewHolder,
         position: Int,
     ) {
-        val news = currentList[position]
-        holder.bind(news)
+        val event = currentList[position]
+        holder.bind(event)
     }
 
     companion object ItemCallback : DiffUtil.ItemCallback<News>() {

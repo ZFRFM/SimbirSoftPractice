@@ -1,6 +1,5 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.fragments
 
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,25 +8,27 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
-import kotlinx.datetime.toLocalDateTime
-import kotlinx.serialization.json.Json
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsBinding
 import ru.faimizufarov.simbirtraining.java.data.Category
-import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
 import ru.faimizufarov.simbirtraining.java.data.News
-import ru.faimizufarov.simbirtraining.java.data.NewsResponse
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.NewsAdapter
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
-class NewsFragment : Fragment() {
-
+class NewsFragment() : Fragment() {
     private lateinit var binding: FragmentNewsBinding
 
     private val newsAdapter = NewsAdapter(onItemClick = ::updateFeed)
-
     private var appliedFiltersNews = mutableListOf<News>()
-    private var listOfNews = listOf<News>()
+
+    private val unreadNewsCountSubject = PublishSubject.create<Int>()
+    private val disposables = CompositeDisposable()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,17 +51,43 @@ class NewsFragment : Fragment() {
             loadListOfNews()
         }
 
+        val listOfReadNewsIds = mutableListOf<Int>()
+
+        unreadNewsCountSubject.subscribe { id ->
+            listOfReadNewsIds.add(id)
+
+            val unreadNews =
+                if (appliedFiltersNews.isEmpty()) {
+                    NewsListHolder.getNewsList().filter { news: News ->
+                        !listOfReadNewsIds.contains(news.id)
+                    }
+                } else {
+                    appliedFiltersNews.filter { news: News ->
+                        !listOfReadNewsIds.contains(news.id)
+                    }
+                }
+
+            BadgeCounter.badgeCounter.onNext(unreadNews.size)
+        }.let(disposables::add)
+
         NewsFilterHolder.setOnFilterChangedListener { listFilters ->
-            NewsFilterHolder.getFilterList().forEach { filteredCategory ->
+            val localFiltersList = NewsFilterHolder.getFilterList()
+            localFiltersList.forEach { filteredCategory ->
                 if (listFilters.contains(filteredCategory)) {
-                    val filteredNews = listOfNews.filterByCategory(filteredCategory)
+                    val filteredNews =
+                        NewsListHolder.getNewsList().filterByCategory(filteredCategory)
                     appliedFiltersNews.addAll(filteredNews)
                 }
             }
+            val badgeUpdatedCount =
+                appliedFiltersNews.toSet().filter { news: News ->
+                    !listOfReadNewsIds.contains(news.id)
+                }.size
+            BadgeCounter.badgeCounter.onNext(badgeUpdatedCount)
             updateAdapter(appliedFiltersNews)
         }
 
-        updateAdapter(listOfNews)
+        updateAdapter(NewsListHolder.getNewsList())
 
         binding.imageViewFilter.setOnClickListener {
             openFilterFragment()
@@ -69,73 +96,56 @@ class NewsFragment : Fragment() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        putInSavedInstanceState(outState)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposables.dispose()
+    }
+
+    private fun getFromSavedInstanceState(savedInstanceState: Bundle) {
+        val newsArray =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                savedInstanceState.getParcelable(LIST_OF_NEWS, ArrayList::class.java)
+            } else {
+                savedInstanceState.getParcelable(LIST_OF_NEWS)
+            } ?: return
+        NewsListHolder.setNewsList(newsArray.filterIsInstance<News>())
+
+        newsAdapter.submitList(NewsListHolder.getNewsList())
+    }
+
+    private fun putInSavedInstanceState(outState: Bundle) {
         val arrayList = ArrayList<News>()
-        listOfNews.forEach {
+        NewsListHolder.getNewsList().forEach {
             arrayList.add(it)
         }
         outState.putParcelableArrayList(LIST_OF_NEWS, arrayList)
     }
 
-    private fun getFromSavedInstanceState(savedInstanceState: Bundle) {
-        val newsArray = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            savedInstanceState.getParcelable(LIST_OF_NEWS, ArrayList::class.java)
-        } else {
-            savedInstanceState.getParcelable(LIST_OF_NEWS)
-        } ?: return
-        listOfNews = newsArray.filterIsInstance<News>()
-
-        newsAdapter.submitList(listOfNews)
-    }
-
     private fun loadListOfNews() {
         val executor = Executors.newSingleThreadExecutor()
         val fragmentContext = requireContext()
+
+        val jsonObservable =
+            Observable.create { emitter ->
+                val newsJsonInString = NewsListHolder.getNewsJson(fragmentContext)
+                emitter.onNext(newsJsonInString)
+            }.delay(5000, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+
         executor.execute {
-            Thread.sleep(5000)
-            val newsJsonInString = getNewsJson(fragmentContext)
-            listOfNews = getNewsListFromJson(newsJsonInString)
-            newsAdapter.submitList(listOfNews)
+            jsonObservable.subscribe { json ->
+                NewsListHolder.setNewsList(NewsListHolder.getNewsListFromJson(json))
+                val localNewsListKeeper = NewsListHolder.getNewsList()
+                BadgeCounter.badgeCounter.onNext(localNewsListKeeper.size)
+                newsAdapter.submitList(localNewsListKeeper)
+            }.let(disposables::add)
             executor.shutdown()
         }
     }
-
-    private fun getNewsJson(fragmentContext: Context) =
-        fragmentContext
-            .applicationContext
-            .assets
-            .open("news_list.json")
-            .bufferedReader()
-            .use { it.readText() }
-
-    private fun getNewsListFromJson(json: String) =
-        Json
-            .decodeFromString<Array<NewsResponse>>(json)
-            .map { it ->
-                News(
-                    id = it.id,
-                    newsImageUrl = it.newsImage,
-                    nameText = it.nameText,
-                    descriptionText = it.descriptionText,
-                    remainingTimeText = R.string.news_remaining_time,
-                    helpCategory =
-                    it.helpCategory.map {
-                        Category(
-                            enumValue =
-                            when (it.id) {
-                                0 -> HelpCategoryEnum.CHILDREN
-                                1 -> HelpCategoryEnum.ADULTS
-                                2 -> HelpCategoryEnum.ELDERLY
-                                3 -> HelpCategoryEnum.ANIMALS
-                                4 -> HelpCategoryEnum.EVENTS
-                                else -> error("Unknown category")
-                            },
-                            checked = it.checked,
-                        )
-                    },
-                    startDate = it.startDate.toLocalDateTime(),
-                    finishDate = it.finishDate.toLocalDateTime(),
-                )
-            }
 
     private fun List<News>.filterByCategory(category: Category) =
         filter { news ->
@@ -150,26 +160,29 @@ class NewsFragment : Fragment() {
     }
 
     private fun updateFeed(news: News) {
+        unreadNewsCountSubject.onNext(news.id)
+
         val startDate = news.startDate.toString()
         val finishDate = news.finishDate.toString()
 
-        val bundle = bundleOf(
-            DetailDescriptionFragment.IMAGE_VIEW_NEWS
+        val bundle =
+            bundleOf(
+                DetailDescriptionFragment.IMAGE_VIEW_NEWS
                     to news.newsImageUrl,
-            DetailDescriptionFragment.TEXT_VIEW_NAME
+                DetailDescriptionFragment.TEXT_VIEW_NAME
                     to news.nameText,
-            DetailDescriptionFragment.TEXT_VIEW_DESCRIPTION
+                DetailDescriptionFragment.TEXT_VIEW_DESCRIPTION
                     to news.descriptionText,
-            DetailDescriptionFragment.TEXT_VIEW_REMAINING_TIME
+                DetailDescriptionFragment.TEXT_VIEW_REMAINING_TIME
                     to news.remainingTimeText,
-            DetailDescriptionFragment.START_DATE
+                DetailDescriptionFragment.START_DATE
                     to startDate,
-            DetailDescriptionFragment.FINISH_DATE
+                DetailDescriptionFragment.FINISH_DATE
                     to finishDate,
-        )
+            )
 
         setFragmentResult(DetailDescriptionFragment.NEWS_POSITION_RESULT, bundle)
-        parentFragmentManager.beginTransaction().replace(
+        parentFragmentManager.beginTransaction().add(
             R.id.fragmentContainerView,
             DetailDescriptionFragment.newInstance(),
         ).commit()

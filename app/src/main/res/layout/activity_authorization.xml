@@ -5,9 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:fitsSystemWindows="true"
-    tools:context=".java.presentation.ui.activities.MainActivity">
+    tools:context=".java.presentation.ui.activities.AuthorizationActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
@@ -17,12 +16,12 @@
         android:theme="@style/Theme.SimbirSoftPractice.AppBarOverlay">
 
         <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolBar"
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/leaf"
-            app:layout_collapseMode="pin"
-            app:layout_scrollFlags="scroll|enterAlways"
+            app:layout_collapseMode="parallax"
+            app:layout_scrollFlags="enterAlways"
             app:popupTheme="@style/Theme.SimbirSoftPractice.PopupOverlay">
 
             <FrameLayout
@@ -44,20 +43,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/officina_sans_extra_bold_c"
-                    android:text="@string/sponsors"
-                    android:textColor="@color/white"
-                    android:textSize="21sp"
-                    android:textStyle="bold"
-                    android:gravity="center" />
-
-                <ImageView
-                    android:id="@+id/imageViewShare"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="end|center_vertical"
-                    android:src="@drawable/share"
-                    android:layout_marginEnd="@dimen/image_view_edit_margin_end"
-                    android:contentDescription="@string/share" />
+                    android:text="@string/authorization"
+                    android:textAppearance="@style/TextAppearance.AppBarText"
+                    android:gravity="center"/>
 
             </FrameLayout>
 
@@ -66,7 +54,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <include
-        android:id="@+id/contentDetailDescription"
-        layout="@layout/scrolling_detail_desc" />
+        android:id="@+id/contentAuthorizationActivity"
+        layout="@layout/scrolling_authorization_activity" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

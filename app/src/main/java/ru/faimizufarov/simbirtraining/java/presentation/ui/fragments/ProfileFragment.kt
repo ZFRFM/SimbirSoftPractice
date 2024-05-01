@@ -34,10 +34,14 @@ class ProfileFragment : Fragment() {
         ) { key, bundle ->
             val uri =
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                    bundle.getParcelable(ProfilePhotoEditDialog.USER_PICTURE_KEY, Uri::class.java)
+                    bundle.getParcelable(
+                        ProfilePhotoEditDialog.USER_PICTURE_KEY,
+                        Uri::class.java,
+                    )
                 } else {
                     bundle.getParcelable(ProfilePhotoEditDialog.USER_PICTURE_KEY)
                 }
+
             binding.contentProfileInfo.imageViewMan.setImageURI(uri)
         }
 

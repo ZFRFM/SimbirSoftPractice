@@ -6,25 +6,32 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.viewpager2.widget.ViewPager2
+import androidx.fragment.app.setFragmentResult
 import com.google.android.material.tabs.TabLayoutMediator
+import com.jakewharton.rxbinding4.widget.queryTextChanges
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.subjects.PublishSubject
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentSearchBinding
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.SearchPagerAdapter
+import java.util.concurrent.TimeUnit
 
 class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
-
-    private lateinit var fragmentViewPagerAdapter: SearchPagerAdapter
-    private lateinit var viewPager: ViewPager2
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        binding = FragmentSearchBinding.inflate(inflater, container, false)
+        binding =
+            FragmentSearchBinding.inflate(
+                inflater,
+                container,
+                false,
+            )
         return binding.root
     }
 
@@ -33,6 +40,33 @@ class SearchFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+
+        getFromSavedInstanceState(savedInstanceState)
+
+        val searchSubject = PublishSubject.create<String>()
+
+        binding.searchView.queryTextChanges()
+            .debounce(500, TimeUnit.MILLISECONDS)
+            .map { it.toString() }
+            .observeOn(AndroidSchedulers.mainThread())
+            .doOnEach { notification ->
+                notification.value?.let { query ->
+                    val bundle = bundleOf(QUERY_BUNDLE_KEY to query)
+                    setFragmentResult(QUERY_KEY, bundle)
+                }
+            }
+            .subscribe(searchSubject)
+
+        configureSearchView()
+        configureViewPager()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        putInSavedInstanceState(outState)
+    }
+
+    private fun configureSearchView() {
         val searchManager =
             requireActivity()
                 .getSystemService(Context.SEARCH_SERVICE) as SearchManager
@@ -40,12 +74,17 @@ class SearchFragment : Fragment() {
             .setSearchableInfo(
                 searchManager.getSearchableInfo(requireActivity().componentName),
             )
+    }
 
-        fragmentViewPagerAdapter = SearchPagerAdapter(this, requireContext())
-        viewPager = binding.contentSearch.viewPager
+    private fun configureViewPager() {
+        val fragmentViewPagerAdapter =
+            SearchPagerAdapter(this, requireContext())
+
+        val viewPager = binding.contentSearch.viewPager
+        val tabLayout = binding.contentSearch.tabLayout
+
         viewPager.adapter = fragmentViewPagerAdapter
 
-        val tabLayout = binding.contentSearch.tabLayout
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             viewPager.adapter = fragmentViewPagerAdapter
             tab.text =
@@ -57,8 +96,26 @@ class SearchFragment : Fragment() {
         }.attach()
     }
 
+    private fun getFromSavedInstanceState(savedInstanceState: Bundle?) {
+        binding.searchView.setQuery(
+            savedInstanceState?.getString(QUERY_SAVE_INSTANCE_STATE_KEY),
+            true,
+        )
+    }
+
+    private fun putInSavedInstanceState(outState: Bundle) {
+        outState.putString(
+            QUERY_SAVE_INSTANCE_STATE_KEY,
+            binding.searchView.query.toString(),
+        )
+    }
+
     companion object {
         @JvmStatic
         fun newInstance() = SearchFragment()
+
+        const val QUERY_KEY = "QUERY_KEY"
+        const val QUERY_BUNDLE_KEY = "QUERY_BUNDLE_KEY"
+        const val QUERY_SAVE_INSTANCE_STATE_KEY = "QUERY_SAVE_INSTANCE_STATE_KEY"
     }
 }

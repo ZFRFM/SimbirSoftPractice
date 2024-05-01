@@ -202,4 +202,21 @@
     <string name="friends_count">+102</string>
     <string name="by_events">По мероприятиям</string>
     <string name="by_NGO">По НКО</string>
+    <string name="authorization">Авторизация</string>
+    <string name="authorization_top_text">Для участия в мероприятиях войдите
+в приложение через социальые сети</string>
+    <string name="authorization_center_text">Или авторизуйтесь через приложение</string>
+    <string name="email">E-mail</string>
+    <string name="input_email">Введите e-mail</string>
+    <string name="password">Пароль</string>
+    <string name="input_password">Введите пароль</string>
+    <string name="sign_in">ВОЙТИ</string>
+    <string name="forgot_password"><u>Забыли пароль?</u></string>
+    <string name="sign_up"><u>Регистрация</u></string>
+    <string name="write_key_words">Напишите в строке поиска название мероприятия или ключевые слова.</string>
+    <string name="example">"Например, "</string>
+    <string name="key_words_examples">мастер-класс, помощь</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="zero">0</string>
 </resources>

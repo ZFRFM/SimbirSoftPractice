@@ -41,6 +41,7 @@ class HelpCategoriesFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+
         binding.contentHelpCategories.recyclerViewHelpCategories.adapter = helpCategoriesAdapter
         if (savedInstanceState != null && savedInstanceState.isCategoriesSaved) {
             getFromSavedInstanceState(savedInstanceState)
@@ -68,7 +69,9 @@ class HelpCategoriesFragment : Fragment() {
 
     private fun startJsonLoaderService() {
         val serviceIntent = Intent(requireContext(), CategoryLoaderService::class.java)
+
         activity?.startService(serviceIntent)
+
         Intent(requireContext(), CategoryLoaderService::class.java).also { intent ->
             isServiceBound =
                 requireActivity()
@@ -92,6 +95,7 @@ class HelpCategoriesFragment : Fragment() {
             } else {
                 savedInstanceState.getParcelable(LIST_OF_CATEGORIES_KEY)
             }
+
         listOfCategories = arrayList?.map {
             it as HelpCategoryEnum
         } ?: listOfCategories
