@@ -1,7 +1,13 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.fragments
 
-import io.reactivex.rxjava3.subjects.PublishSubject
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 object BadgeCounter {
-    val badgeCounter = PublishSubject.create<Int>()
+    private val _badgeCounter = MutableStateFlow(0)
+    val badgeCounter: StateFlow<Int> = _badgeCounter
+
+    suspend fun setBadgeCounterEmitValue(emitValue: Int) {
+        _badgeCounter.emit(emitValue)
+    }
 }
