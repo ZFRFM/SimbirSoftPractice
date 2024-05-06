@@ -31,6 +31,8 @@
                     android:background="@color/white"
                     android:searchIcon="@drawable/search"
                     android:voiceIcon="@drawable/mic"
+                    android:inputType="text"
+                    android:imeOptions="actionSearch"
                     android:iconifiedByDefault="false"
                     android:theme="@style/Theme.SearchView"
                     android:queryHint="@string/writeNameOfOrganization"

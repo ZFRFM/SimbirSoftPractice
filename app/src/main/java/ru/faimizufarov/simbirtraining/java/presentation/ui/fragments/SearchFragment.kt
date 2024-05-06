@@ -48,21 +48,21 @@ class SearchFragment : Fragment() {
 
         getFromSavedInstanceState(savedInstanceState)
 
-        try {
-            lifecycleScope.launch {
+        lifecycleScope.launch {
+            try {
                 binding.searchView.getQueryTextChangeStateFlow()
                     .debounce(500)
                     .collect { query ->
                         val bundle = bundleOf(QUERY_BUNDLE_KEY to query)
                         setFragmentResult(QUERY_KEY, bundle)
                     }
+            } catch (exception: Exception) {
+                Toast.makeText(
+                    requireContext(),
+                    "Произошел сбой поиска",
+                    Toast.LENGTH_SHORT,
+                ).show()
             }
-        } catch (exception: Exception) {
-            Toast.makeText(
-                requireContext(),
-                "Произошел сбой поиска",
-                Toast.LENGTH_SHORT,
-            ).show()
         }
 
         configureSearchView()

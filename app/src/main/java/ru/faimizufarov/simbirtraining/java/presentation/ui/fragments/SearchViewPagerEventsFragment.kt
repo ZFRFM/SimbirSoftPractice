@@ -4,9 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentSearchViewPagerEventsBinding
 import ru.faimizufarov.simbirtraining.java.data.News
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.SearchResultEventsAdapter
@@ -49,10 +55,29 @@ class SearchViewPagerEventsFragment : Fragment() {
                         }
                     }
 
-                val searchViewEventsAdapter = SearchResultEventsAdapter()
+                val searchViewEventsAdapter =
+                    SearchResultEventsAdapter(
+                        onItemClick = ::clickOnEventPosition,
+                    )
                 searchViewEventsAdapter.submitList(filteredEventsList)
                 binding.recyclerViewEventsViewPager.adapter = searchViewEventsAdapter
             }
+    }
+
+    private fun clickOnEventPosition(news: News) {
+        val errorHandler =
+            CoroutineExceptionHandler { _, error: Throwable ->
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.search_item_click_exception),
+                    Toast.LENGTH_SHORT,
+                ).show()
+            }
+
+        lifecycleScope.launch(errorHandler) {
+            delay(1000)
+            throw Exception("Error on server side")
+        }
     }
 
     companion object {

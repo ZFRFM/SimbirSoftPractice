@@ -7,7 +7,9 @@ import androidx.recyclerview.widget.ListAdapter
 import ru.faimizufarov.simbirtraining.databinding.ItemSearchResultBinding
 import ru.faimizufarov.simbirtraining.java.data.News
 
-class SearchResultEventsAdapter :
+class SearchResultEventsAdapter(
+    private val onItemClick: (News) -> Unit,
+) :
     ListAdapter<News, SearchResultEventsViewHolder>(ItemCallback) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -17,7 +19,9 @@ class SearchResultEventsAdapter :
             ItemSearchResultBinding
                 .inflate(LayoutInflater.from(parent.context), parent, false)
 
-        return SearchResultEventsViewHolder(itemBinding)
+        return SearchResultEventsViewHolder(itemBinding) { index ->
+            onItemClick(currentList[index])
+        }
     }
 
     override fun onBindViewHolder(
