@@ -36,12 +36,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         lifecycleScope.launch {
-            try {
-                BadgeCounter.badgeCounter.collect {
-                    updateBadgeCount(it)
-                }
-            } catch (exception: Exception) {
-                return@launch
+            BadgeCounter.badgeCounter.collect {
+                updateBadgeCount(it)
             }
         }
     }

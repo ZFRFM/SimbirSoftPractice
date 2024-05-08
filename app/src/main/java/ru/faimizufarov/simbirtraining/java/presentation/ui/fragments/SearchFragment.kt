@@ -7,15 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.FlowPreview
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import ru.faimizufarov.simbirtraining.R
@@ -49,20 +49,12 @@ class SearchFragment : Fragment() {
         getFromSavedInstanceState(savedInstanceState)
 
         lifecycleScope.launch {
-            try {
-                binding.searchView.getQueryTextChangeStateFlow()
-                    .debounce(500)
-                    .collect { query ->
-                        val bundle = bundleOf(QUERY_BUNDLE_KEY to query)
-                        setFragmentResult(QUERY_KEY, bundle)
-                    }
-            } catch (exception: Exception) {
-                Toast.makeText(
-                    requireContext(),
-                    "Произошел сбой поиска",
-                    Toast.LENGTH_SHORT,
-                ).show()
-            }
+            binding.searchView.getQueryTextChangeStateFlow()
+                .debounce(500)
+                .collect { query ->
+                    val bundle = bundleOf(QUERY_BUNDLE_KEY to query)
+                    setFragmentResult(QUERY_KEY, bundle)
+                }
         }
 
         configureSearchView()
@@ -128,20 +120,22 @@ class SearchFragment : Fragment() {
     }
 }
 
-fun SearchView.getQueryTextChangeStateFlow(): StateFlow<String> {
-    val query = MutableStateFlow("")
+fun SearchView.getQueryTextChangeStateFlow(): Flow<String> =
+    callbackFlow {
+        setOnQueryTextListener(
+            object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return true
+                }
 
-    setOnQueryTextListener(
-        object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
+                override fun onQueryTextChange(newText: String): Boolean {
+                    trySend(newText).isSuccess
+                    return true
+                }
+            },
+        )
 
-            override fun onQueryTextChange(newText: String): Boolean {
-                query.value = newText
-                return true
-            }
-        },
-    )
-    return query
-}
+        awaitClose {
+            setOnQueryTextListener(null)
+        }
+    }
