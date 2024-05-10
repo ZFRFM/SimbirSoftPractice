@@ -8,8 +8,10 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.faimizufarov.simbirtraining.R
@@ -19,6 +21,8 @@ import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.SearchResult
 
 class SearchViewPagerEventsFragment : Fragment() {
     private lateinit var binding: FragmentSearchViewPagerEventsBinding
+
+    private val fetchDataScope = CoroutineScope(Dispatchers.IO)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -64,6 +68,11 @@ class SearchViewPagerEventsFragment : Fragment() {
             }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        fetchDataScope.cancel()
+    }
+
     private fun clickOnEventPosition(news: News) {
         val errorHandler =
             CoroutineExceptionHandler { _, error: Throwable ->
@@ -74,7 +83,7 @@ class SearchViewPagerEventsFragment : Fragment() {
                 ).show()
             }
 
-        lifecycleScope.launch(errorHandler) {
+        fetchDataScope.launch(errorHandler) {
             delay(1000)
             throw Exception("Error on server side")
         }
