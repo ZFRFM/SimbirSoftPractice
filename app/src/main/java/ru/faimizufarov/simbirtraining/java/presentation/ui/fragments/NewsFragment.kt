@@ -10,9 +10,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
@@ -29,7 +28,8 @@ class NewsFragment : Fragment() {
     private val newsAdapter = NewsAdapter(onItemClick = ::updateFeed)
     private var appliedFiltersNews = mutableListOf<News>()
 
-    private val listOfReadNewsIds = mutableListOf<Int>()
+    private val readNewsIdsStateFlow: MutableStateFlow<List<Int>> =
+        MutableStateFlow(listOf())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,6 +52,22 @@ class NewsFragment : Fragment() {
             loadListOfNews()
         }
 
+        lifecycleScope.launch {
+            readNewsIdsStateFlow.collect {
+                val availableNews =
+                    appliedFiltersNews
+                        .takeIf(List<News>::isNotEmpty)
+                        ?: NewsListHolder.getNewsList()
+
+                val unreadNews =
+                    availableNews.filter { news: News ->
+                        !readNewsIdsStateFlow.value.contains(news.id)
+                    }
+
+                BadgeCounter.setBadgeCounterEmitValue(unreadNews.size)
+            }
+        }
+
         NewsFilterHolder.setOnFilterChangedListener { listFilters ->
             lifecycleScope.launch {
                 val localFiltersList = NewsFilterHolder.getFilterList()
@@ -64,7 +80,7 @@ class NewsFragment : Fragment() {
                 }
                 val badgeUpdatedCount =
                     appliedFiltersNews.toSet().filter { news: News ->
-                        !listOfReadNewsIds.contains(news.id)
+                        !readNewsIdsStateFlow.value.contains(news.id)
                     }.size
                 BadgeCounter.setBadgeCounterEmitValue(badgeUpdatedCount)
                 updateAdapter(appliedFiltersNews)
@@ -141,24 +157,7 @@ class NewsFragment : Fragment() {
 
     private fun updateFeed(news: News) {
         lifecycleScope.launch {
-            callbackFlow {
-                trySend(news.id)
-                awaitClose { }
-            }.collect { id ->
-                listOfReadNewsIds.add(id)
-
-                val availableNews =
-                    appliedFiltersNews
-                        .takeIf(List<News>::isNotEmpty)
-                        ?: NewsListHolder.getNewsList()
-
-                val unreadNews =
-                    availableNews.filter { news: News ->
-                        !listOfReadNewsIds.contains(news.id)
-                    }
-
-                BadgeCounter.setBadgeCounterEmitValue(unreadNews.size)
-            }
+            readNewsIdsStateFlow.emit(readNewsIdsStateFlow.value + news.id)
         }
 
         val startDate = news.startDate.toString()
