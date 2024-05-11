@@ -6,7 +6,16 @@ import ru.faimizufarov.simbirtraining.java.data.News
 
 class SearchResultEventsViewHolder(
     private val itemBinding: ItemSearchResultBinding,
+    onItemClicked: (Int) -> Unit,
 ) : RecyclerView.ViewHolder(itemBinding.root) {
+    init {
+        with(itemBinding) {
+            root.setOnClickListener {
+                onItemClicked(adapterPosition)
+            }
+        }
+    }
+
     fun bind(news: News) {
         itemBinding.textViewItemSearchResult.text = news.nameText
     }

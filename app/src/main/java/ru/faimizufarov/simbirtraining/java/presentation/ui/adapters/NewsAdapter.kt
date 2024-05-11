@@ -11,9 +11,6 @@ class NewsAdapter(
     private val onItemClick: (News) -> Unit,
 ) :
     ListAdapter<News, NewsViewHolder>(ItemCallback) {
-    private val newsListClickable
-        get() = currentList
-
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
@@ -26,7 +23,7 @@ class NewsAdapter(
             )
 
         return NewsViewHolder(itemBinding) { index ->
-            onItemClick(newsListClickable[index])
+            onItemClick(currentList[index])
         }
     }
 

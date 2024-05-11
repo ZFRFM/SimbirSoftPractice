@@ -1,6 +1,7 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.fragments
 
 import android.content.Context
+import kotlinx.coroutines.delay
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.json.Json
 import ru.faimizufarov.simbirtraining.R
@@ -18,13 +19,15 @@ object NewsListHolder {
         newsListHolder = listOfNews
     }
 
-    fun getNewsJson(context: Context) =
-        context
+    suspend fun getNewsJson(context: Context): String {
+        delay(1000)
+        return context
             .applicationContext
             .assets
             .open("news_list.json")
             .bufferedReader()
             .use { it.readText() }
+    }
 
     fun getNewsListFromJson(json: String) =
         Json

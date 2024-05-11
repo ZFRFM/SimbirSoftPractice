@@ -8,27 +8,28 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
-import io.reactivex.rxjava3.subjects.PublishSubject
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.launch
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsBinding
 import ru.faimizufarov.simbirtraining.java.data.Category
 import ru.faimizufarov.simbirtraining.java.data.News
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.NewsAdapter
 import java.util.concurrent.Executors
-import java.util.concurrent.TimeUnit
 
-class NewsFragment() : Fragment() {
+class NewsFragment : Fragment() {
     private lateinit var binding: FragmentNewsBinding
 
     private val newsAdapter = NewsAdapter(onItemClick = ::updateFeed)
     private var appliedFiltersNews = mutableListOf<News>()
 
-    private val unreadNewsCountSubject = PublishSubject.create<Int>()
-    private val disposables = CompositeDisposable()
+    private val readNewsIdsStateFlow: MutableStateFlow<List<Int>> =
+        MutableStateFlow(listOf())
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -51,40 +52,39 @@ class NewsFragment() : Fragment() {
             loadListOfNews()
         }
 
-        val listOfReadNewsIds = mutableListOf<Int>()
+        lifecycleScope.launch {
+            readNewsIdsStateFlow.collect {
+                val availableNews =
+                    appliedFiltersNews
+                        .takeIf(List<News>::isNotEmpty)
+                        ?: NewsListHolder.getNewsList()
 
-        unreadNewsCountSubject.subscribe { id ->
-            listOfReadNewsIds.add(id)
-
-            val unreadNews =
-                if (appliedFiltersNews.isEmpty()) {
-                    NewsListHolder.getNewsList().filter { news: News ->
-                        !listOfReadNewsIds.contains(news.id)
+                val unreadNews =
+                    availableNews.filter { news: News ->
+                        !readNewsIdsStateFlow.value.contains(news.id)
                     }
-                } else {
-                    appliedFiltersNews.filter { news: News ->
-                        !listOfReadNewsIds.contains(news.id)
-                    }
-                }
 
-            BadgeCounter.badgeCounter.onNext(unreadNews.size)
-        }.let(disposables::add)
+                BadgeCounter.setBadgeCounterEmitValue(unreadNews.size)
+            }
+        }
 
         NewsFilterHolder.setOnFilterChangedListener { listFilters ->
-            val localFiltersList = NewsFilterHolder.getFilterList()
-            localFiltersList.forEach { filteredCategory ->
-                if (listFilters.contains(filteredCategory)) {
-                    val filteredNews =
-                        NewsListHolder.getNewsList().filterByCategory(filteredCategory)
-                    appliedFiltersNews.addAll(filteredNews)
+            lifecycleScope.launch {
+                val localFiltersList = NewsFilterHolder.getFilterList()
+                localFiltersList.forEach { filteredCategory ->
+                    if (listFilters.contains(filteredCategory)) {
+                        val filteredNews =
+                            NewsListHolder.getNewsList().filterByCategory(filteredCategory)
+                        appliedFiltersNews.addAll(filteredNews)
+                    }
                 }
+                val badgeUpdatedCount =
+                    appliedFiltersNews.toSet().filter { news: News ->
+                        !readNewsIdsStateFlow.value.contains(news.id)
+                    }.size
+                BadgeCounter.setBadgeCounterEmitValue(badgeUpdatedCount)
+                updateAdapter(appliedFiltersNews)
             }
-            val badgeUpdatedCount =
-                appliedFiltersNews.toSet().filter { news: News ->
-                    !listOfReadNewsIds.contains(news.id)
-                }.size
-            BadgeCounter.badgeCounter.onNext(badgeUpdatedCount)
-            updateAdapter(appliedFiltersNews)
         }
 
         updateAdapter(NewsListHolder.getNewsList())
@@ -97,11 +97,6 @@ class NewsFragment() : Fragment() {
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         putInSavedInstanceState(outState)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        disposables.dispose()
     }
 
     private fun getFromSavedInstanceState(savedInstanceState: Bundle) {
@@ -128,21 +123,22 @@ class NewsFragment() : Fragment() {
         val executor = Executors.newSingleThreadExecutor()
         val fragmentContext = requireContext()
 
-        val jsonObservable =
-            Observable.create { emitter ->
+        val jsonFlow =
+            flow {
                 val newsJsonInString = NewsListHolder.getNewsJson(fragmentContext)
-                emitter.onNext(newsJsonInString)
-            }.delay(5000, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
+                delay(5000)
+                emit(newsJsonInString)
+            }.flowOn(Dispatchers.IO)
 
         executor.execute {
-            jsonObservable.subscribe { json ->
-                NewsListHolder.setNewsList(NewsListHolder.getNewsListFromJson(json))
-                val localNewsListKeeper = NewsListHolder.getNewsList()
-                BadgeCounter.badgeCounter.onNext(localNewsListKeeper.size)
-                newsAdapter.submitList(localNewsListKeeper)
-            }.let(disposables::add)
+            lifecycleScope.launch {
+                jsonFlow.collect { json ->
+                    NewsListHolder.setNewsList(NewsListHolder.getNewsListFromJson(json))
+                    val localNewsListKeeper = NewsListHolder.getNewsList()
+                    BadgeCounter.setBadgeCounterEmitValue(localNewsListKeeper.size)
+                    newsAdapter.submitList(localNewsListKeeper)
+                }
+            }
             executor.shutdown()
         }
     }
@@ -160,7 +156,9 @@ class NewsFragment() : Fragment() {
     }
 
     private fun updateFeed(news: News) {
-        unreadNewsCountSubject.onNext(news.id)
+        lifecycleScope.launch {
+            readNewsIdsStateFlow.emit(readNewsIdsStateFlow.value + news.id)
+        }
 
         val startDate = news.startDate.toString()
         val finishDate = news.finishDate.toString()

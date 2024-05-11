@@ -88,6 +88,8 @@ dependencies {
     implementation("com.jakewharton.rxbinding4:rxbinding:4.0.0")
     //endregion
 
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1-Beta")
+
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.mockito:mockito-core:2.22.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
