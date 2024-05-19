@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import ru.faimizufarov.simbirtraining.databinding.FragmentHelpCategoriesBinding
-import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
+import ru.faimizufarov.simbirtraining.java.data.models.HelpCategoryEnum
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.HelpCategoriesAdapter
 import ru.faimizufarov.simbirtraining.java.services.CategoryLoaderService
 import ru.faimizufarov.simbirtraining.java.services.CategoryLoaderServiceConnection

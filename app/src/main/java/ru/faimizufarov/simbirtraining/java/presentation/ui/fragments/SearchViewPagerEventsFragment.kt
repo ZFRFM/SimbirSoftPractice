@@ -16,7 +16,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentSearchViewPagerEventsBinding
-import ru.faimizufarov.simbirtraining.java.data.News
+import ru.faimizufarov.simbirtraining.java.data.models.News
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.SearchResultEventsAdapter
 
 class SearchViewPagerEventsFragment : Fragment() {

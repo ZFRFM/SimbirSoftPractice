@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.data
+package ru.faimizufarov.simbirtraining.java.data.models
 
 data class Organization(
     val id: Int,

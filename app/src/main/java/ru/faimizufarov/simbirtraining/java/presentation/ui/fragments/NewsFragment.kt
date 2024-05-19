@@ -17,8 +17,8 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsBinding
-import ru.faimizufarov.simbirtraining.java.data.CategoryFilter
-import ru.faimizufarov.simbirtraining.java.data.News
+import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
+import ru.faimizufarov.simbirtraining.java.data.models.News
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.NewsAdapter
 import java.util.concurrent.Executors
 

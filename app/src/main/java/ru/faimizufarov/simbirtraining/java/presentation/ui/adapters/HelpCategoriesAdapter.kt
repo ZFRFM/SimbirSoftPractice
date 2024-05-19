@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import ru.faimizufarov.simbirtraining.databinding.ItemHelpCategoryBinding
-import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
+import ru.faimizufarov.simbirtraining.java.data.models.HelpCategoryEnum
 
 class HelpCategoriesAdapter :
     ListAdapter<HelpCategoryEnum, HelpCategoriesViewHolder>(ItemCallback) {

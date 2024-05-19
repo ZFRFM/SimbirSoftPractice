@@ -1,7 +1,7 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.fragments
 
-import ru.faimizufarov.simbirtraining.java.data.CategoryFilter
-import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
+import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
+import ru.faimizufarov.simbirtraining.java.data.models.HelpCategoryEnum
 
 object NewsFilterHolder {
     private val listFiltersHolder =

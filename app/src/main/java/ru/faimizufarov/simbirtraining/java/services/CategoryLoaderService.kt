@@ -9,9 +9,9 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.serialization.json.Json
-import ru.faimizufarov.simbirtraining.java.data.CategoryResponse
-import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
-import ru.faimizufarov.simbirtraining.java.data.mapToHelpCategoryEnum
+import ru.faimizufarov.simbirtraining.java.data.models.CategoryResponse
+import ru.faimizufarov.simbirtraining.java.data.models.HelpCategoryEnum
+import ru.faimizufarov.simbirtraining.java.data.models.mapToHelpCategoryEnum
 import java.util.concurrent.TimeUnit
 
 class CategoryLoaderService : Service() {
