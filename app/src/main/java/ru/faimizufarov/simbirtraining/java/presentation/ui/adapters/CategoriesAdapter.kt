@@ -5,10 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import ru.faimizufarov.simbirtraining.databinding.ItemHelpCategoryBinding
-import ru.faimizufarov.simbirtraining.java.data.models.HelpCategoryEnum
+import ru.faimizufarov.simbirtraining.java.data.models.Category
 
-class HelpCategoriesAdapter :
-    ListAdapter<HelpCategoryEnum, HelpCategoriesViewHolder>(ItemCallback) {
+class CategoriesAdapter : ListAdapter<Category, HelpCategoriesViewHolder>(ItemCallback) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
@@ -33,15 +32,15 @@ class HelpCategoriesAdapter :
         holder.bind(category)
     }
 
-    companion object ItemCallback : DiffUtil.ItemCallback<HelpCategoryEnum>() {
+    companion object ItemCallback : DiffUtil.ItemCallback<Category>() {
         override fun areItemsTheSame(
-            oldItem: HelpCategoryEnum,
-            newItem: HelpCategoryEnum,
+            oldItem: Category,
+            newItem: Category,
         ) = oldItem.id == newItem.id
 
         override fun areContentsTheSame(
-            oldItem: HelpCategoryEnum,
-            newItem: HelpCategoryEnum,
+            oldItem: Category,
+            newItem: Category,
         ) = oldItem == newItem
     }
 }

@@ -19,8 +19,8 @@ class CategoryLoaderService : Service() {
 
     private val binder = LocalBinder()
 
-    private var listOfCategories: List<HelpCategoryEnum>? = null
-    private var onListOfCategoryChanged: ((List<HelpCategoryEnum>) -> Unit)? = null
+    private var listOfCategories: List<Category>? = null
+    private var onListOfCategoryChanged: ((List<Category>) -> Unit)? = null
 
     private val disposables = CompositeDisposable()
 
@@ -49,12 +49,12 @@ class CategoryLoaderService : Service() {
                 .observeOn(AndroidSchedulers.mainThread())
 
         jsonObservable.subscribe { categories ->
-            listOfCategories = categories.map(Category::toEnum)
+            listOfCategories = categories
             onListOfCategoryChanged?.invoke(listOfCategories ?: listOf())
         }.let(disposables::add)
     }
 
-    fun setOnListOfCategoryChangedListener(listener: (List<HelpCategoryEnum>) -> Unit) {
+    fun setOnListOfCategoryChangedListener(listener: (List<Category>) -> Unit) {
         onListOfCategoryChanged = listener
     }
 

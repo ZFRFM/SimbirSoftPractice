@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.ActivityMainBinding
 import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.BadgeCounter
-import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.HelpCategoriesFragment
+import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.CategoriesFragment
 import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.NewsFragment
 import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.ProfileFragment
 import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.SearchFragment
@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
         viewBinding.bottomNavView.setOnItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
-                R.id.action_help -> setCurrentFragment(HelpCategoriesFragment.newInstance())
+                R.id.action_help -> setCurrentFragment(CategoriesFragment.newInstance())
                 R.id.action_profile -> setCurrentFragment(ProfileFragment.newInstance())
                 R.id.action_search -> setCurrentFragment(SearchFragment.newInstance())
                 R.id.action_news -> setCurrentFragment(NewsFragment.newInstance())
