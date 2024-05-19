@@ -9,12 +9,14 @@ import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.serialization.json.Json
-import ru.faimizufarov.simbirtraining.java.data.models.CategoryResponse
-import ru.faimizufarov.simbirtraining.java.data.models.HelpCategoryEnum
-import ru.faimizufarov.simbirtraining.java.data.models.mapToHelpCategoryEnum
+import ru.faimizufarov.simbirtraining.java.data.models.*
+import ru.faimizufarov.simbirtraining.java.data.repositories.CategoryRepository
 import java.util.concurrent.TimeUnit
 
 class CategoryLoaderService : Service() {
+
+    private val categoryRepository by lazy { CategoryRepository(applicationContext.assets) }
+
     private val binder = LocalBinder()
 
     private var listOfCategories: List<HelpCategoryEnum>? = null
@@ -42,35 +44,18 @@ class CategoryLoaderService : Service() {
 
     private fun receiveCategoryListJsonInString() {
         val jsonObservable =
-            Observable.create { emitter ->
-                val categoryListJsonInString =
-                    this@CategoryLoaderService
-                        .applicationContext
-                        .assets
-                        .open("responses/categories_list.json")
-                        .bufferedReader()
-                        .use { it.readText() }
-                emitter.onNext(categoryListJsonInString)
-            }
-                .delay(5000, TimeUnit.MILLISECONDS)
+            categoryRepository.getCategoriesObservable()
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
 
-        jsonObservable.subscribe { categoryListJsonInString ->
-            listOfCategories = convertToListOfCategories(categoryListJsonInString)
+        jsonObservable.subscribe { categories ->
+            listOfCategories = categories.map(Category::toEnum)
             onListOfCategoryChanged?.invoke(listOfCategories ?: listOf())
         }.let(disposables::add)
     }
 
     fun setOnListOfCategoryChangedListener(listener: (List<HelpCategoryEnum>) -> Unit) {
         onListOfCategoryChanged = listener
-    }
-
-    private fun convertToListOfCategories(json: String): List<HelpCategoryEnum> {
-        return Json
-            .decodeFromString<Array<CategoryResponse>>(json).map {
-                it.mapToHelpCategoryEnum()
-            }
     }
 
     override fun onDestroy() {

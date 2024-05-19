@@ -1,22 +1,32 @@
 [
     {
-        "id": 0,
-        "checked": true
+        "id": "0",
+        "localized_name": "Дети",
+        "global_name": "Children",
+        "image_path": "images/children_category.png"
     },
     {
-        "id": 1,
-        "checked": true
+        "id": "1",
+        "localized_name": "Взрослые",
+        "global_name": "Adults",
+        "image_path": "images/adults_category.png"
     },
     {
-        "id": 2,
-        "checked": true
+        "id": "2",
+        "localized_name": "Пожилые",
+        "global_name": "Elderly",
+        "image_path": "images/elderly_category.png"
     },
     {
-        "id": 3,
-        "checked": true
+        "id": "3",
+        "localized_name": "Животные",
+        "global_name": "Animals",
+        "image_path": "images/animals_category.png"
     },
     {
-        "id": 4,
-        "checked": true
+        "id": "4",
+        "localized_name": "Мероприятия",
+        "global_name": "Events",
+        "image_path": "images/events_category.png"
     }
 ]
