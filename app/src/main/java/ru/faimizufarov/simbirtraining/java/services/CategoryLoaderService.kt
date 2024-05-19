@@ -47,7 +47,7 @@ class CategoryLoaderService : Service() {
                     this@CategoryLoaderService
                         .applicationContext
                         .assets
-                        .open("categories_list.json")
+                        .open("responses/categories_list.json")
                         .bufferedReader()
                         .use { it.readText() }
                 emitter.onNext(categoryListJsonInString)

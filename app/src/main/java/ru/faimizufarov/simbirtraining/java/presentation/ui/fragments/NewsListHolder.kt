@@ -5,7 +5,6 @@ import kotlinx.coroutines.delay
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.json.Json
 import ru.faimizufarov.simbirtraining.R
-import ru.faimizufarov.simbirtraining.java.data.CategoryFilter
 import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
 import ru.faimizufarov.simbirtraining.java.data.News
 import ru.faimizufarov.simbirtraining.java.data.NewsResponse
@@ -24,7 +23,7 @@ object NewsListHolder {
         return context
             .applicationContext
             .assets
-            .open("news_list.json")
+            .open("responses/news_list.json")
             .bufferedReader()
             .use { it.readText() }
     }
