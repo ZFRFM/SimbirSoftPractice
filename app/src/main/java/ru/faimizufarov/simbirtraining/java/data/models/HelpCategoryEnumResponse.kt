@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.data
+package ru.faimizufarov.simbirtraining.java.data.models
 
 import kotlinx.serialization.Serializable
 

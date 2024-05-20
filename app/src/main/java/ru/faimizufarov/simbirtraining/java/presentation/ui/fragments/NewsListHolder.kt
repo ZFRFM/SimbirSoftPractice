@@ -5,9 +5,9 @@ import kotlinx.coroutines.delay
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.json.Json
 import ru.faimizufarov.simbirtraining.R
-import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
-import ru.faimizufarov.simbirtraining.java.data.News
-import ru.faimizufarov.simbirtraining.java.data.NewsResponse
+import ru.faimizufarov.simbirtraining.java.data.models.HelpCategoryEnum
+import ru.faimizufarov.simbirtraining.java.data.models.News
+import ru.faimizufarov.simbirtraining.java.data.models.NewsResponse
 
 object NewsListHolder {
     private var newsListHolder = listOf<News>()
