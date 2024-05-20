@@ -4,15 +4,15 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import ru.faimizufarov.simbirtraining.databinding.ItemNewsFilterFragmentBinding
-import ru.faimizufarov.simbirtraining.java.data.Category
+import ru.faimizufarov.simbirtraining.java.data.CategoryFilter
 import ru.faimizufarov.simbirtraining.java.presentation.ui.fragments.NewsFilterHolder
 
 class FilterAdapter(
-    private val filterList: List<Category>,
-    private val onItemClick: (Category, Boolean) -> Unit,
+    private val filterList: List<CategoryFilter>,
+    private val onItemClick: (CategoryFilter, Boolean) -> Unit,
 ) :
     RecyclerView.Adapter<FilterViewHolder>() {
-    private var categoryListClickable: List<Category> = NewsFilterHolder.getFilterList()
+    private var categoryFilterListClickable: List<CategoryFilter> = NewsFilterHolder.getFilterList()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -27,8 +27,8 @@ class FilterAdapter(
 
         return FilterViewHolder(itemBinding) {
             onItemClick(
-                categoryListClickable[it],
-                !categoryListClickable[it].checked,
+                categoryFilterListClickable[it],
+                !categoryFilterListClickable[it].checked,
             )
         }
     }
