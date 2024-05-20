@@ -23,7 +23,7 @@ object NewsListHolder {
         return context
             .applicationContext
             .assets
-            .open("news_list.json")
+            .open("responses/news_list.json")
             .bufferedReader()
             .use { it.readText() }
     }
