@@ -126,7 +126,7 @@ class NewsFragment : Fragment() {
         val jsonFlow =
             flow {
                 val newsJsonInString = NewsListHolder.getNewsJson(fragmentContext)
-                delay(5000)
+                delay(2500)
                 emit(newsJsonInString)
             }.flowOn(Dispatchers.IO)
 
@@ -145,7 +145,7 @@ class NewsFragment : Fragment() {
 
     private fun List<News>.filterByCategory(categoryFilter: CategoryFilter) =
         filter { news ->
-            news.helpCategoryFilter.any { it == categoryFilter }
+            news.helpCategoryFilter.any { it == categoryFilter.enumValue }
         }
 
     private fun openFilterFragment() {

@@ -52,7 +52,7 @@ class CategoryLoaderService : Service() {
                         .use { it.readText() }
                 emitter.onNext(categoryListJsonInString)
             }
-                .delay(5000, TimeUnit.MILLISECONDS)
+                .delay(2500, TimeUnit.MILLISECONDS)
                 .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
 
