@@ -8,8 +8,6 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
 import ru.faimizufarov.simbirtraining.java.data.models.Category
-import ru.faimizufarov.simbirtraining.java.data.models.HelpCategoryEnum
-import ru.faimizufarov.simbirtraining.java.data.models.toEnum
 import ru.faimizufarov.simbirtraining.java.data.repositories.CategoryRepository
 import java.util.concurrent.TimeUnit
 
@@ -20,8 +18,8 @@ class CategoryLoaderService : Service() {
         CategoryRepository(applicationContext.assets)
     }
 
-    private var listOfCategories: List<HelpCategoryEnum>? = null
-    private var onListOfCategoryChanged: ((List<HelpCategoryEnum>) -> Unit)? = null
+    private var listOfCategories: List<Category>? = null
+    private var onListOfCategoryChanged: ((List<Category>) -> Unit)? = null
 
     private val disposables = CompositeDisposable()
 
@@ -51,12 +49,12 @@ class CategoryLoaderService : Service() {
                 .observeOn(AndroidSchedulers.mainThread())
 
         jsonObservable.subscribe { categories ->
-            listOfCategories = categories.map(Category::toEnum)
+            listOfCategories = categories
             onListOfCategoryChanged?.invoke(listOfCategories ?: listOf())
         }.let(disposables::add)
     }
 
-    fun setOnListOfCategoryChangedListener(listener: (List<HelpCategoryEnum>) -> Unit) {
+    fun setOnListOfCategoryChangedListener(listener: (List<Category>) -> Unit) {
         onListOfCategoryChanged = listener
     }
 

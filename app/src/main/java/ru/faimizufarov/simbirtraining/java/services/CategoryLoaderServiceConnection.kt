@@ -3,10 +3,10 @@ package ru.faimizufarov.simbirtraining.java.services
 import android.content.ComponentName
 import android.content.ServiceConnection
 import android.os.IBinder
-import ru.faimizufarov.simbirtraining.java.data.models.HelpCategoryEnum
+import ru.faimizufarov.simbirtraining.java.data.models.Category
 
 class CategoryLoaderServiceConnection(
-    private val showCategories: (List<HelpCategoryEnum>) -> Unit,
+    private val showCategories: (List<Category>) -> Unit,
 ) : ServiceConnection {
     private var connectedService: CategoryLoaderService? = null
 

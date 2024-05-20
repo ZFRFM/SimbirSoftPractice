@@ -4,44 +4,44 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import ru.faimizufarov.simbirtraining.databinding.ItemHelpCategoryBinding
-import ru.faimizufarov.simbirtraining.java.data.models.HelpCategoryEnum
+import ru.faimizufarov.simbirtraining.databinding.ItemCategoryBinding
+import ru.faimizufarov.simbirtraining.java.data.models.Category
 
-class HelpCategoriesAdapter :
-    ListAdapter<HelpCategoryEnum, HelpCategoriesViewHolder>(ItemCallback) {
+class CategoriesAdapter :
+    ListAdapter<Category, CategoriesViewHolder>(ItemCallback) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): HelpCategoriesViewHolder {
+    ): CategoriesViewHolder {
         val itemBinding =
-            ItemHelpCategoryBinding.inflate(
+            ItemCategoryBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false,
             )
 
-        return HelpCategoriesViewHolder(itemBinding)
+        return CategoriesViewHolder(itemBinding)
     }
 
     override fun getItemCount() = currentList.size
 
     override fun onBindViewHolder(
-        holder: HelpCategoriesViewHolder,
+        holder: CategoriesViewHolder,
         position: Int,
     ) {
         val category = currentList[position]
         holder.bind(category)
     }
 
-    companion object ItemCallback : DiffUtil.ItemCallback<HelpCategoryEnum>() {
+    companion object ItemCallback : DiffUtil.ItemCallback<Category>() {
         override fun areItemsTheSame(
-            oldItem: HelpCategoryEnum,
-            newItem: HelpCategoryEnum,
+            oldItem: Category,
+            newItem: Category,
         ) = oldItem.id == newItem.id
 
         override fun areContentsTheSame(
-            oldItem: HelpCategoryEnum,
-            newItem: HelpCategoryEnum,
+            oldItem: Category,
+            newItem: Category,
         ) = oldItem == newItem
     }
 }
