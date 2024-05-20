@@ -1,15 +1,12 @@
 package ru.faimizufarov.simbirtraining.java.data.models
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
 data class CategoryResponse(
-    val id: Int,
-    val checked: Boolean,
+    @SerialName("id") val id: String,
+    @SerialName("name_en") val globalName: String,
+    @SerialName("name") val localizedName: String,
+    @SerialName("image") val imagePath: String,
 )
-
-fun CategoryResponse.mapToHelpCategoryEnum() =
-    HelpCategoryEnum
-        .entries
-        .firstOrNull { enum -> enum.id == id }
-        ?: error("Unknown category")
