@@ -1,13 +1,14 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.fragments
 
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
+import ru.faimizufarov.simbirtraining.java.data.models.HelpCategoryEnum
 
 interface NewsFilterHolder {
 
     val filters: List<CategoryFilter>
-    fun setFilter(categoryFilter: CategoryFilter)
+    fun setFilter(categoryEnum: HelpCategoryEnum)
 
-    fun removeFilter(categoryFilter: CategoryFilter)
+    fun removeFilter(categoryEnum: HelpCategoryEnum)
 
     fun confirm()
 

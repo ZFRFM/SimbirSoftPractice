@@ -46,9 +46,9 @@ class NewsFilterFragment : Fragment() {
             contentDetailDescription.recyclerViewNewsFilterFragment.adapter =
                 FilterAdapter(newsFilterHolder.filters) { category, isFiltered ->
                     if (isFiltered) {
-                        newsFilterHolder.setFilter(category)
+                        category.enumValue?.let(newsFilterHolder::setFilter)
                     } else {
-                        newsFilterHolder.removeFilter(category)
+                        category.enumValue?.let(newsFilterHolder::removeFilter)
                     }
                 }
 
