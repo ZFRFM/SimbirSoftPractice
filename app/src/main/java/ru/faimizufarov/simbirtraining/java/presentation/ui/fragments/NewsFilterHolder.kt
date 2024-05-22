@@ -5,7 +5,9 @@ import ru.faimizufarov.simbirtraining.java.data.models.HelpCategoryEnum
 
 interface NewsFilterHolder {
 
-    val filters: List<CategoryFilter>
+    val activeFilters: List<CategoryFilter>
+    val queuedFilters: List<CategoryFilter>
+
     fun setFilter(categoryEnum: HelpCategoryEnum)
 
     fun removeFilter(categoryEnum: HelpCategoryEnum)
@@ -14,5 +16,7 @@ interface NewsFilterHolder {
 
     fun cancel()
 
-    fun setOnFilterChangedListener(listener: ((List<CategoryFilter>) -> Unit))
+    fun setOnFiltersSubmittedListener(listener: ((List<CategoryFilter>) -> Unit))
+
+    fun setOnFiltersEditedListener(listener: ((List<CategoryFilter>) -> Unit))
 }

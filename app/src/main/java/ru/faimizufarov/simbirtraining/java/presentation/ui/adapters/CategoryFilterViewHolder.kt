@@ -4,40 +4,32 @@ import androidx.recyclerview.widget.RecyclerView
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.ItemNewsFilterFragmentBinding
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
+import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilterItem
 import ru.faimizufarov.simbirtraining.java.data.models.HelpCategoryEnum
 
-class FilterViewHolder(
+class CategoryFilterViewHolder(
     private val itemBinding: ItemNewsFilterFragmentBinding,
-    onItemClicked: (Int) -> Unit,
+    onItemClick: (position: Int) -> Unit,
 ) : RecyclerView.ViewHolder(itemBinding.root) {
     init {
         with(itemBinding) {
             root.setOnClickListener {
-                onItemClicked(adapterPosition)
+                onItemClick(adapterPosition)
 
                 itemBinding.switchFilterItem.isChecked =
                     !itemBinding.switchFilterItem.isChecked
             }
 
             switchFilterItem.setOnClickListener {
-                onItemClicked(adapterPosition)
+                onItemClick(adapterPosition)
             }
         }
     }
 
-    fun bind(categoryFilter: CategoryFilter) {
+    fun bind(categoryFilter: CategoryFilterItem) {
         with(itemBinding) {
-            val titleRes =
-                when (categoryFilter.enumValue) {
-                    HelpCategoryEnum.CHILDREN -> R.string.children
-                    HelpCategoryEnum.ADULTS -> R.string.adults
-                    HelpCategoryEnum.ELDERLY -> R.string.elderly
-                    HelpCategoryEnum.ANIMALS -> R.string.animals
-                    HelpCategoryEnum.EVENTS -> R.string.events
-                    null -> error("Unknown category encountered, can't process it as a filter")
-                }
-            textViewFilterItem.setText(titleRes)
-            switchFilterItem.isChecked = categoryFilter.checked
+            textViewFilterItem.text = categoryFilter.title
+            switchFilterItem.isChecked = categoryFilter.isChecked
         }
     }
 }
