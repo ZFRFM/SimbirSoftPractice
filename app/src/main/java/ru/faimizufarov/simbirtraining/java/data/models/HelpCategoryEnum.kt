@@ -14,3 +14,13 @@ enum class HelpCategoryEnum(
     ANIMALS(3),
     EVENTS(4),
 }
+
+@Deprecated("Horrible, but temporary")
+fun String.categoryEnumFromId() = when (this) {
+    "0" -> HelpCategoryEnum.CHILDREN
+    "1" -> HelpCategoryEnum.ADULTS
+    "2" -> HelpCategoryEnum.ELDERLY
+    "3" -> HelpCategoryEnum.ANIMALS
+    "4" -> HelpCategoryEnum.EVENTS
+    else -> error("Unknown category")
+}

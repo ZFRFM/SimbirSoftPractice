@@ -8,6 +8,7 @@ import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.java.data.models.HelpCategoryEnum
 import ru.faimizufarov.simbirtraining.java.data.models.News
 import ru.faimizufarov.simbirtraining.java.data.models.NewsResponse
+import ru.faimizufarov.simbirtraining.java.data.models.categoryEnumFromId
 
 object NewsListHolder {
     private var newsListHolder = listOf<News>()
@@ -38,15 +39,8 @@ object NewsListHolder {
                     nameText = it.nameText,
                     descriptionText = it.descriptionText,
                     remainingTimeText = R.string.news_remaining_time,
-                    helpCategory = it.helpCategory.map {
-                        when (it.id) {
-                            0 -> HelpCategoryEnum.CHILDREN
-                            1 -> HelpCategoryEnum.ADULTS
-                            2 -> HelpCategoryEnum.ELDERLY
-                            3 -> HelpCategoryEnum.ANIMALS
-                            4 -> HelpCategoryEnum.EVENTS
-                            else -> error("Unknown category")
-                        }
+                    helpCategory = it.helpCategory.map { response ->
+                        response.id.toString().categoryEnumFromId()
                     },
                     startDate = it.startDate.toLocalDateTime(),
                     finishDate = it.finishDate.toLocalDateTime(),
