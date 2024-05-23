@@ -5,7 +5,7 @@ import kotlinx.coroutines.delay
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.json.Json
 import ru.faimizufarov.simbirtraining.R
-import ru.faimizufarov.simbirtraining.java.data.models.HelpCategoryEnum
+import ru.faimizufarov.simbirtraining.java.data.models.CategoryIdResponse
 import ru.faimizufarov.simbirtraining.java.data.models.News
 import ru.faimizufarov.simbirtraining.java.data.models.NewsResponse
 import ru.faimizufarov.simbirtraining.java.data.models.categoryEnumFromId
@@ -39,9 +39,7 @@ object NewsListHolder {
                     nameText = it.nameText,
                     descriptionText = it.descriptionText,
                     remainingTimeText = R.string.news_remaining_time,
-                    helpCategory = it.helpCategory.map { response ->
-                        response.id.toString().categoryEnumFromId()
-                    },
+                    categoryIds = it.categoryIds.map(CategoryIdResponse::id),
                     startDate = it.startDate.toLocalDateTime(),
                     finishDate = it.finishDate.toLocalDateTime(),
                 )

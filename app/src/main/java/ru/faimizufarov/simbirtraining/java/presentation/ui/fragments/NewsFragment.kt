@@ -142,8 +142,7 @@ class NewsFragment : Fragment() {
 
     private fun List<News>.applyCategoryFilters(filters: List<CategoryFilter>) = filter { article ->
         val isFilteredIn by lazy {
-            val articleCategoryIdList = article.helpCategory.map { enum -> enum.id.toString() }
-            filters.any { filter -> filter.categoryId in articleCategoryIdList }
+            filters.any { filter -> filter.categoryId in article.categoryIds }
         }
         filters.isEmpty() || isFilteredIn
     }
