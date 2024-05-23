@@ -12,7 +12,7 @@ class FilterAdapter(
     private val onItemClick: (CategoryFilter, Boolean) -> Unit,
 ) :
     RecyclerView.Adapter<FilterViewHolder>() {
-    private var categoryFilterListClickable: List<CategoryFilter> = NewsFilterHolder.getFilterList()
+    private val categoryFilterListClickable = NewsFilterHolder.getFilterList()
 
     override fun onCreateViewHolder(
         parent: ViewGroup,

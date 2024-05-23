@@ -26,7 +26,7 @@ class NewsFragment : Fragment() {
     private lateinit var binding: FragmentNewsBinding
 
     private val newsAdapter = NewsAdapter(onItemClick = ::updateFeed)
-    private var appliedFiltersNews = mutableListOf<News>()
+    private val appliedFiltersNews = mutableListOf<News>()
 
     private val readNewsIdsStateFlow: MutableStateFlow<List<Int>> =
         MutableStateFlow(listOf())
@@ -143,11 +143,6 @@ class NewsFragment : Fragment() {
         }
     }
 
-    private fun List<News>.filterByCategory(categoryFilter: CategoryFilter) =
-        filter { news ->
-            news.helpCategoryFilter.any { it == categoryFilter.enumValue }
-        }
-
     private fun openFilterFragment() {
         parentFragmentManager.beginTransaction().add(
             R.id.fragmentContainerView,
@@ -189,8 +184,14 @@ class NewsFragment : Fragment() {
     private fun updateAdapter(list: List<News>) {
         newsAdapter.submitList(list.toSet().toList())
         binding.contentNews.recyclerViewNewsFragment.adapter = newsAdapter
-        appliedFiltersNews = mutableListOf()
+        appliedFiltersNews.clear()
     }
+
+    private fun List<News>.filterByCategory(categoryFilter: CategoryFilter) =
+        filter { news ->
+            categoryFilter.checked &&
+                news.helpCategoryFilter.any { it == categoryFilter.enumValue }
+        }
 
     companion object {
         fun newInstance() = NewsFragment()
