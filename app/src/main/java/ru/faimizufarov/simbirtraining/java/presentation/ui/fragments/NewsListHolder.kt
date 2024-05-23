@@ -8,7 +8,6 @@ import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryIdResponse
 import ru.faimizufarov.simbirtraining.java.data.models.News
 import ru.faimizufarov.simbirtraining.java.data.models.NewsResponse
-import ru.faimizufarov.simbirtraining.java.data.models.categoryEnumFromId
 
 object NewsListHolder {
     private var newsListHolder = listOf<News>()

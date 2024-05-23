@@ -4,7 +4,6 @@ import android.content.ComponentName
 import android.content.ServiceConnection
 import android.os.IBinder
 import ru.faimizufarov.simbirtraining.java.data.models.Category
-import ru.faimizufarov.simbirtraining.java.data.models.HelpCategoryEnum
 
 class CategoryLoaderServiceConnection(
     private val showCategories: (List<Category>) -> Unit,
