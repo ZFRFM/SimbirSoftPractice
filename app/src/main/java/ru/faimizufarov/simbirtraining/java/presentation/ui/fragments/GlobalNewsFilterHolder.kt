@@ -1,47 +1,34 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.fragments
 
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
-import ru.faimizufarov.simbirtraining.java.data.models.HelpCategoryEnum
 
 object GlobalNewsFilterHolder : NewsFilterHolder {
-    override val activeFilters = listOf(
-        CategoryFilter(enumValue = HelpCategoryEnum.CHILDREN, checked = true),
-        CategoryFilter(enumValue = HelpCategoryEnum.ADULTS, checked = true),
-        CategoryFilter(enumValue = HelpCategoryEnum.ELDERLY, checked = true),
-        CategoryFilter(enumValue = HelpCategoryEnum.ANIMALS, checked = true),
-        CategoryFilter(enumValue = HelpCategoryEnum.EVENTS, checked = true),
-    )
+    private val _activeFilters = mutableListOf<CategoryFilter>()
+    override val activeFilters: List<CategoryFilter> = _activeFilters
 
-    override val queuedFilters = this.activeFilters.map(CategoryFilter::copy)
+    private val _queuedFilters = mutableListOf<CategoryFilter>()
+    override val queuedFilters: List<CategoryFilter> = _queuedFilters
 
-    override fun setFilter(categoryEnum: HelpCategoryEnum) {
-        queuedFilters.firstOrNull { it.enumValue == categoryEnum }?.checked = true
-        onFiltersEditedListener.invoke(queuedFilters)
+    override fun setFilter(categoryId: String) {
+        _queuedFilters.add(CategoryFilter(categoryId))
+        onFiltersEditedListener(queuedFilters)
     }
 
-    override fun removeFilter(categoryEnum: HelpCategoryEnum) {
-        queuedFilters.firstOrNull { it.enumValue == categoryEnum }?.checked = false
-        onFiltersEditedListener.invoke(queuedFilters)
+    override fun removeFilter(categoryId: String) {
+        _queuedFilters.removeIf { filter -> filter.categoryId == categoryId }
+        onFiltersEditedListener(queuedFilters)
     }
 
     override fun confirm() {
-        queuedFilters.forEach { queuedFilter ->
-            val sameActiveFilter = activeFilters.firstOrNull { activeFilter ->
-                activeFilter.enumValue == queuedFilter.enumValue
-            }
-            sameActiveFilter?.checked = queuedFilter.checked
-        }
+        _activeFilters.clear()
+        _activeFilters.addAll(queuedFilters)
         onFiltersSubmittedListener.invoke(activeFilters)
     }
 
     override fun cancel() {
-        activeFilters.forEach { active ->
-            val sameQueuedFilter = activeFilters.firstOrNull { queuedFilter ->
-                queuedFilter.enumValue == active.enumValue
-            }
-            sameQueuedFilter?.checked = active.checked
-        }
-        onFiltersSubmittedListener.invoke(activeFilters)
+        _queuedFilters.clear()
+        _queuedFilters.addAll(activeFilters)
+        onFiltersEditedListener.invoke(queuedFilters)
     }
 
     private var onFiltersSubmittedListener: (List<CategoryFilter>) -> Unit = {}

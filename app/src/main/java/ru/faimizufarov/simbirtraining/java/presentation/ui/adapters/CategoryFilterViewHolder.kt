@@ -1,11 +1,8 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.adapters
 
 import androidx.recyclerview.widget.RecyclerView
-import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.ItemNewsFilterFragmentBinding
-import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilterItem
-import ru.faimizufarov.simbirtraining.java.data.models.HelpCategoryEnum
 
 class CategoryFilterViewHolder(
     private val itemBinding: ItemNewsFilterFragmentBinding,
