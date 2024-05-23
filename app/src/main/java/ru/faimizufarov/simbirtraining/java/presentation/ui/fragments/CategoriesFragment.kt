@@ -17,7 +17,9 @@ import ru.faimizufarov.simbirtraining.java.services.CategoryLoaderServiceConnect
 
 class CategoriesFragment : Fragment() {
     private lateinit var binding: FragmentHelpCategoriesBinding
-    private val categoriesAdapter = CategoriesAdapter()
+    private val categoriesAdapter by lazy {
+        CategoriesAdapter(requireContext())
+    }
 
     private var listOfCategories: List<Category>? = null
 

@@ -7,8 +7,14 @@ import android.os.IBinder
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import ru.faimizufarov.simbirtraining.java.data.models.Category
+import ru.faimizufarov.simbirtraining.java.data.models.mapToCategory
 import ru.faimizufarov.simbirtraining.java.data.repositories.CategoryRepository
+import ru.faimizufarov.simbirtraining.java.network.AppApi
 import java.util.concurrent.TimeUnit
 
 class CategoryLoaderService : Service() {
@@ -36,7 +42,20 @@ class CategoryLoaderService : Service() {
         flags: Int,
         startId: Int,
     ): Int {
-        receiveCategoryListJsonInString()
+        val serviceCoroutineScope = CoroutineScope(Dispatchers.IO)
+
+        val coroutineExceptionHandler =
+            CoroutineExceptionHandler { _, _: Throwable ->
+                receiveCategoryListJsonInString()
+            }
+
+        serviceCoroutineScope.launch(coroutineExceptionHandler) {
+            listOfCategories =
+                AppApi.retrofitService.getCategories().map {
+                    it.mapToCategory()
+                }
+            onListOfCategoryChanged?.invoke(listOfCategories ?: emptyList())
+        }
 
         return super.onStartCommand(intent, flags, startId)
     }

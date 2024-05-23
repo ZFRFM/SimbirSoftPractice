@@ -1,7 +1,6 @@
 package ru.faimizufarov.simbirtraining.java.data.repositories
 
 import android.content.res.AssetManager
-import android.graphics.BitmapFactory
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.serialization.json.Json
 import ru.faimizufarov.simbirtraining.java.data.models.Category
@@ -23,14 +22,11 @@ class CategoryRepository(
             .map<Array<CategoryResponse>>(Json.Default::decodeFromString)
             .map { categoryResponseArray ->
                 categoryResponseArray.map { categoryResponse ->
-                    val iconStream = assetManager.open(categoryResponse.imagePath)
-                    val iconBitmap = BitmapFactory.decodeStream(iconStream)
-
                     Category(
                         id = categoryResponse.id,
                         localizedName = categoryResponse.localizedName,
                         globalName = categoryResponse.globalName,
-                        icon = iconBitmap,
+                        imagePath = categoryResponse.imagePath,
                     )
                 }
             }

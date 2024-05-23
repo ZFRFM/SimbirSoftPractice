@@ -34,7 +34,7 @@ class DetailDescriptionFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        setFragmentResultListener(NEWS_POSITION_RESULT) { key, bundle ->
+        setFragmentResultListener(NEWS_POSITION_RESULT) { _, bundle ->
 
             val startDate = LocalDateTime.parse(bundle.getString(START_DATE) ?: "")
             val finishDate = LocalDateTime.parse(bundle.getString(FINISH_DATE) ?: "")
@@ -48,11 +48,11 @@ class DetailDescriptionFragment : Fragment() {
 
             with(binding.contentDetailDescription) {
                 val imageUrl = bundle.getString(IMAGE_VIEW_NEWS)
-                Glide.with(requireContext()).load(imageUrl)
+                Glide.with(this@DetailDescriptionFragment).load(imageUrl)
                     .into(binding.contentDetailDescription.imageViewFirstPicture)
-                textViewNews.setText(bundle.getString(TEXT_VIEW_NAME))
-                textViewDescTop.setText(bundle.getString(TEXT_VIEW_DESCRIPTION))
-                textViewRemainingTime.setText(
+                textViewNews.text = bundle.getString(TEXT_VIEW_NAME)
+                textViewDescTop.text = bundle.getString(TEXT_VIEW_DESCRIPTION)
+                textViewRemainingTime.text =
                     if (finishDay - today >= 0) {
                         getString(
                             R.string.news_remaining_time_with_args,
@@ -64,8 +64,7 @@ class DetailDescriptionFragment : Fragment() {
                         )
                     } else {
                         getString(R.string.news_event_finished)
-                    },
-                )
+                    }
             }
         }
 

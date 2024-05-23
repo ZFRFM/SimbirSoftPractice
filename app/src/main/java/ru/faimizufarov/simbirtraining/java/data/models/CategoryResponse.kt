@@ -10,3 +10,11 @@ data class CategoryResponse(
     @SerialName("name") val localizedName: String,
     @SerialName("image") val imagePath: String,
 )
+
+fun CategoryResponse.mapToCategory() =
+    Category(
+        id = id,
+        globalName = globalName,
+        localizedName = localizedName,
+        imagePath = imagePath,
+    )
