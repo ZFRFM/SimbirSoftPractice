@@ -1,45 +1,31 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.fragments
 
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
 
 object GlobalNewsFilterHolder : NewsFilterHolder {
-    private val _activeFilters = mutableListOf<CategoryFilter>()
-    override val activeFilters: List<CategoryFilter> = _activeFilters
+    private val _activeFiltersFlow = MutableStateFlow(emptyList<CategoryFilter>())
+    override val activeFiltersFlow: StateFlow<List<CategoryFilter>> = _activeFiltersFlow
 
-    private val _queuedFilters = mutableListOf<CategoryFilter>()
-    override val queuedFilters: List<CategoryFilter> = _queuedFilters
+    private val _queuedFiltersFlow = MutableStateFlow(emptyList<CategoryFilter>())
+    override val queuedFiltersFlow: StateFlow<List<CategoryFilter>> = _queuedFiltersFlow
 
     override fun setFilter(categoryId: String) {
-        _queuedFilters.add(CategoryFilter(categoryId))
-        onFiltersEditedListener(queuedFilters)
+        val updatedFilters = _queuedFiltersFlow.value + CategoryFilter(categoryId)
+        _queuedFiltersFlow.tryEmit(updatedFilters)
     }
 
     override fun removeFilter(categoryId: String) {
-        _queuedFilters.removeIf { filter -> filter.categoryId == categoryId }
-        onFiltersEditedListener(queuedFilters)
+        val updatedFilters = _queuedFiltersFlow.value.filterNot { it.categoryId == categoryId }
+        _queuedFiltersFlow.tryEmit(updatedFilters)
     }
 
     override fun confirm() {
-        _activeFilters.clear()
-        _activeFilters.addAll(queuedFilters)
-        onFiltersSubmittedListener.invoke(activeFilters)
+        _activeFiltersFlow.tryEmit(_queuedFiltersFlow.value)
     }
 
     override fun cancel() {
-        _queuedFilters.clear()
-        _queuedFilters.addAll(activeFilters)
-        onFiltersEditedListener.invoke(queuedFilters)
-    }
-
-    private var onFiltersSubmittedListener: (List<CategoryFilter>) -> Unit = {}
-
-    override fun setOnFiltersSubmittedListener(listener: ((List<CategoryFilter>) -> Unit)) {
-        onFiltersSubmittedListener = listener
-    }
-
-    private var onFiltersEditedListener: (List<CategoryFilter>) -> Unit = {}
-
-    override fun setOnFiltersEditedListener(listener: (List<CategoryFilter>) -> Unit) {
-        onFiltersEditedListener = listener
+        _queuedFiltersFlow.tryEmit(_activeFiltersFlow.value)
     }
 }

@@ -12,6 +12,7 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
@@ -70,9 +71,8 @@ class NewsFragment : Fragment() {
             }
         }
 
-        newsFilterHolder.setOnFiltersSubmittedListener { listFilters ->
-            lifecycleScope.launch {
-                val filters = newsFilterHolder.activeFilters
+        lifecycleScope.launch {
+            newsFilterHolder.activeFiltersFlow.collect { filters ->
                 val filteredNews = NewsListHolder.getNewsList().applyCategoryFilters(filters)
                 appliedFiltersNews.addAll(filteredNews)
                 val badgeUpdatedCount =
