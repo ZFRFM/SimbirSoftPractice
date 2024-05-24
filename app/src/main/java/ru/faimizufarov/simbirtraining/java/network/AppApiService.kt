@@ -11,7 +11,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryResponse
 
-private const val BASE_URL = "http://192.168.42.86:8080"
+private const val BASE_URL = "http://192.168.48.86:8080"
 
 private val loggingInterceptor =
     HttpLoggingInterceptor().apply {

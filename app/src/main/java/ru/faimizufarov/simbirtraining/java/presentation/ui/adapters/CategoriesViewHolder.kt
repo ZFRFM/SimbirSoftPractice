@@ -15,14 +15,14 @@ class CategoriesViewHolder(
         val (image, title) = category.imagePath to category.localizedName
 
         try {
+            val iconStream = assetManager.open(image)
+            val iconBitmap = BitmapFactory.decodeStream(iconStream)
+            itemBinding.imageViewHelpCategory.setImageBitmap(iconBitmap)
+        } catch (exception: Exception) {
             Glide
                 .with(itemBinding.root.context)
                 .load(image)
                 .into(itemBinding.imageViewHelpCategory)
-        } catch (exception: Exception) {
-            val iconStream = assetManager.open(image)
-            val iconBitmap = BitmapFactory.decodeStream(iconStream)
-            itemBinding.imageViewHelpCategory.setImageBitmap(iconBitmap)
         }
 
         itemBinding.textViewHelpCategory.text = title
