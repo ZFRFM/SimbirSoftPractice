@@ -18,12 +18,12 @@ object GlobalNewsFilterHolder : NewsFilterHolder {
 
     private val queuedFilters = activeFilters.map(CategoryFilter::copy)
 
-    override fun setFilter(categoryFilter: CategoryFilter) {
-        queuedFilters.firstOrNull { it == categoryFilter }?.checked = true
+    override fun setFilter(categoryEnum: HelpCategoryEnum) {
+        queuedFilters.firstOrNull { it.enumValue == categoryEnum }?.checked = true
     }
 
-    override fun removeFilter(categoryFilter: CategoryFilter) {
-        queuedFilters.firstOrNull { it == categoryFilter }?.checked = false
+    override fun removeFilter(categoryEnum: HelpCategoryEnum) {
+        queuedFilters.firstOrNull { it.enumValue == categoryEnum }?.checked = false
     }
 
     override fun confirm() {
