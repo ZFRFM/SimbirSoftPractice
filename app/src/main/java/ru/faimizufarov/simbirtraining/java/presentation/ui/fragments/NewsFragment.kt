@@ -25,6 +25,8 @@ import java.util.concurrent.Executors
 class NewsFragment : Fragment() {
     private lateinit var binding: FragmentNewsBinding
 
+    private val newsFilterHolder: NewsFilterHolder = GlobalNewsFilterHolder
+
     private val newsAdapter = NewsAdapter(onItemClick = ::updateFeed)
     private val appliedFiltersNews = mutableListOf<News>()
 
@@ -68,9 +70,9 @@ class NewsFragment : Fragment() {
             }
         }
 
-        NewsFilterHolder.setOnFilterChangedListener { listFilters ->
+        newsFilterHolder.setOnFilterChangedListener { listFilters ->
             lifecycleScope.launch {
-                val localFiltersList = NewsFilterHolder.getFilterList()
+                val localFiltersList = newsFilterHolder.filters
                 localFiltersList.forEach { filteredCategory ->
                     if (listFilters.contains(filteredCategory)) {
                         val filteredNews =

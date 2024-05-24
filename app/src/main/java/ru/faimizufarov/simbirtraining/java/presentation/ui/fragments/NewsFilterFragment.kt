@@ -14,6 +14,8 @@ class NewsFilterFragment : Fragment() {
     private lateinit var binding: FragmentNewsFilterBinding
     private lateinit var itemDecoration: DividerItemDecoration
 
+    private val newsFilterHolder: NewsFilterHolder = GlobalNewsFilterHolder
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -42,18 +44,23 @@ class NewsFilterFragment : Fragment() {
                 .addItemDecoration(itemDecoration)
 
             contentDetailDescription.recyclerViewNewsFilterFragment.adapter =
-                FilterAdapter(NewsFilterHolder.getFilterList()) { category, isFiltered ->
-                    NewsFilterHolder.setFilter(category, isFiltered)
+                FilterAdapter(newsFilterHolder.filters) { category, isFiltered ->
+                    if (isFiltered) {
+                        newsFilterHolder.setFilter(category)
+                    } else {
+                        newsFilterHolder.removeFilter(category)
+                    }
                 }
 
             imageViewOk.setOnClickListener {
-                NewsFilterHolder.onFiltersChangedListener?.invoke(NewsFilterHolder.getFilterList())
+                newsFilterHolder.confirm()
                 parentFragmentManager
                     .beginTransaction()
                     .remove(this@NewsFilterFragment).commit()
             }
 
             imageViewBack.setOnClickListener {
+                newsFilterHolder.cancel()
                 parentFragmentManager
                     .beginTransaction()
                     .remove(this@NewsFilterFragment).commit()
