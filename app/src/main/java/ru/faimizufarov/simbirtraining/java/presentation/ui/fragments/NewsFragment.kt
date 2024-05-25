@@ -15,8 +15,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsBinding
+import ru.faimizufarov.simbirtraining.databinding.ItemNewsFragmentBinding
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
 import ru.faimizufarov.simbirtraining.java.data.models.News
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.NewsAdapter
@@ -24,13 +28,14 @@ import java.util.concurrent.Executors
 
 class NewsFragment : Fragment() {
     private lateinit var binding: FragmentNewsBinding
+    private lateinit var bindingItemNews: ItemNewsFragmentBinding
 
     private val newsFilterHolder: NewsFilterHolder = GlobalNewsFilterHolder
 
     private val newsAdapter = NewsAdapter(onItemClick = ::updateFeed)
     private val appliedFiltersNews = mutableListOf<News>()
 
-    private val readNewsIdsStateFlow: MutableStateFlow<List<Int>> =
+    private val readNewsIdsStateFlow: MutableStateFlow<List<String>> =
         MutableStateFlow(listOf())
 
     override fun onCreateView(
@@ -39,6 +44,7 @@ class NewsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentNewsBinding.inflate(inflater, container, false)
+        bindingItemNews = ItemNewsFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -151,19 +157,21 @@ class NewsFragment : Fragment() {
             readNewsIdsStateFlow.emit(readNewsIdsStateFlow.value + news.id)
         }
 
-        val startDate = news.startDate.toString()
-        val finishDate = news.finishDate.toString()
+        val startDate =
+            Instant.fromEpochMilliseconds(news.startDate)
+                .toLocalDateTime(TimeZone.currentSystemDefault()).toString()
+        val finishDate =
+            Instant.fromEpochMilliseconds(news.finishDate)
+                .toLocalDateTime(TimeZone.currentSystemDefault()).toString()
 
         val bundle =
             bundleOf(
-                DetailDescriptionFragment.IMAGE_VIEW_NEWS
-                    to news.newsImageUrl,
+                DetailDescriptionFragment.IMAGES_VIEW_NEWS
+                    to news.newsImages,
                 DetailDescriptionFragment.TEXT_VIEW_NAME
                     to news.nameText,
                 DetailDescriptionFragment.TEXT_VIEW_DESCRIPTION
                     to news.descriptionText,
-                DetailDescriptionFragment.TEXT_VIEW_REMAINING_TIME
-                    to news.remainingTimeText,
                 DetailDescriptionFragment.START_DATE
                     to startDate,
                 DetailDescriptionFragment.FINISH_DATE

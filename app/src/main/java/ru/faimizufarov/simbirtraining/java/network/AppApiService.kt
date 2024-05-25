@@ -1,7 +1,6 @@
 package ru.faimizufarov.simbirtraining.java.network
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
-import kotlinx.coroutines.flow.Flow
 import kotlinx.serialization.json.Json
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
@@ -10,6 +9,7 @@ import retrofit2.Retrofit
 import retrofit2.http.GET
 import retrofit2.http.POST
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryResponse
+import ru.faimizufarov.simbirtraining.java.data.models.NewsResponse
 
 private const val BASE_URL = "http://192.168.48.86:8080"
 
@@ -35,7 +35,7 @@ interface AppApiService {
     suspend fun getCategories(): List<CategoryResponse>
 
     @POST("events")
-    fun getEvents(): Flow<List<Unit>>
+    suspend fun getEvents(): List<NewsResponse>
 }
 
 object AppApi {

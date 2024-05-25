@@ -1,18 +1,21 @@
 package ru.faimizufarov.simbirtraining.java.data.models
 
 import android.os.Parcelable
-import kotlinx.datetime.LocalDateTime
 import kotlinx.parcelize.Parcelize
 import kotlinx.parcelize.RawValue
 
 @Parcelize
 data class News(
-    val id: Int,
-    val newsImageUrl: String,
+    val id: String,
     val nameText: String,
+    val startDate: Long,
+    val finishDate: Long,
     val descriptionText: String,
-    val remainingTimeText: Int,
-    val categoryIds: List<String>,
-    val startDate: @RawValue LocalDateTime,
-    val finishDate: @RawValue LocalDateTime,
+    val status: Long,
+    val newsImages: List<String>,
+    val categoryIds: @RawValue List<String>,
+    val createAt: Long,
+    val phone: String,
+    val address: String,
+    val organisation: String,
 ) : Parcelable

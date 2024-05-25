@@ -2,10 +2,7 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.fragments
 
 import android.content.Context
 import kotlinx.coroutines.delay
-import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.json.Json
-import ru.faimizufarov.simbirtraining.R
-import ru.faimizufarov.simbirtraining.java.data.models.CategoryIdResponse
 import ru.faimizufarov.simbirtraining.java.data.models.News
 import ru.faimizufarov.simbirtraining.java.data.models.NewsResponse
 
@@ -34,13 +31,17 @@ object NewsListHolder {
             .map { it ->
                 News(
                     id = it.id,
-                    newsImageUrl = it.newsImage,
                     nameText = it.nameText,
+                    startDate = it.startDate,
+                    finishDate = it.finishDate,
                     descriptionText = it.descriptionText,
-                    remainingTimeText = R.string.news_remaining_time,
-                    categoryIds = it.categoryIds.map(CategoryIdResponse::id),
-                    startDate = it.startDate.toLocalDateTime(),
-                    finishDate = it.finishDate.toLocalDateTime(),
+                    status = it.status,
+                    newsImages = it.newsImages,
+                    categoryIds = it.categoryIds,
+                    createAt = it.createAt,
+                    phone = it.phone,
+                    address = it.address,
+                    organisation = it.organisation,
                 )
             }
 }

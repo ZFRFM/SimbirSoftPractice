@@ -5,17 +5,28 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NewsResponse(
-    val id: Int,
-    @SerialName("event_image")
-    val newsImage: String,
-    @SerialName("event_name_text")
+    @SerialName("id")
+    val id: String,
+    @SerialName("name")
     val nameText: String,
-    @SerialName("event_description_text")
+    @SerialName("startDate")
+    val startDate: Long,
+    @SerialName("endDate")
+    val finishDate: Long,
+    @SerialName("description")
     val descriptionText: String,
-    @SerialName("help_category")
-    val categoryIds: List<CategoryIdResponse>,
-    @SerialName("start_date")
-    val startDate: String,
-    @SerialName("finish_date")
-    val finishDate: String,
+    @SerialName("status")
+    val status: Long,
+    @SerialName("photos")
+    val newsImages: List<String>,
+    @SerialName("categories")
+    val categoryIds: List<String>,
+    @SerialName("createAt")
+    val createAt: Long,
+    @SerialName("phone")
+    val phone: String,
+    @SerialName("address")
+    val address: String,
+    @SerialName("organisation")
+    val organisation: String,
 )

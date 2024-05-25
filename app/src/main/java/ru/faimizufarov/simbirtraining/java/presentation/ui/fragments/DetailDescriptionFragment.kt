@@ -47,7 +47,7 @@ class DetailDescriptionFragment : Fragment() {
             val today = Clock.System.todayIn(TimeZone.currentSystemDefault()).toEpochDays()
 
             with(binding.contentDetailDescription) {
-                val imageUrl = bundle.getString(IMAGE_VIEW_NEWS)
+                val imageUrl = bundle.getString(IMAGES_VIEW_NEWS)
                 Glide.with(this@DetailDescriptionFragment).load(imageUrl)
                     .into(binding.contentDetailDescription.imageViewFirstPicture)
                 textViewNews.text = bundle.getString(TEXT_VIEW_NAME)
@@ -74,10 +74,9 @@ class DetailDescriptionFragment : Fragment() {
     }
 
     companion object {
-        const val IMAGE_VIEW_NEWS = "IMAGE_VIEW_NEWS"
+        const val IMAGES_VIEW_NEWS = "IMAGES_VIEW_NEWS"
         const val TEXT_VIEW_NAME = "TEXT_VIEW_NAME"
         const val TEXT_VIEW_DESCRIPTION = "TEXT_VIEW_DESCRIPTION"
-        const val TEXT_VIEW_REMAINING_TIME = "TEXT_VIEW_REMAINING_TIME"
         const val START_DATE = "START_DATE"
         const val FINISH_DATE = "FINISH_DATE"
         const val NEWS_POSITION_RESULT = "NEWS_POSITION_RESULT"
