@@ -9,11 +9,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsFilterBinding
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilterItem
 import ru.faimizufarov.simbirtraining.java.data.repositories.CategoryRepository
+import ru.faimizufarov.simbirtraining.java.data.toFlow
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.FilterAdapter
 
 class NewsFilterFragment : Fragment() {
@@ -83,41 +86,22 @@ class NewsFilterFragment : Fragment() {
             }
         }
 
-        lifecycleScope.launch(Dispatchers.IO) {
-            val categories = categoriesRepository.getCategoriesObservable().blockingFirst()
-            val filters = newsFilterHolder.queuedFilters
+        lifecycleScope.launch {
+            val categoriesFlow = categoriesRepository.getCategoriesObservable().toFlow()
+            val filtersFlow = newsFilterHolder.queuedFiltersFlow
 
-            launch(Dispatchers.Main) {
-                val filterItems =
-                    categories.map { category ->
-                        CategoryFilterItem(
-                            categoryId = category.id,
-                            // FIXME: make distinction between global and local
-                            title = category.globalName,
-                            isChecked = filters.any { filter -> filter.categoryId == category.id },
-                        )
-                    }
-                filterAdapter.submitList(filterItems)
-            }
-        }
-        // TODO: duplicated code
-        newsFilterHolder.setOnFiltersEditedListener { filters ->
-            lifecycleScope.launch(Dispatchers.IO) {
-                val categories = categoriesRepository.getCategoriesObservable().blockingFirst()
-
-                launch(Dispatchers.Main) {
-                    val filterItems =
-                        categories.map { category ->
-                            CategoryFilterItem(
-                                categoryId = category.id,
-                                // FIXME: make distinction between global and local
-                                title = category.globalName,
-                                isChecked = filters.any { filter -> filter.categoryId == category.id },
-                            )
-                        }
-                    filterAdapter.submitList(filterItems)
+            combine(categoriesFlow, filtersFlow) { categories, filters ->
+                categories.map { category ->
+                    CategoryFilterItem(
+                        categoryId = category.id,
+                        // FIXME: make distinction between global and local
+                        title = category.globalName,
+                        isChecked = filters.any { filter -> filter.categoryId == category.id },
+                    )
                 }
             }
+                .flowOn(Dispatchers.IO)
+                .collect(filterAdapter::submitList)
         }
     }
 

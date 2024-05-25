@@ -1,10 +1,11 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.fragments
 
+import kotlinx.coroutines.flow.StateFlow
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
 
 interface NewsFilterHolder {
-    val activeFilters: List<CategoryFilter>
-    val queuedFilters: List<CategoryFilter>
+    val activeFiltersFlow: StateFlow<List<CategoryFilter>>
+    val queuedFiltersFlow: StateFlow<List<CategoryFilter>>
 
     fun setFilter(categoryId: String)
 
@@ -13,8 +14,4 @@ interface NewsFilterHolder {
     fun confirm()
 
     fun cancel()
-
-    fun setOnFiltersSubmittedListener(listener: ((List<CategoryFilter>) -> Unit))
-
-    fun setOnFiltersEditedListener(listener: ((List<CategoryFilter>) -> Unit))
 }

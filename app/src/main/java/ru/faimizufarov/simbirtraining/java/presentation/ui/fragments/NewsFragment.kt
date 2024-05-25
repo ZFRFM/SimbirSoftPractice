@@ -70,9 +70,8 @@ class NewsFragment : Fragment() {
             }
         }
 
-        newsFilterHolder.setOnFiltersSubmittedListener { listFilters ->
-            lifecycleScope.launch {
-                val filters = newsFilterHolder.activeFilters
+        lifecycleScope.launch {
+            newsFilterHolder.activeFiltersFlow.collect { filters ->
                 val filteredNews = NewsListHolder.getNewsList().applyCategoryFilters(filters)
                 appliedFiltersNews.addAll(filteredNews)
                 val badgeUpdatedCount =
