@@ -72,14 +72,9 @@ class NewsFragment : Fragment() {
 
         newsFilterHolder.setOnFiltersSubmittedListener { listFilters ->
             lifecycleScope.launch {
-                val localFiltersList = newsFilterHolder.activeFilters
-                localFiltersList.forEach { filteredCategory ->
-                    if (listFilters.contains(filteredCategory)) {
-                        val filteredNews =
-                            NewsListHolder.getNewsList().filterByCategory(filteredCategory)
-                        appliedFiltersNews.addAll(filteredNews)
-                    }
-                }
+                val filters = newsFilterHolder.activeFilters
+                val filteredNews = NewsListHolder.getNewsList().applyCategoryFilters(filters)
+                appliedFiltersNews.addAll(filteredNews)
                 val badgeUpdatedCount =
                     appliedFiltersNews.toSet().filter { news: News ->
                         !readNewsIdsStateFlow.value.contains(news.id)
@@ -189,10 +184,13 @@ class NewsFragment : Fragment() {
         appliedFiltersNews.clear()
     }
 
-    private fun List<News>.filterByCategory(categoryFilter: CategoryFilter) =
-        filter { news ->
-            categoryFilter.checked &&
-                news.helpCategoryFilter.any { it == categoryFilter.enumValue }
+    private fun List<News>.applyCategoryFilters(filters: List<CategoryFilter>) =
+        filter { article ->
+            val isFilteredIn by lazy {
+                val articleCategoryIdList = article.helpCategoryFilter.map { enum -> enum.id.toString() }
+                filters.any { filter -> filter.categoryId in articleCategoryIdList }
+            }
+            filters.isEmpty() || isFilteredIn
         }
 
     companion object {
