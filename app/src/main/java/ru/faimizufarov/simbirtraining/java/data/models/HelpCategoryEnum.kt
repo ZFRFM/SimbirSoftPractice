@@ -1,7 +1,9 @@
 package ru.faimizufarov.simbirtraining.java.data.models
 
 import android.os.Parcelable
+import androidx.annotation.StringRes
 import kotlinx.parcelize.Parcelize
+import ru.faimizufarov.simbirtraining.R
 
 @Deprecated("Replace with Category")
 @Parcelize
@@ -24,4 +26,15 @@ fun String.categoryEnumFromId() =
         "3" -> HelpCategoryEnum.ANIMALS
         "4" -> HelpCategoryEnum.EVENTS
         else -> error("Unknown category")
+    }
+
+@StringRes
+@Deprecated("Horrible, but temporary")
+fun HelpCategoryEnum.toTitleRes() =
+    when (this) {
+        HelpCategoryEnum.CHILDREN -> R.string.children
+        HelpCategoryEnum.ADULTS -> R.string.adults
+        HelpCategoryEnum.ELDERLY -> R.string.elderly
+        HelpCategoryEnum.ANIMALS -> R.string.animals
+        HelpCategoryEnum.EVENTS -> R.string.events
     }

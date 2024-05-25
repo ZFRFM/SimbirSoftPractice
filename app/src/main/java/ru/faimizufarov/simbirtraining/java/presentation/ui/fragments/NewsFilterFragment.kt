@@ -8,6 +8,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsFilterBinding
+import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
+import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilterItem
+import ru.faimizufarov.simbirtraining.java.data.models.categoryEnumFromId
+import ru.faimizufarov.simbirtraining.java.data.models.toTitleRes
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.FilterAdapter
 
 class NewsFilterFragment : Fragment() {
@@ -15,6 +19,16 @@ class NewsFilterFragment : Fragment() {
     private lateinit var itemDecoration: DividerItemDecoration
 
     private val newsFilterHolder: NewsFilterHolder = GlobalNewsFilterHolder
+
+    private val filterAdapter =
+        FilterAdapter { categoryFilterItem ->
+            val categoryEnum = categoryFilterItem.categoryId.categoryEnumFromId()
+            if (categoryFilterItem.isChecked) {
+                newsFilterHolder.removeFilter(categoryEnum)
+            } else {
+                newsFilterHolder.setFilter(categoryEnum)
+            }
+        }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,14 +57,9 @@ class NewsFilterFragment : Fragment() {
             contentDetailDescription.recyclerViewNewsFilterFragment
                 .addItemDecoration(itemDecoration)
 
-            contentDetailDescription.recyclerViewNewsFilterFragment.adapter =
-                FilterAdapter(newsFilterHolder.filters) { category, isFiltered ->
-                    if (isFiltered) {
-                        category.enumValue?.let(newsFilterHolder::setFilter)
-                    } else {
-                        category.enumValue?.let(newsFilterHolder::removeFilter)
-                    }
-                }
+            contentDetailDescription
+                .recyclerViewNewsFilterFragment
+                .adapter = filterAdapter
 
             imageViewOk.setOnClickListener {
                 newsFilterHolder.confirm()
@@ -66,7 +75,19 @@ class NewsFilterFragment : Fragment() {
                     .remove(this@NewsFilterFragment).commit()
             }
         }
+
+        filterAdapter.submitList(newsFilterHolder.queuedFilters.map { filter -> filter.toItem() })
+        newsFilterHolder.setOnFiltersEditedListener {
+            filterAdapter.submitList(newsFilterHolder.queuedFilters.map { filter -> filter.toItem() })
+        }
     }
+
+    private fun CategoryFilter.toItem() =
+        CategoryFilterItem(
+            enumValue?.id.toString(),
+            enumValue?.toTitleRes()?.let(::getString) ?: error("No suitable title found"),
+            checked,
+        )
 
     companion object {
         fun newInstance(): NewsFilterFragment {

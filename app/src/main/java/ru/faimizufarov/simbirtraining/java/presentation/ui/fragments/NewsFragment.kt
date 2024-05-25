@@ -70,9 +70,9 @@ class NewsFragment : Fragment() {
             }
         }
 
-        newsFilterHolder.setOnFilterChangedListener { listFilters ->
+        newsFilterHolder.setOnFiltersSubmittedListener { listFilters ->
             lifecycleScope.launch {
-                val localFiltersList = newsFilterHolder.filters
+                val localFiltersList = newsFilterHolder.activeFilters
                 localFiltersList.forEach { filteredCategory ->
                     if (listFilters.contains(filteredCategory)) {
                         val filteredNews =

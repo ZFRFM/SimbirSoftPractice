@@ -2,18 +2,18 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.ListAdapter
 import ru.faimizufarov.simbirtraining.databinding.ItemNewsFilterFragmentBinding
-import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
+import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilterItem
 
 class FilterAdapter(
-    private val filterList: List<CategoryFilter>,
-    private val onItemClick: (CategoryFilter, Boolean) -> Unit,
-) : RecyclerView.Adapter<FilterViewHolder>() {
+    private val onFilterClick: (CategoryFilterItem) -> Unit,
+) : ListAdapter<CategoryFilterItem, CategoryFilterViewHolder>
+    (CategoryFilterItem.ItemCallback) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
-    ): FilterViewHolder {
+    ): CategoryFilterViewHolder {
         val itemBinding =
             ItemNewsFilterFragmentBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -21,18 +21,16 @@ class FilterAdapter(
                 false,
             )
 
-        return FilterViewHolder(itemBinding) {
-            onItemClick(filterList[it], !filterList[it].checked)
-        }
+        return CategoryFilterViewHolder(
+            itemBinding = itemBinding,
+            onItemClick = { position -> onFilterClick(getItem(position)) },
+        )
     }
 
-    override fun getItemCount() = filterList.size
-
     override fun onBindViewHolder(
-        holder: FilterViewHolder,
+        holder: CategoryFilterViewHolder,
         position: Int,
     ) {
-        val filter = filterList[position]
-        holder.bind(filter)
+        holder.bind(getItem(position))
     }
 }

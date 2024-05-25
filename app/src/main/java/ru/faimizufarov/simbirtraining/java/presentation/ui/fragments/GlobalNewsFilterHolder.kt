@@ -4,7 +4,7 @@ import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
 import ru.faimizufarov.simbirtraining.java.data.models.HelpCategoryEnum
 
 object GlobalNewsFilterHolder : NewsFilterHolder {
-    private val activeFilters =
+    override val activeFilters =
         listOf(
             CategoryFilter(enumValue = HelpCategoryEnum.CHILDREN, checked = true),
             CategoryFilter(enumValue = HelpCategoryEnum.ADULTS, checked = true),
@@ -13,17 +13,16 @@ object GlobalNewsFilterHolder : NewsFilterHolder {
             CategoryFilter(enumValue = HelpCategoryEnum.EVENTS, checked = true),
         )
 
-    override val filters: List<CategoryFilter>
-        get() = activeFilters
-
-    private val queuedFilters = activeFilters.map(CategoryFilter::copy)
+    override val queuedFilters = this.activeFilters.map(CategoryFilter::copy)
 
     override fun setFilter(categoryEnum: HelpCategoryEnum) {
         queuedFilters.firstOrNull { it.enumValue == categoryEnum }?.checked = true
+        onFiltersEditedListener.invoke(queuedFilters)
     }
 
     override fun removeFilter(categoryEnum: HelpCategoryEnum) {
         queuedFilters.firstOrNull { it.enumValue == categoryEnum }?.checked = false
+        onFiltersEditedListener.invoke(queuedFilters)
     }
 
     override fun confirm() {
@@ -34,7 +33,7 @@ object GlobalNewsFilterHolder : NewsFilterHolder {
                 }
             sameActiveFilter?.checked = queuedFilter.checked
         }
-        onFiltersChangedListener.invoke(activeFilters)
+        onFiltersSubmittedListener.invoke(activeFilters)
     }
 
     override fun cancel() {
@@ -45,12 +44,18 @@ object GlobalNewsFilterHolder : NewsFilterHolder {
                 }
             sameQueuedFilter?.checked = active.checked
         }
-        onFiltersChangedListener.invoke(activeFilters)
+        onFiltersSubmittedListener.invoke(activeFilters)
     }
 
-    private var onFiltersChangedListener: ((List<CategoryFilter>) -> Unit) = {}
+    private var onFiltersSubmittedListener: (List<CategoryFilter>) -> Unit = {}
 
-    override fun setOnFilterChangedListener(listener: ((List<CategoryFilter>) -> Unit)) {
-        onFiltersChangedListener = listener
+    override fun setOnFiltersSubmittedListener(listener: ((List<CategoryFilter>) -> Unit)) {
+        onFiltersSubmittedListener = listener
+    }
+
+    private var onFiltersEditedListener: (List<CategoryFilter>) -> Unit = {}
+
+    override fun setOnFiltersEditedListener(listener: (List<CategoryFilter>) -> Unit) {
+        onFiltersEditedListener = listener
     }
 }
