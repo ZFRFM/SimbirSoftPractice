@@ -44,12 +44,12 @@ class CategoryLoaderService : Service() {
     ): Int {
         val serviceCoroutineScope = CoroutineScope(Dispatchers.IO)
 
-        val coroutineExceptionHandler =
+        val categoryCoroutineExceptionHandler =
             CoroutineExceptionHandler { _, _: Throwable ->
                 receiveCategoryListJsonInString()
             }
 
-        serviceCoroutineScope.launch(coroutineExceptionHandler) {
+        serviceCoroutineScope.launch(categoryCoroutineExceptionHandler) {
             listOfCategories =
                 AppApi.retrofitService.getCategories().map {
                     it.mapToCategory()

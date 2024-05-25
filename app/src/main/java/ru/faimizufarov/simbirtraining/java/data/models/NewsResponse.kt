@@ -30,3 +30,19 @@ data class NewsResponse(
     @SerialName("organisation")
     val organisation: String,
 )
+
+fun NewsResponse.mapToNews() =
+    News(
+        id,
+        nameText,
+        startDate,
+        finishDate,
+        descriptionText,
+        status,
+        newsImages,
+        categoryIds,
+        createAt,
+        phone,
+        address,
+        organisation,
+    )

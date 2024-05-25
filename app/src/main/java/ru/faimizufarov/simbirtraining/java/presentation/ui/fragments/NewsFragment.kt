@@ -9,6 +9,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,15 +21,15 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsBinding
-import ru.faimizufarov.simbirtraining.databinding.ItemNewsFragmentBinding
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
 import ru.faimizufarov.simbirtraining.java.data.models.News
+import ru.faimizufarov.simbirtraining.java.data.models.mapToNews
+import ru.faimizufarov.simbirtraining.java.network.AppApi
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.NewsAdapter
 import java.util.concurrent.Executors
 
 class NewsFragment : Fragment() {
     private lateinit var binding: FragmentNewsBinding
-    private lateinit var bindingItemNews: ItemNewsFragmentBinding
 
     private val newsFilterHolder: NewsFilterHolder = GlobalNewsFilterHolder
 
@@ -44,7 +45,6 @@ class NewsFragment : Fragment() {
         savedInstanceState: Bundle?,
     ): View {
         binding = FragmentNewsBinding.inflate(inflater, container, false)
-        bindingItemNews = ItemNewsFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -57,7 +57,7 @@ class NewsFragment : Fragment() {
         if (savedInstanceState != null) {
             getFromSavedInstanceState(savedInstanceState)
         } else {
-            loadListOfNews()
+            loadServerNews(emptyList())
         }
 
         lifecycleScope.launch {
@@ -78,14 +78,11 @@ class NewsFragment : Fragment() {
 
         lifecycleScope.launch {
             newsFilterHolder.activeFiltersFlow.collect { filters ->
-                val filteredNews = NewsListHolder.getNewsList().applyCategoryFilters(filters)
-                appliedFiltersNews.addAll(filteredNews)
-                val badgeUpdatedCount =
-                    appliedFiltersNews.toSet().filter { news: News ->
-                        !readNewsIdsStateFlow.value.contains(news.id)
-                    }.size
-                BadgeCounter.setBadgeCounterEmitValue(badgeUpdatedCount)
-                updateAdapter(appliedFiltersNews)
+                try {
+                    loadServerNews(filters.map { it.categoryId })
+                } catch (exception: Exception) {
+                    loadFilteredLocalNews(filters)
+                }
             }
         }
 
@@ -121,14 +118,31 @@ class NewsFragment : Fragment() {
         outState.putParcelableArrayList(LIST_OF_NEWS, arrayList)
     }
 
-    private fun loadListOfNews() {
+    private fun loadServerNews(ids: List<String>) {
+        val newsCoroutineExceptionHandler =
+            CoroutineExceptionHandler { _, _: Throwable ->
+                loadAssetsNews()
+            }
+
+        lifecycleScope.launch(newsCoroutineExceptionHandler) {
+            val serverNews =
+                AppApi.retrofitService.getEvents(ids).map {
+                    it.mapToNews()
+                }
+            BadgeCounter.setBadgeCounterEmitValue(serverNews.size)
+            NewsListHolder.setNewsList(serverNews)
+            newsAdapter.submitList(serverNews)
+        }
+    }
+
+    private fun loadAssetsNews() {
         val executor = Executors.newSingleThreadExecutor()
         val fragmentContext = requireContext()
 
         val jsonFlow =
             flow {
                 val newsJsonInString = NewsListHolder.getNewsJson(fragmentContext)
-                delay(2500)
+                delay(1000)
                 emit(newsJsonInString)
             }.flowOn(Dispatchers.IO)
 
@@ -143,6 +157,17 @@ class NewsFragment : Fragment() {
             }
             executor.shutdown()
         }
+    }
+
+    private suspend fun loadFilteredLocalNews(filters: List<CategoryFilter>) {
+        val filteredNews = NewsListHolder.getNewsList().applyCategoryFilters(filters)
+        appliedFiltersNews.addAll(filteredNews)
+        val badgeUpdatedCount =
+            appliedFiltersNews.toSet().filter { news: News ->
+                !readNewsIdsStateFlow.value.contains(news.id)
+            }.size
+        BadgeCounter.setBadgeCounterEmitValue(badgeUpdatedCount)
+        updateAdapter(appliedFiltersNews)
     }
 
     private fun openFilterFragment() {

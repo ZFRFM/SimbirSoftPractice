@@ -6,6 +6,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryResponse
@@ -25,7 +26,9 @@ private val httpClient =
 
 private val retrofit =
     Retrofit.Builder()
-        .addConverterFactory(Json.asConverterFactory("application/json".toMediaType()))
+        .addConverterFactory(
+            Json.asConverterFactory("application/json".toMediaType()),
+        )
         .baseUrl(BASE_URL)
         .client(httpClient)
         .build()
@@ -35,7 +38,9 @@ interface AppApiService {
     suspend fun getCategories(): List<CategoryResponse>
 
     @POST("events")
-    suspend fun getEvents(): List<NewsResponse>
+    suspend fun getEvents(
+        @Body ids: List<String>,
+    ): List<NewsResponse>
 }
 
 object AppApi {
