@@ -12,7 +12,7 @@ data class News(
     val nameText: String,
     val descriptionText: String,
     val remainingTimeText: Int,
-    val helpCategoryFilter: List<HelpCategoryEnum>,
+    val categoryIds: List<String>,
     val startDate: @RawValue LocalDateTime,
     val finishDate: @RawValue LocalDateTime,
 ) : Parcelable
