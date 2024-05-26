@@ -17,7 +17,7 @@ import ru.faimizufarov.simbirtraining.databinding.FragmentNewsFilterBinding
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilterItem
 import ru.faimizufarov.simbirtraining.java.data.repositories.CategoryRepository
 import ru.faimizufarov.simbirtraining.java.data.toFlow
-import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.FilterAdapter
+import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.CategoryFilterAdapter
 
 class NewsFilterFragment : Fragment() {
     private lateinit var binding: FragmentNewsFilterBinding
@@ -27,8 +27,8 @@ class NewsFilterFragment : Fragment() {
 
     private val categoriesRepository by lazy { CategoryRepository(requireContext().assets) }
 
-    private val filterAdapter =
-        FilterAdapter { filterItem ->
+    private val categoryFilterAdapter =
+        CategoryFilterAdapter { filterItem ->
             if (filterItem.isChecked) {
                 newsFilterHolder.removeFilter(filterItem.categoryId)
             } else {
@@ -69,7 +69,7 @@ class NewsFilterFragment : Fragment() {
 
             contentDetailDescription
                 .recyclerViewNewsFilterFragment
-                .adapter = filterAdapter
+                .adapter = categoryFilterAdapter
 
             imageViewOk.setOnClickListener {
                 newsFilterHolder.confirm()
@@ -101,7 +101,7 @@ class NewsFilterFragment : Fragment() {
                 }
             }
                 .flowOn(Dispatchers.IO)
-                .collect(filterAdapter::submitList)
+                .collect(categoryFilterAdapter::submitList)
         }
     }
 

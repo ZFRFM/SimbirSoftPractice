@@ -25,7 +25,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            buildConfigField("String", "BASE_URL", "\"http://192.168.48.86:8080\"")
+        }
         release {
+            buildConfigField("String", "BASE_URL", "\"http://192.168.48.86:8080\"")
             isMinifyEnabled = false
             @Suppress("ktlint:standard:trailing-comma-on-call-site")
             proguardFiles(
@@ -46,6 +50,7 @@ android {
     buildFeatures {
         viewBinding = true
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -79,9 +84,10 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     //endregion
 
-    // Coroutine
+    //region Coroutine
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    //endregion
 
     //region Retrofit
     implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")

@@ -2,7 +2,6 @@ package ru.faimizufarov.simbirtraining.java.data.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
 
 @Parcelize
 data class News(
@@ -13,9 +12,9 @@ data class News(
     val descriptionText: String,
     val status: Long,
     val newsImages: List<String>,
-    val categoryIds: @RawValue List<String>,
+    val categoryIds: List<String>,
     val createAt: Long,
-    val phone: String,
-    val address: String,
-    val organisation: String,
+    val phoneText: String,
+    val addressText: String,
+    val organisationText: String,
 ) : Parcelable

@@ -19,6 +19,9 @@ class CategoryFilterViewHolder(
 
             switchFilterItem.setOnClickListener {
                 onItemClick(adapterPosition)
+
+                itemBinding.switchFilterItem.isChecked =
+                    !itemBinding.switchFilterItem.isChecked
             }
         }
     }

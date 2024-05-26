@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.ListAdapter
 import ru.faimizufarov.simbirtraining.databinding.ItemNewsFilterFragmentBinding
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilterItem
 
-class FilterAdapter(
+class CategoryFilterAdapter(
     private val onFilterClick: (CategoryFilterItem) -> Unit,
 ) : ListAdapter<CategoryFilterItem, CategoryFilterViewHolder>
     (CategoryFilterItem.ItemCallback) {

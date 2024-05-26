@@ -8,7 +8,7 @@ data class CategoryResponse(
     @SerialName("id") val id: String,
     @SerialName("name_en") val globalName: String,
     @SerialName("name") val localizedName: String,
-    @SerialName("image") val imagePath: String,
+    @SerialName("image") val imageUrl: String,
 )
 
 fun CategoryResponse.mapToCategory() =
@@ -16,5 +16,5 @@ fun CategoryResponse.mapToCategory() =
         id = id,
         globalName = globalName,
         localizedName = localizedName,
-        imagePath = imagePath,
+        imagePath = imageUrl,
     )

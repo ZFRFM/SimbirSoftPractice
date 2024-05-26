@@ -32,7 +32,7 @@ class NewsViewHolder(
     fun bind(news: News) {
         val context = itemBinding.root.context
 
-        Glide.with(context).load(news.newsImages[0]).into(itemBinding.imageViewNews)
+        Glide.with(context).load(news.newsImages.first()).into(itemBinding.imageViewNews)
 
         with(itemBinding) {
             textViewNewsName.text = news.nameText

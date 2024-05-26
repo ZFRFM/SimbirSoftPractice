@@ -1,6 +1,5 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.adapters
 
-import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -8,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import ru.faimizufarov.simbirtraining.databinding.ItemCategoryBinding
 import ru.faimizufarov.simbirtraining.java.data.models.Category
 
-class CategoriesAdapter(private val context: Context) :
+class CategoriesAdapter :
     ListAdapter<Category, CategoriesViewHolder>(ItemCallback) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -21,7 +20,7 @@ class CategoriesAdapter(private val context: Context) :
                 false,
             )
 
-        return CategoriesViewHolder(itemBinding, context.assets)
+        return CategoriesViewHolder(itemBinding, parent.context.assets)
     }
 
     override fun getItemCount() = currentList.size

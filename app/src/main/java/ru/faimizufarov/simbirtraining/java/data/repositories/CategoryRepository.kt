@@ -26,7 +26,7 @@ class CategoryRepository(
                         id = categoryResponse.id,
                         localizedName = categoryResponse.localizedName,
                         globalName = categoryResponse.globalName,
-                        imagePath = categoryResponse.imagePath,
+                        imagePath = categoryResponse.imageUrl,
                     )
                 }
             }

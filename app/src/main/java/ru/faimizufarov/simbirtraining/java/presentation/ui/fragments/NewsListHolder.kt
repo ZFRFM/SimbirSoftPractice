@@ -39,9 +39,9 @@ object NewsListHolder {
                     newsImages = it.newsImages,
                     categoryIds = it.categoryIds,
                     createAt = it.createAt,
-                    phone = it.phone,
-                    address = it.address,
-                    organisation = it.organisation,
+                    phoneText = it.phone,
+                    addressText = it.address,
+                    organisationText = it.organisation,
                 )
             }
 }
