@@ -25,7 +25,7 @@ class NewsFilterFragment : Fragment() {
 
     private val newsFilterHolder: NewsFilterHolder = GlobalNewsFilterHolder
 
-    private val categoriesRepository by lazy { CategoryRepository(requireContext().assets) }
+    private val categoriesRepository by lazy { CategoryRepository(requireContext()) }
 
     private val categoryFilterAdapter =
         CategoryFilterAdapter { filterItem ->
@@ -94,8 +94,7 @@ class NewsFilterFragment : Fragment() {
                 categories.map { category ->
                     CategoryFilterItem(
                         categoryId = category.id,
-                        // FIXME: make distinction between global and local
-                        title = category.globalName,
+                        title = category.title,
                         isChecked = filters.any { filter -> filter.categoryId == category.id },
                     )
                 }

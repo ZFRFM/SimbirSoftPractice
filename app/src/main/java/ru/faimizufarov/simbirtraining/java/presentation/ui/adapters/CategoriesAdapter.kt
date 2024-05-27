@@ -20,7 +20,7 @@ class CategoriesAdapter :
                 false,
             )
 
-        return CategoriesViewHolder(itemBinding, parent.context.assets)
+        return CategoriesViewHolder(itemBinding)
     }
 
     override fun getItemCount() = currentList.size
