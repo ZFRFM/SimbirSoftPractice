@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentProfileBinding
 
@@ -28,6 +30,30 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?,
     ) {
         super.onViewCreated(view, savedInstanceState)
+
+        Glide.with(this)
+            .load(R.drawable.avatar_3)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .placeholder(R.drawable.baseline_create_24)
+            .error(R.drawable.baseline_error_24)
+            .into(binding.contentProfileInfo.imageViewFirstAvatar)
+
+        Glide.with(this)
+            .load(R.drawable.avatar_2)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .placeholder(R.drawable.baseline_create_24)
+            .error(R.drawable.baseline_error_24)
+            .into(binding.contentProfileInfo.imageViewSecondAvatar)
+
+        Glide.with(this)
+            .load(R.drawable.avatar_1)
+            .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .placeholder(R.drawable.baseline_create_24)
+            .error(R.drawable.baseline_error_24)
+            .into(binding.contentProfileInfo.imageViewThirdAvatar)
 
         setFragmentResultListener(
             ProfilePhotoEditDialog.USER_PICTURE_RESULT_KEY,

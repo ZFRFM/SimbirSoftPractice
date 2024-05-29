@@ -10,16 +10,18 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import ru.faimizufarov.simbirtraining.databinding.FragmentHelpCategoriesBinding
-import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
-import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.HelpCategoriesAdapter
+import ru.faimizufarov.simbirtraining.java.data.models.Category
+import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.CategoriesAdapter
 import ru.faimizufarov.simbirtraining.java.services.CategoryLoaderService
 import ru.faimizufarov.simbirtraining.java.services.CategoryLoaderServiceConnection
 
-class HelpCategoriesFragment : Fragment() {
+class CategoriesFragment : Fragment() {
     private lateinit var binding: FragmentHelpCategoriesBinding
-    private val helpCategoriesAdapter = HelpCategoriesAdapter()
+    private val categoriesAdapter by lazy {
+        CategoriesAdapter()
+    }
 
-    private var listOfCategories: List<HelpCategoryEnum>? = null
+    private var listOfCategories: List<Category>? = null
 
     private var isServiceBound = false
     private val connection =
@@ -42,7 +44,7 @@ class HelpCategoriesFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.contentHelpCategories.recyclerViewHelpCategories.adapter = helpCategoriesAdapter
+        binding.contentHelpCategories.recyclerViewHelpCategories.adapter = categoriesAdapter
         if (savedInstanceState != null && savedInstanceState.isCategoriesSaved) {
             getFromSavedInstanceState(savedInstanceState)
         } else {
@@ -79,9 +81,9 @@ class HelpCategoriesFragment : Fragment() {
         }
     }
 
-    private fun showCategories(categories: List<HelpCategoryEnum>) {
+    private fun showCategories(categories: List<Category>) {
         listOfCategories = categories
-        helpCategoriesAdapter.submitList(categories)
+        categoriesAdapter.submitList(categories)
         binding.contentHelpCategories.progressBar.isVisible = false
     }
 
@@ -96,11 +98,9 @@ class HelpCategoriesFragment : Fragment() {
                 savedInstanceState.getParcelable(LIST_OF_CATEGORIES_KEY)
             }
 
-        listOfCategories = arrayList?.map {
-            it as HelpCategoryEnum
-        } ?: listOfCategories
+        listOfCategories = arrayList?.filterIsInstance<Category>() ?: listOfCategories
 
-        helpCategoriesAdapter.submitList(listOfCategories)
+        categoriesAdapter.submitList(listOfCategories)
 
         if (listOfCategories != null) {
             binding.contentHelpCategories.progressBar.isVisible = false
@@ -116,7 +116,7 @@ class HelpCategoriesFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = HelpCategoriesFragment()
+        fun newInstance() = CategoriesFragment()
 
         private const val LIST_OF_CATEGORIES_KEY = "LIST_OF_CATEGORIES_KEY"
     }

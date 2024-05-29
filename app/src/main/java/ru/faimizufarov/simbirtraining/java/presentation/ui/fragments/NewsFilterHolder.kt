@@ -1,30 +1,17 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.fragments
 
-import ru.faimizufarov.simbirtraining.java.data.Category
-import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
+import kotlinx.coroutines.flow.StateFlow
+import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
 
-object NewsFilterHolder {
-    private val listFiltersHolder =
-        listOf(
-            Category(enumValue = HelpCategoryEnum.CHILDREN, checked = true),
-            Category(enumValue = HelpCategoryEnum.ADULTS, checked = true),
-            Category(enumValue = HelpCategoryEnum.ELDERLY, checked = true),
-            Category(enumValue = HelpCategoryEnum.ANIMALS, checked = true),
-            Category(enumValue = HelpCategoryEnum.EVENTS, checked = true),
-        )
+interface NewsFilterHolder {
+    val activeFiltersFlow: StateFlow<List<CategoryFilter>>
+    val queuedFiltersFlow: StateFlow<List<CategoryFilter>>
 
-    var onFiltersChangedListener: ((List<Category>) -> Unit)? = null
+    fun setFilter(categoryId: String)
 
-    fun getFilterList() = listFiltersHolder
+    fun removeFilter(categoryId: String)
 
-    fun setFilter(
-        category: Category,
-        isFiltered: Boolean,
-    ) {
-        listFiltersHolder.firstOrNull { it == category }?.checked = isFiltered
-    }
+    fun confirm()
 
-    fun setOnFilterChangedListener(listener: ((List<Category>) -> Unit)?) {
-        onFiltersChangedListener = listener
-    }
+    fun cancel()
 }

@@ -2,13 +2,9 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.fragments
 
 import android.content.Context
 import kotlinx.coroutines.delay
-import kotlinx.datetime.toLocalDateTime
 import kotlinx.serialization.json.Json
-import ru.faimizufarov.simbirtraining.R
-import ru.faimizufarov.simbirtraining.java.data.Category
-import ru.faimizufarov.simbirtraining.java.data.HelpCategoryEnum
-import ru.faimizufarov.simbirtraining.java.data.News
-import ru.faimizufarov.simbirtraining.java.data.NewsResponse
+import ru.faimizufarov.simbirtraining.java.data.models.News
+import ru.faimizufarov.simbirtraining.java.data.models.NewsResponse
 
 object NewsListHolder {
     private var newsListHolder = listOf<News>()
@@ -24,7 +20,7 @@ object NewsListHolder {
         return context
             .applicationContext
             .assets
-            .open("news_list.json")
+            .open("responses/news_list.json")
             .bufferedReader()
             .use { it.readText() }
     }
@@ -35,27 +31,17 @@ object NewsListHolder {
             .map { it ->
                 News(
                     id = it.id,
-                    newsImageUrl = it.newsImage,
                     nameText = it.nameText,
+                    startDate = it.startDate,
+                    finishDate = it.finishDate,
                     descriptionText = it.descriptionText,
-                    remainingTimeText = R.string.news_remaining_time,
-                    helpCategory =
-                        it.helpCategory.map {
-                            Category(
-                                enumValue =
-                                    when (it.id) {
-                                        0 -> HelpCategoryEnum.CHILDREN
-                                        1 -> HelpCategoryEnum.ADULTS
-                                        2 -> HelpCategoryEnum.ELDERLY
-                                        3 -> HelpCategoryEnum.ANIMALS
-                                        4 -> HelpCategoryEnum.EVENTS
-                                        else -> error("Unknown category")
-                                    },
-                                checked = it.checked,
-                            )
-                        },
-                    startDate = it.startDate.toLocalDateTime(),
-                    finishDate = it.finishDate.toLocalDateTime(),
+                    status = it.status,
+                    newsImages = it.newsImages,
+                    categoryIds = it.categoryIds,
+                    createAt = it.createAt,
+                    phoneText = it.phone,
+                    addressText = it.address,
+                    organisationText = it.organisation,
                 )
             }
 }

@@ -1,0 +1,32 @@
+[
+    {
+        "id": "0",
+        "name_en": "Children",
+        "name": "Дети",
+        "image": "images/children_category.png"
+    },
+    {
+        "id": "1",
+        "name_en": "Adults",
+        "name": "Взрослые",
+        "image": "images/adults_category.png"
+    },
+    {
+        "id": "2",
+        "name_en": "Elderly",
+        "name": "Пожилые",
+        "image": "images/elderly_category.png"
+    },
+    {
+        "id": "3",
+        "name_en": "Animals",
+        "name": "Животные",
+        "image": "images/animals_category.png"
+    },
+    {
+        "id": "4",
+        "name_en": "Events",
+        "name": "Мероприятия",
+        "image": "images/events_category.png"
+    }
+]
