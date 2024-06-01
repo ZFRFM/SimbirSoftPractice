@@ -12,7 +12,7 @@ interface AppApiInterface {
     fun getCategories(): Observable<List<CategoryResponse>>
 
     @POST("events")
-    suspend fun getEvents(
+    fun getEvents(
         @Body ids: List<String>,
-    ): List<NewsResponse>
+    ): Observable<List<NewsResponse>>
 }
