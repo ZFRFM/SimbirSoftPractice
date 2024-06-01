@@ -6,6 +6,7 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import ru.faimizufarov.simbirtraining.BuildConfig
 
 private const val BASE_URL = BuildConfig.BASE_URL
@@ -25,6 +26,7 @@ private val retrofit =
         .addConverterFactory(
             Json.asConverterFactory("application/json".toMediaType()),
         )
+        .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .baseUrl(BASE_URL)
         .client(httpClient)
         .build()

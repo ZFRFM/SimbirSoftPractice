@@ -8,8 +8,10 @@ import android.graphics.drawable.Drawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Observable
-import kotlinx.coroutines.runBlocking
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import kotlinx.serialization.json.Json
 import ru.faimizufarov.simbirtraining.java.data.models.Category
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryAsset
@@ -23,6 +25,8 @@ class CategoryRepository(
     private val api = AppApi.retrofitService
     private val assetManager = context.assets
 
+    private val disposables = CompositeDisposable()
+
     fun getCategoriesObservable() =
         getCategoriesFromApi().onErrorResumeNext {
             getCategoriesFromAssets()
@@ -31,11 +35,16 @@ class CategoryRepository(
     private fun getCategoriesFromApi() =
         Observable.create { emitter ->
             try {
-                val categories =
-                    runBlocking {
-                        api.getCategories().map { response -> response.toCategory() }
-                    }
-                emitter.onNext(categories)
+                api.getCategories()
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe {
+                        val categories = mutableListOf<Category>()
+                        categories.addAll(
+                            it.map { response -> response.toCategory() },
+                        )
+                        emitter.onNext(categories.toList())
+                    }.let { disposables.add(it) }
             } catch (throwable: Throwable) {
                 emitter.onError(throwable)
             }
@@ -63,10 +72,10 @@ class CategoryRepository(
             .asBitmap()
             .load(this.imageUrl)
             .into(
-                object : CustomTarget<Bitmap>() {
+                object : CustomTarget<Bitmap?>() {
                     override fun onResourceReady(
                         resource: Bitmap,
-                        transition: Transition<in Bitmap>?,
+                        transition: Transition<in Bitmap?>?,
                     ) {
                         bitmap = resource
                     }
@@ -77,7 +86,7 @@ class CategoryRepository(
         return Category(
             id = id,
             title = localizedName,
-            image = bitmap ?: error("Bitmap in CategoryResponse did not transform in Category"),
+            image = bitmap,
         )
     }
 

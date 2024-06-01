@@ -6,22 +6,19 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.launch
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsFilterBinding
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilterItem
 import ru.faimizufarov.simbirtraining.java.data.repositories.CategoryRepository
-import ru.faimizufarov.simbirtraining.java.data.toFlow
+import ru.faimizufarov.simbirtraining.java.data.toObservable
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.CategoryFilterAdapter
 
 class NewsFilterFragment : Fragment() {
     private lateinit var binding: FragmentNewsFilterBinding
     private lateinit var itemDecoration: DividerItemDecoration
+    private val disposables = CompositeDisposable()
 
     private val newsFilterHolder: NewsFilterHolder = GlobalNewsFilterHolder
 
@@ -86,22 +83,24 @@ class NewsFilterFragment : Fragment() {
             }
         }
 
-        lifecycleScope.launch {
-            val categoriesFlow = categoriesRepository.getCategoriesObservable().toFlow()
-            val filtersFlow = newsFilterHolder.queuedFiltersFlow
+        categoriesRepository.getCategoriesObservable().subscribe { categories ->
+            newsFilterHolder.queuedFiltersFlow.toObservable().subscribe { filters ->
+                val categoryList =
+                    categories.map { category ->
+                        CategoryFilterItem(
+                            categoryId = category.id,
+                            title = category.title,
+                            isChecked = filters.any { filter -> filter.categoryId == category.id },
+                        )
+                    }
+                categoryFilterAdapter.submitList(categoryList)
+            }.let { disposables.add(it) }
+        }.let { disposables.add(it) }
+    }
 
-            combine(categoriesFlow, filtersFlow) { categories, filters ->
-                categories.map { category ->
-                    CategoryFilterItem(
-                        categoryId = category.id,
-                        title = category.title,
-                        isChecked = filters.any { filter -> filter.categoryId == category.id },
-                    )
-                }
-            }
-                .flowOn(Dispatchers.IO)
-                .collect(categoryFilterAdapter::submitList)
-        }
+    override fun onDestroy() {
+        super.onDestroy()
+        disposables.clear()
     }
 
     companion object {
