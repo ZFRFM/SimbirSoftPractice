@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
+import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsFilterBinding
@@ -83,24 +84,27 @@ class NewsFilterFragment : Fragment() {
             }
         }
 
-        categoriesRepository.getCategoriesObservable().subscribe { categories ->
-            newsFilterHolder.queuedFiltersFlow.toObservable().subscribe { filters ->
-                val categoryList =
-                    categories.map { category ->
-                        CategoryFilterItem(
-                            categoryId = category.id,
-                            title = category.title,
-                            isChecked = filters.any { filter -> filter.categoryId == category.id },
-                        )
-                    }
-                categoryFilterAdapter.submitList(categoryList)
-            }.let { disposables.add(it) }
-        }.let { disposables.add(it) }
+        Observable.combineLatest(
+            categoriesRepository.getCategoriesObservable(),
+            newsFilterHolder.queuedFiltersFlow.toObservable(),
+        ) { categories, filters ->
+            val categoryList =
+                categories.map { category ->
+                    CategoryFilterItem(
+                        categoryId = category.id,
+                        title = category.title,
+                        isChecked = filters.any { filter -> filter.categoryId == category.id },
+                    )
+                }
+            categoryFilterAdapter.submitList(categoryList)
+        }
+            .subscribe()
+            .let { disposables.add(it) }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        disposables.clear()
+        disposables.dispose()
     }
 
     companion object {

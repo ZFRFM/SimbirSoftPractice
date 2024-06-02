@@ -8,5 +8,5 @@ import kotlinx.parcelize.Parcelize
 data class Category(
     val id: String,
     val title: String,
-    val image: Bitmap?,
+    val image: Bitmap,
 ) : Parcelable
