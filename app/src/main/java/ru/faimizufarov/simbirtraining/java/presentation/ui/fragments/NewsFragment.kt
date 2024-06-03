@@ -9,13 +9,14 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.CoroutineExceptionHandler
+import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.rx3.asObservable
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -32,6 +33,8 @@ class NewsFragment : Fragment() {
     private lateinit var binding: FragmentNewsBinding
 
     private val newsFilterHolder: NewsFilterHolder = GlobalNewsFilterHolder
+
+    private val disposables = CompositeDisposable()
 
     private val newsAdapter = NewsAdapter(onItemClick = ::updateFeed)
     private val appliedFiltersNews = mutableListOf<News>()
@@ -76,15 +79,15 @@ class NewsFragment : Fragment() {
             }
         }
 
-        lifecycleScope.launch {
-            newsFilterHolder.activeFiltersFlow.collect { filters ->
-                try {
-                    loadServerNews(filters.map { it.categoryId })
-                } catch (exception: Exception) {
+        newsFilterHolder.activeFiltersFlow.asObservable().subscribe { filters ->
+            try {
+                loadServerNews(filters.map { it.categoryId })
+            } catch (exception: Exception) {
+                lifecycleScope.launch {
                     loadFilteredLocalNews(filters)
                 }
             }
-        }
+        }.let { disposables.add(it) }
 
         updateAdapter(NewsListHolder.getNewsList())
 
@@ -119,20 +122,18 @@ class NewsFragment : Fragment() {
     }
 
     private fun loadServerNews(ids: List<String>) {
-        val newsCoroutineExceptionHandler =
-            CoroutineExceptionHandler { _, _: Throwable ->
-                loadAssetsNews()
-            }
-
-        lifecycleScope.launch(newsCoroutineExceptionHandler) {
-            val serverNews =
-                AppApi.retrofitService.getEvents(ids).map {
-                    it.mapToNews()
-                }
-            BadgeCounter.setBadgeCounterEmitValue(serverNews.size)
-            NewsListHolder.setNewsList(serverNews)
-            newsAdapter.submitList(serverNews)
-        }
+        AppApi.retrofitService.getEvents(ids)
+            .subscribe(
+                { value ->
+                    val serverNews = value.map { it.mapToNews() }
+                    lifecycleScope.launch {
+                        BadgeCounter.setBadgeCounterEmitValue(serverNews.size)
+                    }
+                    NewsListHolder.setNewsList(serverNews)
+                    newsAdapter.submitList(serverNews)
+                },
+                { error -> loadAssetsNews() },
+            ).let { disposables.add(it) }
     }
 
     private fun loadAssetsNews() {
