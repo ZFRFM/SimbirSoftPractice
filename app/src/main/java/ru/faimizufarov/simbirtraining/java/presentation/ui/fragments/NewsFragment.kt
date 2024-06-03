@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.rx3.asObservable
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -24,7 +25,6 @@ import ru.faimizufarov.simbirtraining.databinding.FragmentNewsBinding
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
 import ru.faimizufarov.simbirtraining.java.data.models.News
 import ru.faimizufarov.simbirtraining.java.data.models.mapToNews
-import ru.faimizufarov.simbirtraining.java.data.toObservable
 import ru.faimizufarov.simbirtraining.java.network.AppApi
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.NewsAdapter
 import java.util.concurrent.Executors
@@ -79,7 +79,7 @@ class NewsFragment : Fragment() {
             }
         }
 
-        newsFilterHolder.activeFiltersFlow.toObservable().subscribe { filters ->
+        newsFilterHolder.activeFiltersFlow.asObservable().subscribe { filters ->
             try {
                 loadServerNews(filters.map { it.categoryId })
             } catch (exception: Exception) {

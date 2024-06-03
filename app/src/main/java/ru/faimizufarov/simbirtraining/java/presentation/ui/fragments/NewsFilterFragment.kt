@@ -9,11 +9,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import kotlinx.coroutines.rx3.asObservable
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsFilterBinding
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilterItem
 import ru.faimizufarov.simbirtraining.java.data.repositories.CategoryRepository
-import ru.faimizufarov.simbirtraining.java.data.toObservable
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.CategoryFilterAdapter
 
 class NewsFilterFragment : Fragment() {
@@ -86,7 +86,7 @@ class NewsFilterFragment : Fragment() {
 
         Observable.combineLatest(
             categoriesRepository.getCategoriesObservable(),
-            newsFilterHolder.queuedFiltersFlow.toObservable(),
+            newsFilterHolder.queuedFiltersFlow.asObservable(),
         ) { categories, filters ->
             val categoryList =
                 categories.map { category ->
