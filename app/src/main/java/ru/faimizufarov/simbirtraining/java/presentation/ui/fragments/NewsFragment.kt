@@ -60,9 +60,7 @@ class NewsFragment : Fragment() {
         if (savedInstanceState != null) {
             getFromSavedInstanceState(savedInstanceState)
         } else {
-            lifecycleScope.launch {
-                loadServerNews(emptyList())
-            }
+            loadServerNews(emptyList())
         }
 
         lifecycleScope.launch {
@@ -85,12 +83,12 @@ class NewsFragment : Fragment() {
             newsFilterHolder.activeFiltersFlow.collect { activeFilters ->
                 val coroutineExceptionHandler =
                     CoroutineExceptionHandler { _, _: Throwable ->
-                        lifecycleScope.launch {
+                        launch {
                             loadFilteredLocalNews(activeFilters)
                         }
                     }
 
-                lifecycleScope.launch(coroutineExceptionHandler) {
+                launch(coroutineExceptionHandler) {
                     loadServerNews(activeFilters.map { it.categoryId })
                 }
             }
@@ -128,14 +126,16 @@ class NewsFragment : Fragment() {
         outState.putParcelableArrayList(LIST_OF_NEWS, arrayList)
     }
 
-    private suspend fun loadServerNews(ids: List<String>) {
-        val newsResponses = AppApi.retrofitService.getEvents(ids)
-        val serverNews = newsResponses.map { it.mapToNews() }
+    private fun loadServerNews(ids: List<String>) {
         lifecycleScope.launch {
+            val newsResponses = AppApi.retrofitService.getEvents(ids)
+            val serverNews = newsResponses.map { it.mapToNews() }
+
             BadgeCounter.setBadgeCounterEmitValue(serverNews.size)
+            NewsListHolder.setNewsList(serverNews)
+
+            newsAdapter.submitList(serverNews)
         }
-        NewsListHolder.setNewsList(serverNews)
-        newsAdapter.submitList(serverNews)
     }
 
     private fun loadAssetsNews() {

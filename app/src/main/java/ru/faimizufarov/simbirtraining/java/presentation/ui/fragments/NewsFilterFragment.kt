@@ -85,21 +85,21 @@ class NewsFilterFragment : Fragment() {
         }
 
         lifecycleScope.launch {
-            val categories = categoriesRepository.getCategoryList()
-            val filters = newsFilterHolder.queuedFiltersFlow.value
-
-            val categoryList =
-                categories.map { category ->
-                    CategoryFilterItem(
-                        categoryId = category.id,
-                        title = category.title,
-                        isChecked =
-                            filters.any { filter ->
-                                filter.categoryId == category.id
-                            },
-                    )
-                }
-            categoryFilterAdapter.submitList(categoryList)
+            newsFilterHolder.queuedFiltersFlow.collect { filters ->
+                val categories = categoriesRepository.getCategoryList()
+                val categoryList =
+                    categories.map { category ->
+                        CategoryFilterItem(
+                            categoryId = category.id,
+                            title = category.title,
+                            isChecked =
+                                filters.any { filter ->
+                                    filter.categoryId == category.id
+                                },
+                        )
+                    }
+                categoryFilterAdapter.submitList(categoryList)
+            }
         }
     }
 

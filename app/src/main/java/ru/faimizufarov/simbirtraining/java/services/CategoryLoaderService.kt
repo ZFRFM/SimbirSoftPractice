@@ -4,7 +4,6 @@ import android.app.Service
 import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -18,10 +17,9 @@ class CategoryLoaderService : Service() {
     private val categoryRepository by lazy {
         CategoryRepository(applicationContext)
     }
+    private val coroutineScope = CoroutineScope(Dispatchers.IO)
 
     private var onListOfCategoryChanged: ((List<Category>) -> Unit)? = null
-
-    private val disposables = CompositeDisposable()
 
     inner class LocalBinder : Binder() {
         fun getService(): CategoryLoaderService = this@CategoryLoaderService
@@ -36,8 +34,6 @@ class CategoryLoaderService : Service() {
         flags: Int,
         startId: Int,
     ): Int {
-        val coroutineScope = CoroutineScope(Dispatchers.IO)
-
         coroutineScope.launch {
             delay(500)
             val categoryList = categoryRepository.getCategoryList()
@@ -49,10 +45,5 @@ class CategoryLoaderService : Service() {
 
     fun setOnListOfCategoryChangedListener(listener: (List<Category>) -> Unit) {
         onListOfCategoryChanged = listener
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        disposables.dispose()
     }
 }
