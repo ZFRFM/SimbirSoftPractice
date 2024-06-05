@@ -6,10 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
-import io.reactivex.rxjava3.core.Observable
 import io.reactivex.rxjava3.disposables.CompositeDisposable
-import kotlinx.coroutines.rx3.asObservable
+import kotlinx.coroutines.launch
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsFilterBinding
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilterItem
@@ -84,22 +84,23 @@ class NewsFilterFragment : Fragment() {
             }
         }
 
-        Observable.combineLatest(
-            categoriesRepository.getCategoriesObservable(),
-            newsFilterHolder.queuedFiltersFlow.asObservable(),
-        ) { categories, filters ->
+        lifecycleScope.launch {
+            val categories = categoriesRepository.getCategoryList()
+            val filters = newsFilterHolder.queuedFiltersFlow.value
+
             val categoryList =
                 categories.map { category ->
                     CategoryFilterItem(
                         categoryId = category.id,
                         title = category.title,
-                        isChecked = filters.any { filter -> filter.categoryId == category.id },
+                        isChecked =
+                            filters.any { filter ->
+                                filter.categoryId == category.id
+                            },
                     )
                 }
             categoryFilterAdapter.submitList(categoryList)
         }
-            .subscribe()
-            .let { disposables.add(it) }
     }
 
     override fun onDestroy() {

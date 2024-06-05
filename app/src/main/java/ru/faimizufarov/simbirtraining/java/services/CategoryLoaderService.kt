@@ -5,9 +5,12 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import io.reactivex.rxjava3.disposables.CompositeDisposable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ru.faimizufarov.simbirtraining.java.data.models.Category
 import ru.faimizufarov.simbirtraining.java.data.repositories.CategoryRepository
-import java.util.concurrent.TimeUnit
 
 class CategoryLoaderService : Service() {
     private val binder = LocalBinder()
@@ -33,11 +36,13 @@ class CategoryLoaderService : Service() {
         flags: Int,
         startId: Int,
     ): Int {
-        categoryRepository.getCategoriesObservable()
-            .delay(500, TimeUnit.MILLISECONDS)
-            .subscribe {
-                onListOfCategoryChanged?.invoke(it)
-            }.let { disposables.add(it) }
+        val coroutineScope = CoroutineScope(Dispatchers.IO)
+
+        coroutineScope.launch {
+            delay(500)
+            val categoryList = categoryRepository.getCategoryList()
+            onListOfCategoryChanged?.invoke(categoryList)
+        }
 
         return super.onStartCommand(intent, flags, startId)
     }
