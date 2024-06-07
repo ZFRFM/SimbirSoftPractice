@@ -6,6 +6,7 @@ import android.os.Binder
 import android.os.IBinder
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.faimizufarov.simbirtraining.java.data.models.Category
@@ -17,7 +18,7 @@ class CategoryLoaderService : Service() {
     private val categoryRepository by lazy {
         CategoryRepository(applicationContext)
     }
-    private val coroutineScope = CoroutineScope(Dispatchers.IO)
+    private var coroutineScope: CoroutineScope? = null
 
     private var onListOfCategoryChanged: ((List<Category>) -> Unit)? = null
 
@@ -34,7 +35,8 @@ class CategoryLoaderService : Service() {
         flags: Int,
         startId: Int,
     ): Int {
-        coroutineScope.launch {
+        coroutineScope = CoroutineScope(Dispatchers.IO)
+        coroutineScope?.launch {
             delay(500)
             val categoryList = categoryRepository.getCategoryList()
             onListOfCategoryChanged?.invoke(categoryList)
@@ -45,5 +47,10 @@ class CategoryLoaderService : Service() {
 
     fun setOnListOfCategoryChangedListener(listener: (List<Category>) -> Unit) {
         onListOfCategoryChanged = listener
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        coroutineScope?.cancel()
     }
 }
