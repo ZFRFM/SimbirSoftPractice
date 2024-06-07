@@ -4,10 +4,13 @@ import android.app.Service
 import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
-import io.reactivex.rxjava3.disposables.CompositeDisposable
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import ru.faimizufarov.simbirtraining.java.data.models.Category
 import ru.faimizufarov.simbirtraining.java.data.repositories.CategoryRepository
-import java.util.concurrent.TimeUnit
 
 class CategoryLoaderService : Service() {
     private val binder = LocalBinder()
@@ -15,10 +18,9 @@ class CategoryLoaderService : Service() {
     private val categoryRepository by lazy {
         CategoryRepository(applicationContext)
     }
+    private var coroutineScope: CoroutineScope? = null
 
     private var onListOfCategoryChanged: ((List<Category>) -> Unit)? = null
-
-    private val disposables = CompositeDisposable()
 
     inner class LocalBinder : Binder() {
         fun getService(): CategoryLoaderService = this@CategoryLoaderService
@@ -28,26 +30,31 @@ class CategoryLoaderService : Service() {
         return binder
     }
 
+    override fun onCreate() {
+        super.onCreate()
+        coroutineScope = CoroutineScope(Dispatchers.IO)
+    }
+
     override fun onStartCommand(
         intent: Intent?,
         flags: Int,
         startId: Int,
     ): Int {
-        categoryRepository.getCategoriesObservable()
-            .delay(500, TimeUnit.MILLISECONDS)
-            .subscribe {
-                onListOfCategoryChanged?.invoke(it)
-            }.let { disposables.add(it) }
+        coroutineScope?.launch {
+            delay(500)
+            val categoryList = categoryRepository.getCategoryList()
+            onListOfCategoryChanged?.invoke(categoryList)
+        }
 
         return super.onStartCommand(intent, flags, startId)
     }
 
-    fun setOnListOfCategoryChangedListener(listener: (List<Category>) -> Unit) {
-        onListOfCategoryChanged = listener
-    }
-
     override fun onDestroy() {
         super.onDestroy()
-        disposables.dispose()
+        coroutineScope?.cancel()
+    }
+
+    fun setOnListOfCategoryChangedListener(listener: (List<Category>) -> Unit) {
+        onListOfCategoryChanged = listener
     }
 }
