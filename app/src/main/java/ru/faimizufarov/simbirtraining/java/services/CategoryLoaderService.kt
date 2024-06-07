@@ -30,12 +30,16 @@ class CategoryLoaderService : Service() {
         return binder
     }
 
+    override fun onCreate() {
+        super.onCreate()
+        coroutineScope = CoroutineScope(Dispatchers.IO)
+    }
+
     override fun onStartCommand(
         intent: Intent?,
         flags: Int,
         startId: Int,
     ): Int {
-        coroutineScope = CoroutineScope(Dispatchers.IO)
         coroutineScope?.launch {
             delay(500)
             val categoryList = categoryRepository.getCategoryList()
@@ -45,12 +49,12 @@ class CategoryLoaderService : Service() {
         return super.onStartCommand(intent, flags, startId)
     }
 
-    fun setOnListOfCategoryChangedListener(listener: (List<Category>) -> Unit) {
-        onListOfCategoryChanged = listener
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         coroutineScope?.cancel()
+    }
+
+    fun setOnListOfCategoryChangedListener(listener: (List<Category>) -> Unit) {
+        onListOfCategoryChanged = listener
     }
 }
