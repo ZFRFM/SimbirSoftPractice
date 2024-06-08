@@ -9,9 +9,10 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
@@ -25,22 +26,36 @@ import ru.faimizufarov.simbirtraining.databinding.FragmentNewsBinding
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
 import ru.faimizufarov.simbirtraining.java.data.models.News
 import ru.faimizufarov.simbirtraining.java.data.models.mapToNews
+import ru.faimizufarov.simbirtraining.java.data.models.toNewsEntity
+import ru.faimizufarov.simbirtraining.java.database.AppDatabase
+import ru.faimizufarov.simbirtraining.java.database.toNews
 import ru.faimizufarov.simbirtraining.java.network.AppApi
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.NewsAdapter
 import java.util.concurrent.Executors
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class NewsFragment : Fragment() {
     private lateinit var binding: FragmentNewsBinding
 
     private val newsFilterHolder: NewsFilterHolder = GlobalNewsFilterHolder
+    private var coroutineScope: CoroutineScope? = null
 
-    private val disposables = CompositeDisposable()
+    private val database =
+        lazy {
+            AppDatabase.getDatabase(requireContext())
+        }
 
     private val newsAdapter = NewsAdapter(onItemClick = ::updateFeed)
     private val appliedFiltersNews = mutableListOf<News>()
 
     private val readNewsIdsStateFlow: MutableStateFlow<List<String>> =
         MutableStateFlow(listOf())
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        coroutineScope = CoroutineScope(Dispatchers.IO)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -106,6 +121,11 @@ class NewsFragment : Fragment() {
         putInSavedInstanceState(outState)
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        coroutineScope?.cancel()
+    }
+
     private fun getFromSavedInstanceState(savedInstanceState: Bundle) {
         val newsArray =
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
@@ -128,8 +148,12 @@ class NewsFragment : Fragment() {
 
     private fun loadServerNews(ids: List<String>) {
         lifecycleScope.launch {
-            val newsResponses = AppApi.retrofitService.getEvents(ids)
-            val serverNews = newsResponses.map { it.mapToNews() }
+            val serverNews =
+                if (database.value.newsDao().checkNewsCount() == 0) {
+                    loadServerNewsFromNetwork(ids)
+                } else {
+                    loadServerNewsFromDatabase(ids)
+                }
 
             BadgeCounter.setBadgeCounterEmitValue(serverNews.size)
             NewsListHolder.setNewsList(serverNews)
@@ -225,6 +249,30 @@ class NewsFragment : Fragment() {
                 filters.any { filter -> filter.categoryId in article.categoryIds }
             }
             filters.isEmpty() || isFilteredIn
+        }
+
+    private suspend fun loadServerNewsFromNetwork(ids: List<String>): List<News> {
+        val localServerNews = AppApi.retrofitService.getEvents(ids).map { it.mapToNews() }
+        coroutineScope?.launch {
+            database.value.newsDao().insertNews(localServerNews.map { it.toNewsEntity() })
+        }
+        return localServerNews
+    }
+
+    private suspend fun loadServerNewsFromDatabase(ids: List<String>) =
+        suspendCoroutine { continuation ->
+            coroutineScope?.launch {
+                val databaseNews = database.value.newsDao().getAllNews().map { it.toNews() }
+                val filteredDatabaseNews =
+                    databaseNews.filter {
+                        if (ids.isEmpty()) {
+                            return@filter true
+                        } else {
+                            it.categoryIds.any { it in ids }
+                        }
+                    }
+                continuation.resume(filteredDatabaseNews)
+            }
         }
 
     companion object {
