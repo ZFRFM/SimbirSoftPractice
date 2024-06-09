@@ -36,3 +36,19 @@ fun NewsEntity.toNews() =
         addressText = addressText,
         organisationText = organisationText,
     )
+
+fun News.toNewsEntity() =
+    NewsEntity(
+        id = id,
+        nameText = nameText,
+        startDate = startDate,
+        finishDate = finishDate,
+        descriptionText = descriptionText,
+        status = status,
+        newsImages = newsImages,
+        categoryIds = categoryIds,
+        createAt = createAt,
+        phoneText = phoneText,
+        addressText = addressText,
+        organisationText = organisationText,
+    )
