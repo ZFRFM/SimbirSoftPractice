@@ -33,6 +33,11 @@ class AuthorizationActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
+
+        binding.contentAuthorizationActivity.vk.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }
     }
 
     override fun onSaveInstanceState(

@@ -36,14 +36,16 @@ class CategoryRepository(
     private val database = AppDatabase.getDatabase(context)
 
     suspend fun getCategoryList() =
-        try {
-            withTimeout(5000) {
-                getCategoriesFromApi()
+        withContext(Dispatchers.IO) {
+            try {
+                withTimeout(5000) {
+                    getCategoriesFromApi()
+                }
+            } catch (httpException: HttpException) {
+                getCategoriesFromAssets()
+            } catch (timeoutCancellationException: TimeoutCancellationException) {
+                getCategoriesFromAssets()
             }
-        } catch (httpException: HttpException) {
-            getCategoriesFromAssets()
-        } catch (timeoutCancellationException: TimeoutCancellationException) {
-            getCategoriesFromAssets()
         }
 
     private suspend fun getCategoriesFromApi() = isCategoriesCached()
@@ -109,50 +111,63 @@ class CategoryRepository(
                 )
         }
 
-    private suspend fun loadCategoriesFromNetwork() =
-        withContext(Dispatchers.IO) {
-            val categories = api.getCategories().map { response -> response.toCategory() }
-            database.categoryDao().insertCategories(categories.map { it.toCategoryEntity() })
-            categories
-        }
-
-    private suspend fun loadCategoriesFromDatabase() =
-        withContext(Dispatchers.IO) {
-            database.categoryDao().getAllCategories().map { it.toCategory() }
-        }
-
-    private suspend fun Category.toCategoryEntity(): CategoryEntity {
-        saveBitmapInLocalStorage(context, image, id)
-        return CategoryEntity(
-            id = id,
-            title = title,
+    private suspend fun loadCategoriesFromNetwork(): List<Category> {
+        val categories = api.getCategories().map { response -> response.toCategory() }
+        database.categoryDao().insertCategories(
+            categories.map {
+                it.toCategoryEntity(::saveBitmapInLocalStorage)
+            },
         )
+        return categories
     }
 
-    private suspend fun saveBitmapInLocalStorage(
-        context: Context,
-        bitmap: Bitmap,
-        id: String,
-    ) = suspendCoroutine<String> { continuation ->
+    private suspend fun Category.toCategoryEntity(saveImageInFile: suspend (String, Bitmap) -> Unit): CategoryEntity {
         val directory = context.getDir("bitmaps", Context.MODE_PRIVATE)
         val file = File(directory, "category_image_$id.png")
+        return if (file.exists()) {
+            CategoryEntity(
+                id = id,
+                title = title,
+            )
+        } else {
+            saveImageInFile(id, image)
+            CategoryEntity(
+                id = id,
+                title = title,
+            )
+        }
+    }
+
+    private fun saveBitmapInLocalStorage(
+        imageId: String,
+        bitmap: Bitmap,
+    ) {
+        val directory = context.getDir("bitmaps", Context.MODE_PRIVATE)
+        val file = File(directory, "category_image_$imageId.png")
         val fileOutputStream = FileOutputStream(file)
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
         fileOutputStream.flush()
-        continuation.resume(file.absolutePath)
     }
 
-    private suspend fun CategoryEntity.toCategory() =
+    private suspend fun loadCategoriesFromDatabase(): List<Category> {
+        val categories = database.categoryDao().getAllCategories()
+        return categories.map { entity ->
+            entity.toCategory(::retrieveBitmap)
+        }
+    }
+
+    private suspend fun CategoryEntity.toCategory(getImageFromId: suspend (String) -> Bitmap) =
         Category(
             id = id,
             title = title,
-            image = retrieveBitmap(this),
+            image = getImageFromId(id),
         )
 
-    private suspend fun retrieveBitmap(categoryEntity: CategoryEntity) =
-        withContext(Dispatchers.IO) {
-            BitmapFactory.decodeFile("category_image_${categoryEntity.id}.png")
-        }
+    private fun retrieveBitmap(imageId: String): Bitmap {
+        val directory = context.getDir("bitmaps", Context.MODE_PRIVATE)
+        val file = File(directory, "category_image_$imageId.png")
+        return BitmapFactory.decodeFile(file.absolutePath)
+    }
 
     private suspend fun isCategoriesCached(): List<Category> {
         return if (database.categoryDao().checkCategoriesCount() == 0) {
