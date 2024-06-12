@@ -30,13 +30,15 @@ class AuthorizationActivity : AppCompatActivity() {
         }
 
         binding.contentAuthorizationActivity.buttonSignIn.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
 
         binding.contentAuthorizationActivity.vk.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
-            finish()
+            val intent = Intent(this, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            startActivity(intent)
         }
     }
 

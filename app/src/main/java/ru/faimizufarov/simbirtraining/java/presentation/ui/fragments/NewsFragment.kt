@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -129,7 +130,10 @@ class NewsFragment : Fragment() {
 
     private fun loadServerNews(ids: List<String>) {
         lifecycleScope.launch {
-            val serverNews = newsRepository.value.getNewsList(ids)
+            val serverNews =
+                withContext(Dispatchers.IO) {
+                    newsRepository.value.getNewsList(ids)
+                }
 
             BadgeCounter.setBadgeCounterEmitValue(serverNews.size)
             NewsListHolder.setNewsList(serverNews)

@@ -48,7 +48,12 @@ class CategoryRepository(
             }
         }
 
-    private suspend fun getCategoriesFromApi() = isCategoriesCached()
+    private suspend fun getCategoriesFromApi() =
+        if (isCategoriesCached()) {
+            loadCategoriesFromNetwork()
+        } else {
+            loadCategoriesFromDatabase()
+        }
 
     private suspend fun getCategoriesFromAssets() =
         suspendCoroutine { continuation ->
@@ -115,28 +120,24 @@ class CategoryRepository(
         val categories = api.getCategories().map { response -> response.toCategory() }
         database.categoryDao().insertCategories(
             categories.map {
-                it.toCategoryEntity(::saveBitmapInLocalStorage)
+                val directory = context.getDir("bitmaps", Context.MODE_PRIVATE)
+                val file = File(directory, "category_image_${it.id}.png")
+                if (file.exists()) {
+                    it.toCategoryEntity()
+                } else {
+                    saveBitmapInLocalStorage(it.id, it.image)
+                    it.toCategoryEntity()
+                }
             },
         )
         return categories
     }
 
-    private suspend fun Category.toCategoryEntity(saveImageInFile: suspend (String, Bitmap) -> Unit): CategoryEntity {
-        val directory = context.getDir("bitmaps", Context.MODE_PRIVATE)
-        val file = File(directory, "category_image_$id.png")
-        return if (file.exists()) {
-            CategoryEntity(
-                id = id,
-                title = title,
-            )
-        } else {
-            saveImageInFile(id, image)
-            CategoryEntity(
-                id = id,
-                title = title,
-            )
-        }
-    }
+    private fun Category.toCategoryEntity() =
+        CategoryEntity(
+            id = id,
+            title = title,
+        )
 
     private fun saveBitmapInLocalStorage(
         imageId: String,
@@ -169,11 +170,5 @@ class CategoryRepository(
         return BitmapFactory.decodeFile(file.absolutePath)
     }
 
-    private suspend fun isCategoriesCached(): List<Category> {
-        return if (database.categoryDao().checkCategoriesCount() == 0) {
-            loadCategoriesFromNetwork()
-        } else {
-            loadCategoriesFromDatabase()
-        }
-    }
+    private suspend fun isCategoriesCached() = database.categoryDao().checkCategoriesCount() == 0
 }
