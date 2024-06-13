@@ -8,38 +8,56 @@ import android.graphics.drawable.Drawable
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.TimeoutCancellationException
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.json.Json
 import retrofit2.HttpException
 import ru.faimizufarov.simbirtraining.java.data.models.Category
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryAsset
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryResponse
+import ru.faimizufarov.simbirtraining.java.database.AppDatabase
+import ru.faimizufarov.simbirtraining.java.database.CategoryEntity
 import ru.faimizufarov.simbirtraining.java.network.AppApi
 import java.io.BufferedReader
+import java.io.File
+import java.io.FileOutputStream
 import java.util.Locale
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
+
+const val DIRECTORY_BITMAPS = "bitmaps"
+const val CATEGORY_PATTERN = "category_image_"
+const val EXTENSION = ".png"
 
 class CategoryRepository(
     private val context: Context,
 ) {
     private val api = AppApi.retrofitService
     private val assetManager = context.assets
+    private val database = AppDatabase.getDatabase(context)
 
     suspend fun getCategoryList() =
-        try {
-            withTimeout(5000) {
-                getCategoriesFromApi()
+        withContext(Dispatchers.IO) {
+            try {
+                withTimeout(5000) {
+                    getCategoriesFromApi()
+                }
+            } catch (httpException: HttpException) {
+                getCategoriesFromAssets()
+            } catch (timeoutCancellationException: TimeoutCancellationException) {
+                getCategoriesFromAssets()
             }
-        } catch (httpException: HttpException) {
-            getCategoriesFromAssets()
-        } catch (timeoutCancellationException: TimeoutCancellationException) {
-            getCategoriesFromAssets()
         }
 
-    private suspend fun getCategoriesFromApi() = api.getCategories().map { response -> response.toCategory() }
+    private suspend fun getCategoriesFromApi() =
+        if (isCategoriesCached()) {
+            loadCategoriesFromNetwork()
+        } else {
+            loadCategoriesFromDatabase()
+        }
 
     private suspend fun getCategoriesFromAssets() =
         suspendCoroutine { continuation ->
@@ -101,4 +119,52 @@ class CategoryRepository(
                     },
                 )
         }
+
+    private suspend fun loadCategoriesFromNetwork(): List<Category> {
+        val categories = api.getCategories().map { response -> response.toCategory() }
+        database.categoryDao().insertCategories(
+            categories
+                .onEach { category -> cacheCategoryImage(category) }
+                .map { category -> category.toCategoryEntity() },
+        )
+        return categories
+    }
+
+    private fun Category.toCategoryEntity() =
+        CategoryEntity(
+            id = id,
+            title = title,
+        )
+
+    private fun cacheCategoryImage(category: Category) {
+        val directory = context.getDir(DIRECTORY_BITMAPS, Context.MODE_PRIVATE)
+        val file = File(directory, "$CATEGORY_PATTERN${category.id}$EXTENSION")
+        if (!file.exists()) {
+            val fileOutputStream = FileOutputStream(file)
+            category.image.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
+            fileOutputStream.flush()
+        }
+    }
+
+    private suspend fun loadCategoriesFromDatabase(): List<Category> {
+        val categories = database.categoryDao().getAllCategories()
+        return categories.map { entity ->
+            entity.toCategory(::retrieveBitmap)
+        }
+    }
+
+    private suspend fun CategoryEntity.toCategory(getImageFromId: suspend (String) -> Bitmap) =
+        Category(
+            id = id,
+            title = title,
+            image = getImageFromId(id),
+        )
+
+    private fun retrieveBitmap(imageId: String): Bitmap {
+        val directory = context.getDir("bitmaps", Context.MODE_PRIVATE)
+        val file = File(directory, "category_image_$imageId.png")
+        return BitmapFactory.decodeFile(file.absolutePath)
+    }
+
+    private suspend fun isCategoriesCached() = database.categoryDao().checkCategoriesCount() == 0
 }

@@ -9,7 +9,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.lifecycle.lifecycleScope
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -17,6 +16,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -24,8 +24,7 @@ import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsBinding
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
 import ru.faimizufarov.simbirtraining.java.data.models.News
-import ru.faimizufarov.simbirtraining.java.data.models.mapToNews
-import ru.faimizufarov.simbirtraining.java.network.AppApi
+import ru.faimizufarov.simbirtraining.java.data.repositories.NewsRepository
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.NewsAdapter
 import java.util.concurrent.Executors
 
@@ -34,10 +33,13 @@ class NewsFragment : Fragment() {
 
     private val newsFilterHolder: NewsFilterHolder = GlobalNewsFilterHolder
 
-    private val disposables = CompositeDisposable()
-
     private val newsAdapter = NewsAdapter(onItemClick = ::updateFeed)
     private val appliedFiltersNews = mutableListOf<News>()
+
+    private val newsRepository =
+        lazy {
+            NewsRepository(requireContext())
+        }
 
     private val readNewsIdsStateFlow: MutableStateFlow<List<String>> =
         MutableStateFlow(listOf())
@@ -128,8 +130,10 @@ class NewsFragment : Fragment() {
 
     private fun loadServerNews(ids: List<String>) {
         lifecycleScope.launch {
-            val newsResponses = AppApi.retrofitService.getEvents(ids)
-            val serverNews = newsResponses.map { it.mapToNews() }
+            val serverNews =
+                withContext(Dispatchers.IO) {
+                    newsRepository.value.getNewsList(ids)
+                }
 
             BadgeCounter.setBadgeCounterEmitValue(serverNews.size)
             NewsListHolder.setNewsList(serverNews)
