@@ -28,6 +28,10 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
 
+const val DIRECTORY_BITMAPS = "bitmaps"
+const val CATEGORY_PATTERN = "category_image_"
+const val EXTENSION = ".png"
+
 class CategoryRepository(
     private val context: Context,
 ) {
@@ -119,16 +123,9 @@ class CategoryRepository(
     private suspend fun loadCategoriesFromNetwork(): List<Category> {
         val categories = api.getCategories().map { response -> response.toCategory() }
         database.categoryDao().insertCategories(
-            categories.map {
-                val directory = context.getDir("bitmaps", Context.MODE_PRIVATE)
-                val file = File(directory, "category_image_${it.id}.png")
-                if (file.exists()) {
-                    it.toCategoryEntity()
-                } else {
-                    saveBitmapInLocalStorage(it.id, it.image)
-                    it.toCategoryEntity()
-                }
-            },
+            categories
+                .onEach { category -> cacheCategoryImage(category) }
+                .map { category -> category.toCategoryEntity() },
         )
         return categories
     }
@@ -139,15 +136,14 @@ class CategoryRepository(
             title = title,
         )
 
-    private fun saveBitmapInLocalStorage(
-        imageId: String,
-        bitmap: Bitmap,
-    ) {
-        val directory = context.getDir("bitmaps", Context.MODE_PRIVATE)
-        val file = File(directory, "category_image_$imageId.png")
-        val fileOutputStream = FileOutputStream(file)
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
-        fileOutputStream.flush()
+    private fun cacheCategoryImage(category: Category) {
+        val directory = context.getDir(DIRECTORY_BITMAPS, Context.MODE_PRIVATE)
+        val file = File(directory, "$CATEGORY_PATTERN${category.id}$EXTENSION")
+        if (!file.exists()) {
+            val fileOutputStream = FileOutputStream(file)
+            category.image.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream)
+            fileOutputStream.flush()
+        }
     }
 
     private suspend fun loadCategoriesFromDatabase(): List<Category> {
