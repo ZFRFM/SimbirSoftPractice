@@ -14,12 +14,12 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.json.Json
 import retrofit2.HttpException
+import ru.faimizufarov.simbirtraining.java.data.database.AppDatabase
+import ru.faimizufarov.simbirtraining.java.data.database.CategoryEntity
 import ru.faimizufarov.simbirtraining.java.data.models.Category
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryAsset
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryResponse
-import ru.faimizufarov.simbirtraining.java.database.AppDatabase
-import ru.faimizufarov.simbirtraining.java.database.CategoryEntity
-import ru.faimizufarov.simbirtraining.java.network.AppApi
+import ru.faimizufarov.simbirtraining.java.data.network.AppApi
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileOutputStream

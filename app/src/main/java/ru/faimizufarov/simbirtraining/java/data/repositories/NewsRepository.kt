@@ -1,12 +1,12 @@
 package ru.faimizufarov.simbirtraining.java.data.repositories
 
 import android.content.Context
+import ru.faimizufarov.simbirtraining.java.data.database.AppDatabase
+import ru.faimizufarov.simbirtraining.java.data.database.toNews
+import ru.faimizufarov.simbirtraining.java.data.database.toNewsEntity
 import ru.faimizufarov.simbirtraining.java.data.models.News
 import ru.faimizufarov.simbirtraining.java.data.models.mapToNews
-import ru.faimizufarov.simbirtraining.java.database.AppDatabase
-import ru.faimizufarov.simbirtraining.java.database.toNews
-import ru.faimizufarov.simbirtraining.java.database.toNewsEntity
-import ru.faimizufarov.simbirtraining.java.network.AppApi
+import ru.faimizufarov.simbirtraining.java.data.network.AppApi
 
 class NewsRepository(context: Context) {
     private val database = AppDatabase.getDatabase(context)

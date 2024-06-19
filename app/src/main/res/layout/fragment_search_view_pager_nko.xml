@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".java.presentation.ui.fragments.SearchViewPagerNkoFragment"
+    tools:context=".java.presentation.ui.view.fragments.SearchViewPagerNkoFragment"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/light_grey"
