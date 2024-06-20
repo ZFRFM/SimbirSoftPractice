@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.data.database
+package ru.faimizufarov.simbirtraining.java.data.local
 
 import android.content.Context
 import androidx.room.Database

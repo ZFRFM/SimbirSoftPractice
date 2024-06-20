@@ -1,9 +1,9 @@
 package ru.faimizufarov.simbirtraining.java.data.repositories
 
 import android.content.Context
-import ru.faimizufarov.simbirtraining.java.data.database.AppDatabase
-import ru.faimizufarov.simbirtraining.java.data.database.toNews
-import ru.faimizufarov.simbirtraining.java.data.database.toNewsEntity
+import ru.faimizufarov.simbirtraining.java.data.local.AppDatabase
+import ru.faimizufarov.simbirtraining.java.data.local.toNews
+import ru.faimizufarov.simbirtraining.java.data.local.toNewsEntity
 import ru.faimizufarov.simbirtraining.java.data.models.News
 import ru.faimizufarov.simbirtraining.java.data.models.mapToNews
 import ru.faimizufarov.simbirtraining.java.data.network.AppApi
