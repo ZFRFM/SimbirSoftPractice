@@ -10,6 +10,7 @@ import android.widget.SearchView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.FlowPreview
@@ -21,9 +22,11 @@ import kotlinx.coroutines.launch
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentSearchBinding
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.SearchPagerAdapter
+import ru.faimizufarov.simbirtraining.java.presentation.ui.viewmodel.SearchViewModel
 
 class SearchFragment : Fragment() {
     private lateinit var binding: FragmentSearchBinding
+    private val searchViewModel: SearchViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,12 +49,18 @@ class SearchFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        getFromSavedInstanceState(savedInstanceState)
+        searchViewModel.query.observe(viewLifecycleOwner) {
+            binding.searchView.setQuery(
+                it,
+                true,
+            )
+        }
 
         lifecycleScope.launch {
             binding.searchView.getQueryTextChangeStateFlow()
                 .debounce(500)
                 .collect { query ->
+                    searchViewModel.setQuery(query)
                     val bundle = bundleOf(QUERY_BUNDLE_KEY to query)
                     setFragmentResult(QUERY_KEY, bundle)
                 }
@@ -59,11 +68,6 @@ class SearchFragment : Fragment() {
 
         configureSearchView()
         configureViewPager()
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        putInSavedInstanceState(outState)
     }
 
     private fun configureSearchView() {
@@ -96,27 +100,12 @@ class SearchFragment : Fragment() {
         }.attach()
     }
 
-    private fun getFromSavedInstanceState(savedInstanceState: Bundle?) {
-        binding.searchView.setQuery(
-            savedInstanceState?.getString(QUERY_SAVE_INSTANCE_STATE_KEY),
-            true,
-        )
-    }
-
-    private fun putInSavedInstanceState(outState: Bundle) {
-        outState.putString(
-            QUERY_SAVE_INSTANCE_STATE_KEY,
-            binding.searchView.query.toString(),
-        )
-    }
-
     companion object {
         @JvmStatic
         fun newInstance() = SearchFragment()
 
         const val QUERY_KEY = "QUERY_KEY"
         const val QUERY_BUNDLE_KEY = "QUERY_BUNDLE_KEY"
-        const val QUERY_SAVE_INSTANCE_STATE_KEY = "QUERY_SAVE_INSTANCE_STATE_KEY"
     }
 }
 

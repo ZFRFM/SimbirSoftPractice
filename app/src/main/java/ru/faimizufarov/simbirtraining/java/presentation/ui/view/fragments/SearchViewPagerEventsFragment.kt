@@ -89,16 +89,16 @@ class SearchViewPagerEventsFragment : Fragment() {
         }
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance() = SearchViewPagerEventsFragment()
-    }
-
     private fun setVisibilityOfLocalUi(isVisible: Boolean) {
         with(binding) {
             imageViewZoom.isVisible = isVisible
             textViewWriteKeyWords.isVisible = isVisible
             linearLayoutKeyWords.isVisible = isVisible
         }
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = SearchViewPagerEventsFragment()
     }
 }
