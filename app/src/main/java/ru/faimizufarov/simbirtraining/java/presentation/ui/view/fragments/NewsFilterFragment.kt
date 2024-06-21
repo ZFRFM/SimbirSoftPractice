@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DividerItemDecoration
 import io.reactivex.rxjava3.disposables.CompositeDisposable
@@ -13,8 +14,8 @@ import kotlinx.coroutines.launch
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsFilterBinding
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilterItem
-import ru.faimizufarov.simbirtraining.java.data.repositories.CategoryRepository
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.CategoryFilterAdapter
+import ru.faimizufarov.simbirtraining.java.presentation.ui.viewmodel.NewsFilterViewModel
 
 class NewsFilterFragment : Fragment() {
     private lateinit var binding: FragmentNewsFilterBinding
@@ -23,7 +24,8 @@ class NewsFilterFragment : Fragment() {
 
     private val newsFilterHolder: NewsFilterHolder = GlobalNewsFilterHolder
 
-    private val categoriesRepository by lazy { CategoryRepository(requireContext()) }
+    private val newsFilterViewModel:
+        NewsFilterViewModel by viewModels { NewsFilterViewModel.Factory }
 
     private val categoryFilterAdapter =
         CategoryFilterAdapter { filterItem ->
@@ -86,9 +88,9 @@ class NewsFilterFragment : Fragment() {
 
         lifecycleScope.launch {
             newsFilterHolder.queuedFiltersFlow.collect { filters ->
-                val categories = categoriesRepository.getCategoryList()
+                val categories = newsFilterViewModel.categoriesRepository.value?.getCategoryList()
                 val categoryList =
-                    categories.map { category ->
+                    categories?.map { category ->
                         CategoryFilterItem(
                             categoryId = category.id,
                             title = category.title,
