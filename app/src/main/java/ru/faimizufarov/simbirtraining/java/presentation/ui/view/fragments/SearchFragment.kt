@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.room.util.query
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.channels.awaitClose
@@ -49,11 +50,13 @@ class SearchFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        searchViewModel.query.observe(viewLifecycleOwner) {
+        searchViewModel.query.observe(viewLifecycleOwner) { query ->
             binding.searchView.setQuery(
-                it,
+                query,
                 true,
             )
+            val bundle = bundleOf(QUERY_BUNDLE_KEY to query)
+            setFragmentResult(QUERY_KEY, bundle)
         }
 
         lifecycleScope.launch {
@@ -61,8 +64,6 @@ class SearchFragment : Fragment() {
                 .debounce(500)
                 .collect { query ->
                     searchViewModel.setQuery(query)
-                    val bundle = bundleOf(QUERY_BUNDLE_KEY to query)
-                    setFragmentResult(QUERY_KEY, bundle)
                 }
         }
 
