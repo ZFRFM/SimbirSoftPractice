@@ -1,6 +1,5 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.view.fragments
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,13 +7,11 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.datetime.Instant
@@ -24,9 +21,8 @@ import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsBinding
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
 import ru.faimizufarov.simbirtraining.java.data.models.News
-import ru.faimizufarov.simbirtraining.java.data.repositories.NewsRepository
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.NewsAdapter
-import java.util.concurrent.Executors
+import ru.faimizufarov.simbirtraining.java.presentation.ui.viewmodel.NewsViewModel
 
 class NewsFragment : Fragment() {
     private lateinit var binding: FragmentNewsBinding
@@ -36,10 +32,7 @@ class NewsFragment : Fragment() {
     private val newsAdapter = NewsAdapter(onItemClick = ::updateFeed)
     private val appliedFiltersNews = mutableListOf<News>()
 
-    private val newsRepository =
-        lazy {
-            NewsRepository(requireContext())
-        }
+    private val newsViewModel: NewsViewModel by viewModels { NewsViewModel.Factory }
 
     private val readNewsIdsStateFlow: MutableStateFlow<List<String>> =
         MutableStateFlow(listOf())
@@ -59,10 +52,10 @@ class NewsFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (savedInstanceState != null) {
-            getFromSavedInstanceState(savedInstanceState)
-        } else {
-            loadServerNews(emptyList())
+        loadServerNews(emptyList())
+        newsViewModel.news.observe(viewLifecycleOwner) { news ->
+            NewsListHolder.setNewsList(news)
+            newsAdapter.submitList(NewsListHolder.getNewsList())
         }
 
         lifecycleScope.launch {
@@ -103,66 +96,18 @@ class NewsFragment : Fragment() {
         }
     }
 
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        putInSavedInstanceState(outState)
-    }
-
-    private fun getFromSavedInstanceState(savedInstanceState: Bundle) {
-        val newsArray =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                savedInstanceState.getParcelable(LIST_OF_NEWS, ArrayList::class.java)
-            } else {
-                savedInstanceState.getParcelable(LIST_OF_NEWS)
-            } ?: return
-        NewsListHolder.setNewsList(newsArray.filterIsInstance<News>())
-
-        newsAdapter.submitList(NewsListHolder.getNewsList())
-    }
-
-    private fun putInSavedInstanceState(outState: Bundle) {
-        val arrayList = ArrayList<News>()
-        NewsListHolder.getNewsList().forEach {
-            arrayList.add(it)
-        }
-        outState.putParcelableArrayList(LIST_OF_NEWS, arrayList)
-    }
-
     private fun loadServerNews(ids: List<String>) {
         lifecycleScope.launch {
             val serverNews =
                 withContext(Dispatchers.IO) {
-                    newsRepository.value.getNewsList(ids)
+                    newsViewModel.newsRepository.value?.getNewsList(ids)
                 }
 
-            BadgeCounter.setBadgeCounterEmitValue(serverNews.size)
-            NewsListHolder.setNewsList(serverNews)
+            BadgeCounter.setBadgeCounterEmitValue(serverNews?.size ?: 0)
+            NewsListHolder.setNewsList(serverNews ?: emptyList())
+            newsViewModel.setNews(serverNews ?: emptyList())
 
             newsAdapter.submitList(serverNews)
-        }
-    }
-
-    private fun loadAssetsNews() {
-        val executor = Executors.newSingleThreadExecutor()
-        val fragmentContext = requireContext()
-
-        val jsonFlow =
-            flow {
-                val newsJsonInString = NewsListHolder.getNewsJson(fragmentContext)
-                delay(1000)
-                emit(newsJsonInString)
-            }.flowOn(Dispatchers.IO)
-
-        executor.execute {
-            lifecycleScope.launch {
-                jsonFlow.collect { json ->
-                    NewsListHolder.setNewsList(NewsListHolder.getNewsListFromJson(json))
-                    val localNewsListKeeper = NewsListHolder.getNewsList()
-                    BadgeCounter.setBadgeCounterEmitValue(localNewsListKeeper.size)
-                    newsAdapter.submitList(localNewsListKeeper)
-                }
-            }
-            executor.shutdown()
         }
     }
 
@@ -233,7 +178,5 @@ class NewsFragment : Fragment() {
 
     companion object {
         fun newInstance() = NewsFragment()
-
-        private const val LIST_OF_NEWS = "LIST_OF_NEWS"
     }
 }
