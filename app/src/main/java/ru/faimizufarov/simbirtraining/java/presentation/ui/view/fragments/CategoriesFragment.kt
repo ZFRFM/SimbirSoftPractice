@@ -2,24 +2,27 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.view.fragments
 
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import ru.faimizufarov.simbirtraining.databinding.FragmentHelpCategoriesBinding
 import ru.faimizufarov.simbirtraining.java.data.models.Category
 import ru.faimizufarov.simbirtraining.java.presentation.services.CategoryLoaderService
 import ru.faimizufarov.simbirtraining.java.presentation.services.CategoryLoaderServiceConnection
 import ru.faimizufarov.simbirtraining.java.presentation.ui.adapters.CategoriesAdapter
+import ru.faimizufarov.simbirtraining.java.presentation.ui.viewmodel.CategoriesViewModel
 
 class CategoriesFragment : Fragment() {
     private lateinit var binding: FragmentHelpCategoriesBinding
     private val categoriesAdapter by lazy {
         CategoriesAdapter()
     }
+
+    private val categoriesViewModel: CategoriesViewModel by viewModels()
 
     private var listOfCategories: List<Category>? = null
 
@@ -45,20 +48,11 @@ class CategoriesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.contentHelpCategories.recyclerViewHelpCategories.adapter = categoriesAdapter
-        if (savedInstanceState != null && savedInstanceState.isCategoriesSaved) {
-            getFromSavedInstanceState(savedInstanceState)
-        } else {
-            loadIfAbsentState()
+
+        initialLoading()
+        categoriesViewModel.categories.observe(viewLifecycleOwner) { categories ->
+            categoriesAdapter.submitList(categories)
         }
-    }
-
-    private val Bundle.isCategoriesSaved: Boolean
-        get() = containsKey(LIST_OF_CATEGORIES_KEY)
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        val categoriesArray = listOfCategories?.let(::ArrayList) ?: return
-        outState.putParcelableArrayList(LIST_OF_CATEGORIES_KEY, categoriesArray)
     }
 
     override fun onStop() {
@@ -84,32 +78,11 @@ class CategoriesFragment : Fragment() {
     private fun showCategories(categories: List<Category>) {
         listOfCategories = categories
         categoriesAdapter.submitList(categories)
+        categoriesViewModel.setCategories(categories)
         binding.contentHelpCategories.progressBar.isVisible = false
     }
 
-    private fun getFromSavedInstanceState(savedInstanceState: Bundle) {
-        val arrayList =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                savedInstanceState.getParcelable(
-                    LIST_OF_CATEGORIES_KEY,
-                    ArrayList::class.java,
-                )
-            } else {
-                savedInstanceState.getParcelable(LIST_OF_CATEGORIES_KEY)
-            }
-
-        listOfCategories = arrayList?.filterIsInstance<Category>() ?: listOfCategories
-
-        categoriesAdapter.submitList(listOfCategories)
-
-        if (listOfCategories != null) {
-            binding.contentHelpCategories.progressBar.isVisible = false
-        }
-
-        startJsonLoaderService()
-    }
-
-    private fun loadIfAbsentState() {
+    private fun initialLoading() {
         binding.contentHelpCategories.progressBar.isVisible = true
         startJsonLoaderService()
     }
@@ -117,7 +90,5 @@ class CategoriesFragment : Fragment() {
     companion object {
         @JvmStatic
         fun newInstance() = CategoriesFragment()
-
-        private const val LIST_OF_CATEGORIES_KEY = "LIST_OF_CATEGORIES_KEY"
     }
 }
