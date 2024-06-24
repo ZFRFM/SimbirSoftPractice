@@ -10,10 +10,8 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -103,15 +101,7 @@ class NewsFragment : Fragment() {
 
     private fun loadServerNews(ids: List<String>) {
         lifecycleScope.launch {
-            val serverNews =
-                withContext(Dispatchers.IO) {
-                    newsViewModel.newsRepository.value?.getNewsList(ids)
-                }
-
-            BadgeCounterHolder.setBadgeCounterEmitValue(serverNews?.size ?: 0)
-            NewsListHolder.setNewsList(serverNews ?: emptyList())
-            newsViewModel.setNews(serverNews ?: emptyList())
-
+            val serverNews = newsViewModel.loadServerNews(ids)
             newsAdapter.submitList(serverNews)
         }
     }

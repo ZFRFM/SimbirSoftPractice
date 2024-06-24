@@ -2,21 +2,37 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.authorizatio
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class AuthorizationViewModel : ViewModel() {
-    private val _isEnable = MutableLiveData<Boolean>()
-    val isEnable: LiveData<Boolean>
-        get() = _isEnable
+const val TEXT_LENGTH = 6
 
+class AuthorizationViewModel : ViewModel() {
     private val _emailText = MutableLiveData<String>()
-    val emailText: LiveData<String>
-        get() = _emailText
+    val emailText: LiveData<String> = _emailText
 
     private val _passwordText = MutableLiveData<String>()
-    val passwordText: LiveData<String>
-        get() = _passwordText
+    val passwordText: LiveData<String> = _passwordText
+
+    val isAuthEnabled =
+        MediatorLiveData<Boolean>()
+            .apply {
+                addSource(emailText) { email ->
+                    val password = passwordText.value
+                    if (password != null) {
+                        value =
+                            email.length >= TEXT_LENGTH && password.length >= TEXT_LENGTH
+                    }
+                }
+                addSource(passwordText) { password ->
+                    val email = emailText.value
+                    if (email != null) {
+                        value =
+                            email.length >= TEXT_LENGTH && password.length >= TEXT_LENGTH
+                    }
+                }
+            }
 
     private val _navigateToActivity = SingleLiveEvent<Class<out AppCompatActivity>?>()
     val navigateToActivity: LiveData<Class<out AppCompatActivity>?> = _navigateToActivity
@@ -38,21 +54,9 @@ class AuthorizationViewModel : ViewModel() {
 
     fun setEmailText(emailText: String) {
         _emailText.value = emailText
-        updateIsEnable()
     }
 
     fun setPasswordText(passwordText: String) {
         _passwordText.value = passwordText
-        updateIsEnable()
-    }
-
-    private fun updateIsEnable() {
-        _isEnable.value =
-            (emailText.value?.length ?: 0) >= TEXT_LENGTH &&
-            (passwordText.value?.length ?: 0) >= TEXT_LENGTH
-    }
-
-    companion object {
-        const val TEXT_LENGTH = 6
     }
 }

@@ -24,7 +24,7 @@ class AuthorizationActivity : AppCompatActivity() {
         binding = ActivityAuthorizationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        authorizationViewModel.isEnable.observe(this) { isEnabled ->
+        authorizationViewModel.isAuthEnabled.observe(this) { isEnabled ->
             contentBinding.buttonSignIn.isEnabled = isEnabled
         }
 

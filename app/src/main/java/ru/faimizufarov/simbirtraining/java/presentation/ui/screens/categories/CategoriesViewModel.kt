@@ -7,8 +7,7 @@ import ru.faimizufarov.simbirtraining.java.data.models.Category
 
 class CategoriesViewModel : ViewModel() {
     private val _categories = MutableLiveData<List<Category>>()
-    val categories: LiveData<List<Category>>
-        get() = _categories
+    val categories: LiveData<List<Category>> = _categories
 
     fun setCategories(categories: List<Category>) {
         _categories.value = categories
