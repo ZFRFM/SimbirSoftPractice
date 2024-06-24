@@ -22,7 +22,7 @@
         android:theme="@style/Theme.SimbirSoftPractice"
         tools:targetApi="31">
         <activity
-            android:name=".java.presentation.ui.view.activities.AuthorizationActivity"
+            android:name=".java.presentation.ui.screens.authorization.AuthorizationActivity"
             android:exported="false" />
 
         <service
@@ -31,7 +31,7 @@
             android:exported="false" />
 
         <activity
-            android:name=".java.presentation.ui.view.activities.SearchableActivity"
+            android:name=".java.presentation.ui.activities.SearchableActivity"
             android:exported="false"
             android:launchMode="singleTop">
             <intent-filter>
@@ -43,7 +43,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".java.presentation.ui.view.activities.MainActivity"
+            android:name=".java.presentation.ui.screens.main.MainActivity"
             android:exported="false"
             android:launchMode="singleTop">
             <intent-filter>
@@ -58,7 +58,7 @@
                 android:resource="@xml/searchable" />
         </activity>
         <activity
-            android:name=".java.presentation.ui.view.activities.SplashActivity"
+            android:name=".java.presentation.ui.activities.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.SimbirSoftPractice">
             <intent-filter>
