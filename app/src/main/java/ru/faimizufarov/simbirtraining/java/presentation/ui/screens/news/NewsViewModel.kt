@@ -20,20 +20,18 @@ class NewsViewModel(
     private val _news = MutableLiveData<List<News>>()
     val news: LiveData<List<News>> = _news
 
-    private val _newsRepository = MutableLiveData(NewsRepository(context))
-    val newsRepository: LiveData<NewsRepository>
-        get() = _newsRepository
+    private val newsRepository = NewsRepository(context)
 
     private fun setNews(news: List<News>) {
         _news.value = news
     }
 
-    suspend fun loadServerNews(ids: List<String>): List<News>? {
-        val serverNews = newsRepository.value?.getNewsList(ids)
+    suspend fun loadServerNews(ids: List<String>): List<News> {
+        val serverNews = newsRepository.getNewsList(ids)
         viewModelScope.launch {
-            BadgeCounterHolder.setBadgeCounterEmitValue(serverNews?.size ?: 0)
-            NewsListHolder.setNewsList(serverNews ?: emptyList())
-            setNews(serverNews ?: emptyList())
+            BadgeCounterHolder.setBadgeCounterEmitValue(serverNews.size)
+            NewsListHolder.setNewsList(serverNews)
+            setNews(serverNews)
         }
         return serverNews
     }

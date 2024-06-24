@@ -7,14 +7,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
 import androidx.lifecycle.viewmodel.CreationExtras
+import ru.faimizufarov.simbirtraining.java.data.models.Category
 import ru.faimizufarov.simbirtraining.java.data.repositories.CategoryRepository
 
 class NewsFilterViewModel(
     context: Context,
 ) : ViewModel() {
-    private val _categoriesRepository = MutableLiveData(CategoryRepository(context))
-    val categoriesRepository: LiveData<CategoryRepository>
-        get() = _categoriesRepository
+    private val categoriesRepository = CategoryRepository(context)
+
+    private val _categories = MutableLiveData<List<Category>>()
+    val categories: LiveData<List<Category>> = _categories
+
+    suspend fun getCategoryList() {
+        _categories.value = categoriesRepository.getCategoryList()
+    }
 
     companion object {
         val Factory: ViewModelProvider.Factory =
