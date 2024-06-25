@@ -16,11 +16,15 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentSearchViewPagerEventsBinding
+import ru.faimizufarov.simbirtraining.java.App
 import ru.faimizufarov.simbirtraining.java.data.models.News
-import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.NewsListHolder
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.search.adapters.SearchResultEventsAdapter
 
 class SearchViewPagerEventsFragment : Fragment() {
+    private val newsRepository by lazy {
+        (requireContext().applicationContext as App).newsRepository
+    }
+
     private lateinit var binding: FragmentSearchViewPagerEventsBinding
 
     private val fetchDataScope = CoroutineScope(Dispatchers.IO)
@@ -52,7 +56,7 @@ class SearchViewPagerEventsFragment : Fragment() {
                         listOf()
                     } else {
                         setVisibilityOfLocalUi(false)
-                        NewsListHolder.getNewsList().filter { news: News ->
+                        newsRepository.newsListFlow.value.filter { news: News ->
                             news.nameText.contains(
                                 bundle.getString(SearchFragment.QUERY_BUNDLE_KEY) as CharSequence,
                                 ignoreCase = true,
