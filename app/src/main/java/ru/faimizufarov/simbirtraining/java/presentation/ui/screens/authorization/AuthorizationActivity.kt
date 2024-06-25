@@ -28,6 +28,17 @@ class AuthorizationActivity : AppCompatActivity() {
             contentBinding.buttonSignIn.isEnabled = isEnabled
         }
 
+        authorizationViewModel.emailText.observe(this) { emailText ->
+            if (contentBinding.editTextEmail.text.toString() != emailText) {
+                contentBinding.editTextEmail.setText(emailText)
+            }
+        }
+        authorizationViewModel.passwordText.observe(this) { passwordText ->
+            if (contentBinding.editTextPassword.text?.toString() != passwordText) {
+                contentBinding.editTextPassword.setText(passwordText)
+            }
+        }
+
         setAuthData()
 
         authorizationViewModel.navigateToActivity.observe(this) { destination ->

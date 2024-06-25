@@ -26,7 +26,7 @@ class NewsFilterFragment : Fragment() {
     private val newsFilterHolder: NewsFilterHolder = GlobalNewsFilterHolder
 
     private val newsFilterViewModel:
-        NewsFilterViewModel by viewModels { NewsFilterViewModel.Factory }
+        NewsFilterViewModel by viewModels { NewsFilterViewModel.Factory(requireContext()) }
 
     private val categoryFilterAdapter =
         CategoryFilterAdapter { filterItem ->

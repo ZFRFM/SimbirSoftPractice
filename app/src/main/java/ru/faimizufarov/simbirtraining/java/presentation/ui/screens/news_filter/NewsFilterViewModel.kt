@@ -5,16 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory.Companion.APPLICATION_KEY
-import androidx.lifecycle.viewmodel.CreationExtras
+import ru.faimizufarov.simbirtraining.java.App
 import ru.faimizufarov.simbirtraining.java.data.models.Category
 import ru.faimizufarov.simbirtraining.java.data.repositories.CategoryRepository
 
 class NewsFilterViewModel(
-    context: Context,
+    private val categoriesRepository: CategoryRepository,
 ) : ViewModel() {
-    private val categoriesRepository = CategoryRepository(context)
-
     private val _categories = MutableLiveData<List<Category>>()
     val categories: LiveData<List<Category>> = _categories
 
@@ -22,19 +19,10 @@ class NewsFilterViewModel(
         _categories.value = categoriesRepository.getCategoryList()
     }
 
-    companion object {
-        val Factory: ViewModelProvider.Factory =
-            object : ViewModelProvider.Factory {
-                override fun <T : ViewModel> create(
-                    modelClass: Class<T>,
-                    extras: CreationExtras,
-                ): T {
-                    val application = checkNotNull(extras[APPLICATION_KEY])
+    class Factory(context: Context) : ViewModelProvider.Factory {
+        private val categoryRepository =
+            (context.applicationContext as App).categoriesRepository
 
-                    return NewsFilterViewModel(
-                        application.baseContext.applicationContext,
-                    ) as T
-                }
-            }
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = NewsFilterViewModel(categoryRepository) as T
     }
 }
