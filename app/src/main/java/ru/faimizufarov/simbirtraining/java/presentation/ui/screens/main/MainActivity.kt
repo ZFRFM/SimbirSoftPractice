@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
-        mainViewModel.badgeCount.observe(this) { badgeCount ->
+        mainViewModel.badgeCountLiveData.observe(this) { badgeCount ->
             updateBadgeCount(badgeCount)
         }
     }

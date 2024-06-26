@@ -49,7 +49,7 @@ class CategoriesFragment : Fragment() {
         binding.contentHelpCategories.recyclerViewHelpCategories.adapter = categoriesAdapter
 
         initialLoading()
-        categoriesViewModel.categories.observe(viewLifecycleOwner) { categories ->
+        categoriesViewModel.categoriesLiveData.observe(viewLifecycleOwner) { categories ->
             categoriesAdapter.submitList(categories)
         }
     }
@@ -87,7 +87,6 @@ class CategoriesFragment : Fragment() {
     }
 
     companion object {
-        @JvmStatic
         fun newInstance() = CategoriesFragment()
     }
 }

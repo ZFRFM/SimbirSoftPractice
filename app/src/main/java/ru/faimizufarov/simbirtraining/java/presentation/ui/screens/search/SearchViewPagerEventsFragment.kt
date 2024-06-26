@@ -103,7 +103,6 @@ class SearchViewPagerEventsFragment : Fragment() {
     }
 
     companion object {
-        @JvmStatic
         fun newInstance() = SearchViewPagerEventsFragment()
     }
 }

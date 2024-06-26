@@ -26,7 +26,6 @@ class NewsFragment : Fragment() {
     private lateinit var binding: FragmentNewsBinding
 
     private val newsAdapter = NewsAdapter(onItemClick = ::updateFeed)
-    private val appliedFiltersNews = mutableListOf<News>()
 
     private val newsViewModel: NewsViewModel by viewModels {
         NewsViewModel.Factory(requireContext())
@@ -50,7 +49,7 @@ class NewsFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        newsViewModel.news.observe(viewLifecycleOwner) { news ->
+        newsViewModel.newsLiveData.observe(viewLifecycleOwner) { news ->
             newsAdapter.submitList(news)
         }
 
@@ -58,9 +57,7 @@ class NewsFragment : Fragment() {
             readNewsIdsStateFlow.collect {
                 // FIXME: still bad, shouldn't normally read directly from livedata,
                 //  as well as using lifecycleScope at all
-                val availableNews =
-                    appliedFiltersNews
-                        .takeIf(List<News>::isNotEmpty) ?: newsViewModel.news.value
+                val availableNews = newsViewModel.newsLiveData.value
 
                 val unreadNews =
                     availableNews?.filter { news: News ->

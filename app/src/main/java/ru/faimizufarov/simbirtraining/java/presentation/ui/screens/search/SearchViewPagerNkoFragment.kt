@@ -68,7 +68,6 @@ class SearchViewPagerNkoFragment() : Fragment() {
     }
 
     companion object {
-        @JvmStatic
         fun newInstance() = SearchViewPagerNkoFragment()
 
         val organizationNameList =

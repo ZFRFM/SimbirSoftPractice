@@ -1,6 +1,5 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.authorization
 
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,54 +8,45 @@ import androidx.lifecycle.ViewModel
 const val TEXT_LENGTH = 6
 
 class AuthorizationViewModel : ViewModel() {
-    private val _emailText = MutableLiveData<String>()
-    val emailText: LiveData<String> = _emailText
+    private val _emailLiveData = MutableLiveData<String>()
+    val emailLiveData: LiveData<String> = _emailLiveData
 
-    private val _passwordText = MutableLiveData<String>()
-    val passwordText: LiveData<String> = _passwordText
+    private val _passwordLiveData = MutableLiveData<String>()
+    val passwordLiveData: LiveData<String> = _passwordLiveData
 
-    val isAuthEnabled =
+    val isAuthEnabledLiveData: LiveData<Boolean> =
         MediatorLiveData<Boolean>()
             .apply {
-                addSource(emailText) { email ->
-                    val password = passwordText.value
-                    if (password != null) {
-                        value =
-                            email.length >= TEXT_LENGTH && password.length >= TEXT_LENGTH
-                    }
+                addSource(emailLiveData) { email ->
+                    val password = passwordLiveData.value ?: return@addSource
+                    value = email.length >= TEXT_LENGTH && password.length >= TEXT_LENGTH
                 }
-                addSource(passwordText) { password ->
-                    val email = emailText.value
-                    if (email != null) {
-                        value =
-                            email.length >= TEXT_LENGTH && password.length >= TEXT_LENGTH
-                    }
+                addSource(passwordLiveData) { password ->
+                    val email = emailLiveData.value ?: return@addSource
+                    value = password.length >= TEXT_LENGTH && email.length >= TEXT_LENGTH
                 }
             }
 
-    private val _navigateToActivity = SingleLiveEvent<Class<out AppCompatActivity>?>()
-    val navigateToActivity: LiveData<Class<out AppCompatActivity>?> = _navigateToActivity
+    private val _navigateToMainActivity = MutableLiveData<Event<NavigationCommand>>()
+    val navigateToMainActivity: LiveData<Event<NavigationCommand>> = _navigateToMainActivity
 
-    private val _finishActivity = SingleLiveEvent<Unit>()
-    val finishActivity: LiveData<Unit> = _finishActivity
+    private val _finishAuthorizationActivity = MutableLiveData<Event<NavigationCommand>>()
+    val finishAuthorizationActivity: LiveData<Event<NavigationCommand>> =
+        _finishAuthorizationActivity
 
-    fun navigateTo(destination: Class<out AppCompatActivity>) {
-        _navigateToActivity.value = destination
+    fun navigateToMainActivity() {
+        _navigateToMainActivity.value = Event(NavigationCommand.ToMainActivity)
     }
 
-    fun navigationHandled() {
-        _navigateToActivity.value = null
-    }
-
-    fun onFinishActivity() {
-        _finishActivity.call()
+    fun finishAuthorizationActivity() {
+        _finishAuthorizationActivity.value = Event(NavigationCommand.FinishActivity)
     }
 
     fun setEmailText(emailText: String) {
-        _emailText.value = emailText
+        _emailLiveData.value = emailText
     }
 
     fun setPasswordText(passwordText: String) {
-        _passwordText.value = passwordText
+        _passwordLiveData.value = passwordText
     }
 }

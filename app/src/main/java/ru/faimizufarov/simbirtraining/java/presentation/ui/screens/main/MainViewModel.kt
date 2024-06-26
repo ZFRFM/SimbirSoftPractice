@@ -7,7 +7,7 @@ import kotlinx.coroutines.Dispatchers
 import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.BadgeCounterHolder
 
 class MainViewModel : ViewModel() {
-    val badgeCount: LiveData<Int> =
+    val badgeCountLiveData: LiveData<Int> =
         BadgeCounterHolder.badgeCounter
             .asLiveData(Dispatchers.IO)
 }

@@ -48,7 +48,7 @@ class SearchFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        searchViewModel.query.observe(viewLifecycleOwner) { query ->
+        searchViewModel.queryLiveData.observe(viewLifecycleOwner) { query ->
             binding.searchView.setQuery(
                 query,
                 true,
@@ -100,7 +100,6 @@ class SearchFragment : Fragment() {
     }
 
     companion object {
-        @JvmStatic
         fun newInstance() = SearchFragment()
 
         const val QUERY_KEY = "QUERY_KEY"

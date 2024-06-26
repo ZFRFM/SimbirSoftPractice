@@ -90,7 +90,7 @@ class NewsFilterFragment : Fragment() {
         lifecycleScope.launch {
             newsFilterHolder.queuedFiltersFlow.collect { filters ->
                 newsFilterViewModel.getCategoryList()
-                newsFilterViewModel.categories.observe(viewLifecycleOwner) { categories ->
+                newsFilterViewModel.categoriesLiveData.observe(viewLifecycleOwner) { categories ->
                     val categoryList =
                         categories?.map { category ->
                             CategoryFilterItem(

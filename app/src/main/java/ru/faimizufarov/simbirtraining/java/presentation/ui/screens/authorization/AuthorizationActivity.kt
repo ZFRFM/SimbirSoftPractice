@@ -24,52 +24,80 @@ class AuthorizationActivity : AppCompatActivity() {
         binding = ActivityAuthorizationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        authorizationViewModel.isAuthEnabled.observe(this) { isEnabled ->
-            contentBinding.buttonSignIn.isEnabled = isEnabled
-        }
-
-        authorizationViewModel.emailText.observe(this) { emailText ->
-            if (contentBinding.editTextEmail.text.toString() != emailText) {
-                contentBinding.editTextEmail.setText(emailText)
-            }
-        }
-        authorizationViewModel.passwordText.observe(this) { passwordText ->
-            if (contentBinding.editTextPassword.text?.toString() != passwordText) {
-                contentBinding.editTextPassword.setText(passwordText)
-            }
-        }
-
         setAuthData()
-
-        authorizationViewModel.navigateToActivity.observe(this) { destination ->
-            destination?.let {
-                val intent = Intent(this, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                startActivity(intent)
-                authorizationViewModel.navigationHandled()
-            }
-        }
+        observeViewModel()
 
         contentBinding.buttonSignIn.setOnClickListener {
-            authorizationViewModel.navigateTo(MainActivity::class.java)
+            authorizationViewModel.navigateToMainActivity()
         }
 
         contentBinding.vk.setOnClickListener {
-            authorizationViewModel.navigateTo(MainActivity::class.java)
-        }
-
-        authorizationViewModel.finishActivity.observe(this) {
-            finish()
+            authorizationViewModel.navigateToMainActivity()
         }
 
         binding.imageViewBack.setOnClickListener {
-            authorizationViewModel.onFinishActivity()
+            authorizationViewModel.finishAuthorizationActivity()
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         disposables.dispose()
+    }
+
+    private fun observeViewModel() =
+        with(authorizationViewModel) {
+            isAuthEnabledLiveData.observe(this@AuthorizationActivity) { isEnabled ->
+                contentBinding.buttonSignIn.isEnabled = isEnabled
+            }
+
+            emailLiveData.observe(this@AuthorizationActivity) { emailText ->
+                if (contentBinding.editTextEmail.text.toString() != emailText) {
+                    contentBinding.editTextEmail.setText(emailText)
+                }
+            }
+
+            passwordLiveData.observe(this@AuthorizationActivity) { passwordText ->
+                if (contentBinding.editTextPassword.text?.toString() != passwordText) {
+                    contentBinding.editTextPassword.setText(passwordText)
+                }
+            }
+
+            navigateToMainActivity.observe(this@AuthorizationActivity) { event ->
+                event.getContentIfNotHandled()?.let { command ->
+                    when (command) {
+                        is NavigationCommand.ToMainActivity -> {
+                            navigateToMainActivityLocal()
+                        }
+                        else -> {
+                            return@let
+                        }
+                    }
+                }
+            }
+
+            finishAuthorizationActivity.observe(this@AuthorizationActivity) { event ->
+                event.getContentIfNotHandled()?.let { command ->
+                    when (command) {
+                        is NavigationCommand.FinishActivity -> {
+                            finishActivity()
+                        }
+                        else -> {
+                            return@let
+                        }
+                    }
+                }
+            }
+        }
+
+    private fun navigateToMainActivityLocal() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
+    }
+
+    private fun finishActivity() {
+        finish()
     }
 
     private fun setAuthData() {

@@ -5,10 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class SearchViewModel : ViewModel() {
-    private val _query = MutableLiveData<String>()
-    val query: LiveData<String> = _query
+    private val _queryLiveData = MutableLiveData<String>()
+    val queryLiveData: LiveData<String> = _queryLiveData
 
     fun setQuery(query: String) {
-        _query.value = query
+        _queryLiveData.value = query
     }
 }

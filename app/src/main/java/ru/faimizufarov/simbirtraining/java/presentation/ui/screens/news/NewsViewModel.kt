@@ -21,7 +21,7 @@ class NewsViewModel(
     // TODO: to newsRepository. Holders are for babies and shitcoders, prove you're neither
     private val newsFilterHolder: NewsFilterHolder = GlobalNewsFilterHolder
 
-    val news: LiveData<List<News>> =
+    val newsLiveData: LiveData<List<News>> =
         combine(
             newsRepository.newsListFlow,
             newsFilterHolder.activeFiltersFlow,
