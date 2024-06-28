@@ -19,6 +19,9 @@ class NewsRepository(context: Context) {
     private val _newsListFlow = MutableStateFlow(emptyList<News>())
     val newsListFlow: StateFlow<List<News>> = _newsListFlow
 
+    private val _badgeCounter = MutableStateFlow(0)
+    val badgeCounter: StateFlow<Int> = _badgeCounter
+
     suspend fun requestNewsList(ids: List<String>) {
         val newsList =
             if (isNewsCached()) {
@@ -48,5 +51,9 @@ class NewsRepository(context: Context) {
                 }
             }
         return filteredDatabaseNews
+    }
+
+    suspend fun setBadgeCounterEmitValue(emitValue: Int) {
+        _badgeCounter.emit(emitValue)
     }
 }

@@ -15,7 +15,9 @@ import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.search.Search
 @Suppress("ktlint:standard:no-empty-first-line-in-class-body")
 class MainActivity : AppCompatActivity() {
     private lateinit var viewBinding: ActivityMainBinding
-    private val mainViewModel: MainViewModel by viewModels()
+    private val mainViewModel: MainViewModel by viewModels {
+        MainViewModel.Factory(this)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
