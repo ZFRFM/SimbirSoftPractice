@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
 
-object GlobalNewsFilterHolder : NewsFilterHolder {
+class GlobalNewsFilter : NewsFilter {
     private val _activeFiltersFlow = MutableStateFlow(emptyList<CategoryFilter>())
     override val activeFiltersFlow: StateFlow<List<CategoryFilter>> = _activeFiltersFlow
 

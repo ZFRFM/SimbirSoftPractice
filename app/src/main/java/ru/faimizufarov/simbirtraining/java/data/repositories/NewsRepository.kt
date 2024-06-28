@@ -19,8 +19,8 @@ class NewsRepository(context: Context) {
     private val _newsListFlow = MutableStateFlow(emptyList<News>())
     val newsListFlow: StateFlow<List<News>> = _newsListFlow
 
-    private val _badgeCounter = MutableStateFlow(0)
-    val badgeCounter: StateFlow<Int> = _badgeCounter
+    private val _badgeCounterFlow = MutableStateFlow(0)
+    val badgeCounterFlow: StateFlow<Int> = _badgeCounterFlow
 
     suspend fun requestNewsList(ids: List<String>) {
         val newsList =
@@ -54,6 +54,6 @@ class NewsRepository(context: Context) {
     }
 
     suspend fun setBadgeCounterEmitValue(emitValue: Int) {
-        _badgeCounter.emit(emitValue)
+        _badgeCounterFlow.emit(emitValue)
     }
 }

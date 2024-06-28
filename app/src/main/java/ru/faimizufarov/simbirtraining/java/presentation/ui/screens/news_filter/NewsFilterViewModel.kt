@@ -8,18 +8,54 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.faimizufarov.simbirtraining.java.App
-import ru.faimizufarov.simbirtraining.java.data.models.Category
+import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilterItem
 import ru.faimizufarov.simbirtraining.java.data.repositories.CategoryRepository
+import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.GlobalNewsFilter
 
 class NewsFilterViewModel(
     private val categoriesRepository: CategoryRepository,
 ) : ViewModel() {
-    private val _categoriesLiveData = MutableLiveData<List<Category>>()
-    val categoriesLiveData: LiveData<List<Category>> = _categoriesLiveData
+    private val _categoryFiltersLiveData = MutableLiveData<List<CategoryFilterItem>>()
+    val categoryFiltersLiveData: LiveData<List<CategoryFilterItem>> = _categoryFiltersLiveData
 
-    fun getCategoryList() {
+    private val _newsFilters = MutableLiveData(categoriesRepository.newsFilters)
+    val newsFilters: LiveData<GlobalNewsFilter> = _newsFilters
+
+    fun removeFilter(categoryId: String) {
+        newsFilters.value?.removeFilter(categoryId)
+    }
+
+    fun setFilter(categoryId: String) {
+        newsFilters.value?.setFilter(categoryId)
+    }
+
+    fun confirm() {
+        newsFilters.value?.confirm()
+    }
+
+    fun cancel() {
+        newsFilters.value?.cancel()
+    }
+
+    fun collectNewsFilters() {
         viewModelScope.launch {
-            _categoriesLiveData.value = categoriesRepository.getCategoryList()
+            newsFilters.value?.queuedFiltersFlow?.collect { filters ->
+                val categories = categoriesRepository.getCategoryList()
+
+                val categoryFilterList =
+                    categories.map { category ->
+                        CategoryFilterItem(
+                            categoryId = category.id,
+                            title = category.title,
+                            isChecked =
+                                filters.any { filter ->
+                                    filter.categoryId == category.id
+                                },
+                        )
+                    }
+
+                _categoryFiltersLiveData.value = categoryFilterList
+            }
         }
     }
 

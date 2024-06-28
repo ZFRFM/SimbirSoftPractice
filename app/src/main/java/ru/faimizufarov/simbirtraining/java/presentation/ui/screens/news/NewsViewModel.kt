@@ -13,20 +13,20 @@ import kotlinx.coroutines.launch
 import ru.faimizufarov.simbirtraining.java.App
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
 import ru.faimizufarov.simbirtraining.java.data.models.News
+import ru.faimizufarov.simbirtraining.java.data.repositories.CategoryRepository
 import ru.faimizufarov.simbirtraining.java.data.repositories.NewsRepository
-import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.GlobalNewsFilterHolder
-import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.NewsFilterHolder
+import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.NewsFilter
 
 class NewsViewModel(
     private val newsRepository: NewsRepository,
+    categoryRepository: CategoryRepository,
 ) : ViewModel() {
-    // TODO: to newsRepository. Holders are for babies and shitcoders, prove you're neither
-    private val newsFilterHolder: NewsFilterHolder = GlobalNewsFilterHolder
+    private val newsFilters: NewsFilter = categoryRepository.newsFilters
 
     val newsLiveData: LiveData<List<News>> =
         combine(
             newsRepository.newsListFlow,
-            newsFilterHolder.activeFiltersFlow,
+            newsFilters.activeFiltersFlow,
         ) { news, filters ->
             news.filter { article ->
                 val isFilteredIn =
@@ -65,7 +65,7 @@ class NewsViewModel(
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            newsFilterHolder.activeFiltersFlow
+            newsFilters.activeFiltersFlow
                 .map { filters -> filters.map(CategoryFilter::categoryId) }
                 .collect { ids ->
                     newsRepository.requestNewsList(ids)
@@ -75,7 +75,12 @@ class NewsViewModel(
 
     class Factory(context: Context) : ViewModelProvider.Factory {
         private val newsRepository = (context.applicationContext as App).newsRepository
+        private val categoryRepository = (context.applicationContext as App).categoriesRepository
 
-        override fun <T : ViewModel> create(modelClass: Class<T>): T = NewsViewModel(newsRepository) as T
+        override fun <T : ViewModel> create(modelClass: Class<T>): T =
+            NewsViewModel(
+                newsRepository,
+                categoryRepository,
+            ) as T
     }
 }

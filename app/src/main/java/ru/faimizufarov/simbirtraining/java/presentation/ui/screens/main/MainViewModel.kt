@@ -13,7 +13,7 @@ class MainViewModel(
     newsRepository: NewsRepository,
 ) : ViewModel() {
     val badgeCountLiveData: LiveData<Int> =
-        newsRepository.badgeCounter.asLiveData(Dispatchers.IO)
+        newsRepository.badgeCounterFlow.asLiveData(Dispatchers.IO)
 
     class Factory(context: Context) : ViewModelProvider.Factory {
         private val newsRepository = (context.applicationContext as App).newsRepository

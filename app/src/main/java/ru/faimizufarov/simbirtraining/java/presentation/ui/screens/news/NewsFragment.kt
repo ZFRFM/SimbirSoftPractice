@@ -87,6 +87,7 @@ class NewsFragment : Fragment() {
             )
 
         setFragmentResult(DetailDescriptionFragment.NEWS_POSITION_RESULT, bundle)
+
         parentFragmentManager.beginTransaction().add(
             R.id.fragmentContainerView,
             DetailDescriptionFragment.newInstance(),
