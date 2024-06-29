@@ -1,5 +1,6 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.detail_description
 
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -47,11 +48,25 @@ class DetailDescriptionFragment : Fragment() {
             val today = Clock.System.todayIn(TimeZone.currentSystemDefault()).toEpochDays()
 
             with(binding.contentDetailDescription) {
-                val imageUrl = bundle.getString(IMAGES_VIEW_NEWS)
-                Glide.with(this@DetailDescriptionFragment).load(imageUrl)
-                    .into(binding.contentDetailDescription.imageViewFirstPicture)
+                val imageUrlList = bundle.getStringArrayList(IMAGES_VIEW_NEWS)
+                val imageUrl = imageUrlList?.first().toString()
+
+                if (!imageUrl.startsWith("images/news")) {
+                    Glide
+                        .with(requireContext())
+                        .load(imageUrl)
+                        .into(binding.contentDetailDescription.imageViewFirstPicture)
+                } else {
+                    Glide
+                        .with(requireContext())
+                        .load(Uri.parse("file:///android_asset/$imageUrl"))
+                        .into(binding.contentDetailDescription.imageViewFirstPicture)
+                }
+
                 textViewNews.text = bundle.getString(TEXT_VIEW_NAME)
+
                 textViewDescTop.text = bundle.getString(TEXT_VIEW_DESCRIPTION)
+
                 textViewRemainingTime.text =
                     if (finishDay - today >= 0) {
                         getString(

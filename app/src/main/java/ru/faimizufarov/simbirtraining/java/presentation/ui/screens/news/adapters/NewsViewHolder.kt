@@ -1,5 +1,6 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news.adapters
 
+import android.net.Uri
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -31,10 +32,11 @@ class NewsViewHolder(
 
     fun bind(news: News) {
         val context = itemBinding.root.context
+        val newsImageAsset = news.newsImages.first()
 
         Glide
-            .with(itemView.context)
-            .load(news.newsImages.first())
+            .with(itemBinding.root.context)
+            .load(Uri.parse("file:///android_asset/$newsImageAsset"))
             .into(itemBinding.imageViewNews)
 
         with(itemBinding) {
