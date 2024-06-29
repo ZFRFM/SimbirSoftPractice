@@ -49,17 +49,24 @@ class CategoryRepository(
                     getCategoriesFromApi()
                 }
             } catch (httpException: HttpException) {
-                getCategoriesFromAssets()
+                loadCategoriesInOfflineMode()
             } catch (timeoutCancellationException: TimeoutCancellationException) {
-                getCategoriesFromAssets()
+                loadCategoriesInOfflineMode()
             }
         }
 
     private suspend fun getCategoriesFromApi() =
         if (isCategoriesCached()) {
-            loadCategoriesFromNetwork()
-        } else {
             loadCategoriesFromDatabase()
+        } else {
+            loadCategoriesFromNetwork()
+        }
+
+    private suspend fun loadCategoriesInOfflineMode() =
+        if (isCategoriesCached()) {
+            loadCategoriesFromDatabase()
+        } else {
+            getCategoriesFromAssets()
         }
 
     private suspend fun getCategoriesFromAssets() =
@@ -169,5 +176,5 @@ class CategoryRepository(
         return BitmapFactory.decodeFile(file.absolutePath)
     }
 
-    private suspend fun isCategoriesCached() = database.categoryDao().checkCategoriesCount() == 0
+    private suspend fun isCategoriesCached() = database.categoryDao().checkCategoriesCount() != 0
 }
