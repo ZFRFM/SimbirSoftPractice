@@ -141,12 +141,12 @@
         <ProgressBar
             android:id="@+id/progressBar"
             android:layout_width="wrap_content"
-            android:layout_height="160dp"
+            android:layout_height="162dp"
+            android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
-            app:layout_constraintTop_toTopOf="@id/imageViewSecondPicture"
-            app:layout_constraintBottom_toBottomOf="@id/imageViewThirdPicture"
+            app:layout_constraintTop_toBottomOf="@id/textViewQuestion"
             app:layout_constraintEnd_toStartOf="@id/imageViewSecondPicture"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="@id/imageViewFirstPicture" />
 
         <ImageView
             android:id="@+id/imageViewFirstPicture"
@@ -168,7 +168,7 @@
             android:src="@drawable/cardimage_2"
             android:importantForAccessibility="no"
             android:layout_marginStart="10dp"
-            app:layout_constraintTop_toTopOf="@id/imageViewFirstPicture"
+            app:layout_constraintTop_toTopOf="@id/progressBar"
             app:layout_constraintStart_toEndOf="@id/imageViewFirstPicture" />
 
         <ImageView
@@ -178,7 +178,7 @@
             android:src="@drawable/cardimage_3"
             android:importantForAccessibility="no"
             android:layout_marginStart="10dp"
-            app:layout_constraintBottom_toBottomOf="@id/imageViewFirstPicture"
+            app:layout_constraintBottom_toBottomOf="@id/progressBar"
             app:layout_constraintStart_toEndOf="@id/imageViewFirstPicture" />
 
         <TextView

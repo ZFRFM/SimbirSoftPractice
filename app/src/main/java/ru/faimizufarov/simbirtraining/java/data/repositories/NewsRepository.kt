@@ -93,21 +93,6 @@ class NewsRepository(private val context: Context) {
             continuation.resume(news)
         }
 
-        /*suspendCoroutine { continuation ->
-            val assetsReader =
-                assetManager
-                    .open("responses/categories_list.json")
-                    .bufferedReader()
-            val categoryJson = assetsReader.use(BufferedReader::readText)
-            val categoryAssets =
-                Json.decodeFromString<Array<CategoryAsset>>(categoryJson)
-            val categories =
-                categoryAssets.toList().map { categoryAsset ->
-                    categoryAsset.toCategory(assetManager)
-                }
-            continuation.resume(categories)
-        }*/
-
     private fun NewsAsset.toNews() =
         News(
             id = id,
