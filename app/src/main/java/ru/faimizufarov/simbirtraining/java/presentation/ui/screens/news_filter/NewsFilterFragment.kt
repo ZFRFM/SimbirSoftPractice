@@ -66,14 +66,14 @@ class NewsFilterFragment : Fragment() {
                 .adapter = categoryFilterAdapter
 
             imageViewOk.setOnClickListener {
-                newsFilterViewModel.confirm()
+                newsFilterViewModel.confirmFilters()
                 parentFragmentManager
                     .beginTransaction()
                     .remove(this@NewsFilterFragment).commit()
             }
 
             imageViewBack.setOnClickListener {
-                newsFilterViewModel.cancel()
+                newsFilterViewModel.cancelFilters()
                 parentFragmentManager
                     .beginTransaction()
                     .remove(this@NewsFilterFragment).commit()
@@ -84,7 +84,7 @@ class NewsFilterFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        newsFilterViewModel.newsFilters.observe(viewLifecycleOwner) {
+        newsFilterViewModel.newsFilter.observe(viewLifecycleOwner) {
             newsFilterViewModel.collectNewsFilters()
         }
 

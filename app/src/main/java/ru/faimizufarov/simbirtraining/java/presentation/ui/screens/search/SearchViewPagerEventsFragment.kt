@@ -46,20 +46,7 @@ class SearchViewPagerEventsFragment : Fragment() {
                 ?.setFragmentResultListener(SearchFragment.QUERY_KEY) { key, bundle ->
                     val query = bundle.getString(SearchFragment.QUERY_BUNDLE_KEY) as CharSequence
 
-                    val filteredEventsList =
-                        if (query == "") {
-                            setVisibilityOfLocalUi(true)
-                            listOf()
-                        } else {
-                            setVisibilityOfLocalUi(false)
-                            newsList.filter { news: News ->
-                                news.nameText.contains(
-                                    bundle.getString(SearchFragment.QUERY_BUNDLE_KEY)
-                                        as CharSequence,
-                                    ignoreCase = true,
-                                )
-                            }
-                        }
+                    val filteredEventsList = setFilteredEvents(query, newsList)
 
                     val searchViewEventsAdapter =
                         SearchResultEventsAdapter(
@@ -94,6 +81,25 @@ class SearchViewPagerEventsFragment : Fragment() {
             linearLayoutKeyWords.isVisible = isVisible
         }
     }
+
+    private fun setFilteredEvents(
+        query: CharSequence,
+        newsList: List<News>,
+    ) = if (query == "") {
+        setVisibilityOfLocalUi(true)
+        listOf()
+    } else {
+        setVisibilityOfLocalUi(false)
+        newsList.filterByQuery(query)
+    }
+
+    private fun List<News>.filterByQuery(query: CharSequence) =
+        this.filter { news: News ->
+            news.nameText.contains(
+                query,
+                ignoreCase = true,
+            )
+        }
 
     companion object {
         fun newInstance() = SearchViewPagerEventsFragment()

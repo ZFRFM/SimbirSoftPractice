@@ -20,7 +20,6 @@ import ru.faimizufarov.simbirtraining.java.data.models.Category
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryAsset
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryResponse
 import ru.faimizufarov.simbirtraining.java.data.network.AppApi
-import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.GlobalNewsFilter
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileOutputStream
@@ -39,8 +38,6 @@ class CategoryRepository(
     private val api = AppApi.retrofitService
     private val assetManager = context.assets
     private val database = AppDatabase.getDatabase(context)
-
-    val newsFilters = GlobalNewsFilter()
 
     suspend fun getCategoryList() =
         withContext(Dispatchers.IO) {

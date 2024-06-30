@@ -21,11 +21,11 @@ class GlobalNewsFilter : NewsFilter {
         _queuedFiltersFlow.tryEmit(updatedFilters)
     }
 
-    override fun confirm() {
+    override fun confirmFilters() {
         _activeFiltersFlow.tryEmit(_queuedFiltersFlow.value)
     }
 
-    override fun cancel() {
+    override fun cancelFilters() {
         _queuedFiltersFlow.tryEmit(_activeFiltersFlow.value)
     }
 }

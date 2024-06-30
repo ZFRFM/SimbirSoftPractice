@@ -63,41 +63,39 @@ class AuthorizationActivity : AppCompatActivity() {
                 }
             }
 
-            navigateToMainActivity.observe(this@AuthorizationActivity) { event ->
-                event.getContentIfNotHandled()?.let { command ->
-                    when (command) {
-                        is NavigationCommand.ToMainActivity -> {
-                            navigateToMainActivityLocal()
-                        }
-                        else -> {
-                            return@let
+            navigateToMainActivity
+                .observe(this@AuthorizationActivity) { signInButtonClickedEvent ->
+                    signInButtonClickedEvent.getContentIfNotHandled()?.let { command ->
+                        when (command) {
+                            is NavigationCommand.ToMainActivity -> {
+                                navigateToMainActivityLocal()
+                            }
+                            else -> {
+                                return@let
+                            }
                         }
                     }
                 }
-            }
 
-            finishAuthorizationActivity.observe(this@AuthorizationActivity) { event ->
-                event.getContentIfNotHandled()?.let { command ->
-                    when (command) {
-                        is NavigationCommand.FinishActivity -> {
-                            finishActivity()
-                        }
-                        else -> {
-                            return@let
+            finishAuthorizationActivity
+                .observe(this@AuthorizationActivity) { backButtonClickedEvent ->
+                    backButtonClickedEvent.getContentIfNotHandled()?.let { command ->
+                        when (command) {
+                            is NavigationCommand.FinishActivity -> {
+                                finish()
+                            }
+                            else -> {
+                                return@let
+                            }
                         }
                     }
                 }
-            }
         }
 
     private fun navigateToMainActivityLocal() {
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
-    }
-
-    private fun finishActivity() {
-        finish()
     }
 
     private fun setAuthData() {

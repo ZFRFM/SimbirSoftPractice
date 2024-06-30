@@ -34,10 +34,17 @@ class NewsViewHolder(
         val context = itemBinding.root.context
         val newsImageAsset = news.newsImages.first()
 
-        Glide
-            .with(itemBinding.root.context)
-            .load(Uri.parse("file:///android_asset/$newsImageAsset"))
-            .into(itemBinding.imageViewNews)
+        if (!news.newsImages.first().startsWith("images/news")) {
+            Glide
+                .with(itemBinding.root.context)
+                .load(news.newsImages.first())
+                .into(itemBinding.imageViewNews)
+        } else {
+            Glide
+                .with(itemBinding.root.context)
+                .load(Uri.parse("file:///android_asset/$newsImageAsset"))
+                .into(itemBinding.imageViewNews)
+        }
 
         with(itemBinding) {
             textViewNewsName.text = news.nameText

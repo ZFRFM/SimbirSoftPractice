@@ -13,26 +13,19 @@ import kotlinx.coroutines.launch
 import ru.faimizufarov.simbirtraining.java.App
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
 import ru.faimizufarov.simbirtraining.java.data.models.News
-import ru.faimizufarov.simbirtraining.java.data.repositories.CategoryRepository
 import ru.faimizufarov.simbirtraining.java.data.repositories.NewsRepository
-import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.NewsFilter
+import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.GlobalNewsFilter
 
 class NewsViewModel(
     private val newsRepository: NewsRepository,
-    categoryRepository: CategoryRepository,
+    private val newsFilters: GlobalNewsFilter,
 ) : ViewModel() {
-    private val newsFilters: NewsFilter = categoryRepository.newsFilters
-
     val newsLiveData: LiveData<List<News>> =
         combine(
             newsRepository.newsListFlow,
             newsFilters.activeFiltersFlow,
         ) { news, filters ->
-            news.filter { article ->
-                val isFilteredIn =
-                    filters.any { filter -> filter.categoryId in article.categoryIds }
-                filters.isEmpty() || isFilteredIn
-            }
+            news.filterByCategoryId(filters)
         }
             .onEach { news ->
                 newsRepository.setBadgeCounterEmitValue(news.size)
@@ -73,14 +66,21 @@ class NewsViewModel(
         }
     }
 
+    private fun List<News>.filterByCategoryId(filters: List<CategoryFilter>) =
+        this.filter { article ->
+            val isFilteredIn =
+                filters.any { filter -> filter.categoryId in article.categoryIds }
+            filters.isEmpty() || isFilteredIn
+        }
+
     class Factory(context: Context) : ViewModelProvider.Factory {
         private val newsRepository = (context.applicationContext as App).newsRepository
-        private val categoryRepository = (context.applicationContext as App).categoriesRepository
+        private val newsFilters = (context.applicationContext as App).newsFilters
 
         override fun <T : ViewModel> create(modelClass: Class<T>): T =
             NewsViewModel(
                 newsRepository,
-                categoryRepository,
+                newsFilters,
             ) as T
     }
 }

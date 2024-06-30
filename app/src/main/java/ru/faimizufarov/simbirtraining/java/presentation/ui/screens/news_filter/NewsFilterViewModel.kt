@@ -14,32 +14,32 @@ import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.GlobalNewsFil
 
 class NewsFilterViewModel(
     private val categoriesRepository: CategoryRepository,
+    newsFilters: GlobalNewsFilter,
 ) : ViewModel() {
     private val _categoryFiltersLiveData = MutableLiveData<List<CategoryFilterItem>>()
     val categoryFiltersLiveData: LiveData<List<CategoryFilterItem>> = _categoryFiltersLiveData
 
-    private val _newsFilters = MutableLiveData(categoriesRepository.newsFilters)
-    val newsFilters: LiveData<GlobalNewsFilter> = _newsFilters
+    val newsFilter: LiveData<GlobalNewsFilter> = MutableLiveData(newsFilters)
 
     fun removeFilter(categoryId: String) {
-        newsFilters.value?.removeFilter(categoryId)
+        newsFilter.value?.removeFilter(categoryId)
     }
 
     fun setFilter(categoryId: String) {
-        newsFilters.value?.setFilter(categoryId)
+        newsFilter.value?.setFilter(categoryId)
     }
 
-    fun confirm() {
-        newsFilters.value?.confirm()
+    fun confirmFilters() {
+        newsFilter.value?.confirmFilters()
     }
 
-    fun cancel() {
-        newsFilters.value?.cancel()
+    fun cancelFilters() {
+        newsFilter.value?.cancelFilters()
     }
 
     fun collectNewsFilters() {
         viewModelScope.launch {
-            newsFilters.value?.queuedFiltersFlow?.collect { filters ->
+            newsFilter.value?.queuedFiltersFlow?.collect { filters ->
                 val categories = categoriesRepository.getCategoryList()
 
                 val categoryFilterList =
@@ -63,6 +63,8 @@ class NewsFilterViewModel(
         private val categoryRepository =
             (context.applicationContext as App).categoriesRepository
 
-        override fun <T : ViewModel> create(modelClass: Class<T>): T = NewsFilterViewModel(categoryRepository) as T
+        private val newsFilters = (context.applicationContext as App).newsFilters
+
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = NewsFilterViewModel(categoryRepository, newsFilters) as T
     }
 }

@@ -11,7 +11,7 @@ interface NewsFilter {
 
     fun removeFilter(categoryId: String)
 
-    fun confirm()
+    fun confirmFilters()
 
-    fun cancel()
+    fun cancelFilters()
 }
