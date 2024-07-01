@@ -42,7 +42,7 @@ class CategoryRepository(
     suspend fun getCategoryList() =
         withContext(Dispatchers.IO) {
             try {
-                withTimeout(5000) {
+                withTimeout(2500) {
                     getCategoriesFromApi()
                 }
             } catch (httpException: HttpException) {

@@ -31,7 +31,7 @@ class NewsRepository(private val context: Context) {
     suspend fun requestNewsList(ids: List<String>) {
         val newsList =
             try {
-                withTimeout(5000) {
+                withTimeout(2500) {
                     getNewsFromApi(ids)
                 }
             } catch (httpException: HttpException) {

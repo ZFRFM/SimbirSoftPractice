@@ -2,61 +2,54 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news_filter
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.launch
+import androidx.lifecycle.asLiveData
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.map
 import ru.faimizufarov.simbirtraining.java.App
+import ru.faimizufarov.simbirtraining.java.data.models.Category
+import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilterItem
 import ru.faimizufarov.simbirtraining.java.data.repositories.CategoryRepository
 import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.GlobalNewsFilter
 
 class NewsFilterViewModel(
     private val categoriesRepository: CategoryRepository,
-    newsFilters: GlobalNewsFilter,
+    private val newsFilter: GlobalNewsFilter,
 ) : ViewModel() {
-    private val _categoryFiltersLiveData = MutableLiveData<List<CategoryFilterItem>>()
-    val categoryFiltersLiveData: LiveData<List<CategoryFilterItem>> = _categoryFiltersLiveData
+    val categoryFiltersLiveData: LiveData<List<CategoryFilterItem>> =
+        newsFilter.queuedFiltersFlow.map { filters ->
+            val categories = categoriesRepository.getCategoryList()
+            categories.toFilteredItems(filters)
+        }.asLiveData(Dispatchers.IO)
 
-    val newsFilter: LiveData<GlobalNewsFilter> = MutableLiveData(newsFilters)
+    private fun List<Category>.toFilteredItems(filters: List<CategoryFilter>) =
+        map { category ->
+            CategoryFilterItem(
+                categoryId = category.id,
+                title = category.title,
+                isChecked =
+                    filters.any { filter ->
+                        filter.categoryId == category.id
+                    },
+            )
+        }
 
     fun removeFilter(categoryId: String) {
-        newsFilter.value?.removeFilter(categoryId)
+        newsFilter.removeFilter(categoryId)
     }
 
     fun setFilter(categoryId: String) {
-        newsFilter.value?.setFilter(categoryId)
+        newsFilter.setFilter(categoryId)
     }
 
     fun confirmFilters() {
-        newsFilter.value?.confirmFilters()
+        newsFilter.confirmFilters()
     }
 
     fun cancelFilters() {
-        newsFilter.value?.cancelFilters()
-    }
-
-    fun collectNewsFilters() {
-        viewModelScope.launch {
-            newsFilter.value?.queuedFiltersFlow?.collect { filters ->
-                val categories = categoriesRepository.getCategoryList()
-
-                val categoryFilterList =
-                    categories.map { category ->
-                        CategoryFilterItem(
-                            categoryId = category.id,
-                            title = category.title,
-                            isChecked =
-                                filters.any { filter ->
-                                    filter.categoryId == category.id
-                                },
-                        )
-                    }
-
-                _categoryFiltersLiveData.value = categoryFilterList
-            }
-        }
+        newsFilter.cancelFilters()
     }
 
     class Factory(context: Context) : ViewModelProvider.Factory {

@@ -8,7 +8,6 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
-import io.reactivex.rxjava3.disposables.CompositeDisposable
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsFilterBinding
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news_filter.adapters.CategoryFilterAdapter
@@ -16,7 +15,6 @@ import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news_filter.a
 class NewsFilterFragment : Fragment() {
     private lateinit var binding: FragmentNewsFilterBinding
     private lateinit var itemDecoration: DividerItemDecoration
-    private val disposables = CompositeDisposable()
 
     private val newsFilterViewModel:
         NewsFilterViewModel by viewModels { NewsFilterViewModel.Factory(requireContext()) }
@@ -58,10 +56,10 @@ class NewsFilterFragment : Fragment() {
         dividerDrawable?.let(itemDecoration::setDrawable)
 
         with(binding) {
-            contentDetailDescription.recyclerViewNewsFilterFragment
+            contentNewsFilter.recyclerViewNewsFilterFragment
                 .addItemDecoration(itemDecoration)
 
-            contentDetailDescription
+            contentNewsFilter
                 .recyclerViewNewsFilterFragment
                 .adapter = categoryFilterAdapter
 
@@ -84,19 +82,11 @@ class NewsFilterFragment : Fragment() {
     }
 
     private fun observeViewModel() {
-        newsFilterViewModel.newsFilter.observe(viewLifecycleOwner) {
-            newsFilterViewModel.collectNewsFilters()
-        }
-
         newsFilterViewModel.categoryFiltersLiveData
             .observe(viewLifecycleOwner) { categoryFilterList ->
                 categoryFilterAdapter.submitList(categoryFilterList)
+                binding.contentNewsFilter.bottomDivider.visibility = View.VISIBLE
             }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        disposables.dispose()
     }
 
     companion object {
