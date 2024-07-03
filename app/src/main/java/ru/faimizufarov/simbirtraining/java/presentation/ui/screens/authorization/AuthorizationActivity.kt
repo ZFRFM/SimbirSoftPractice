@@ -63,33 +63,13 @@ class AuthorizationActivity : AppCompatActivity() {
                 }
             }
 
-            navigateToMainActivity
-                .observe(this@AuthorizationActivity) { signInButtonClickedEvent ->
-                    signInButtonClickedEvent.getContentIfNotHandled()?.let { command ->
-                        when (command) {
-                            is NavigationCommand.ToMainActivity -> {
-                                navigateToMainActivityLocal()
-                            }
-                            else -> {
-                                return@let
-                            }
-                        }
-                    }
-                }
+            navigateToMainLiveEvent.observe(this@AuthorizationActivity) {
+                navigateToMainActivityLocal()
+            }
 
-            finishAuthorizationActivity
-                .observe(this@AuthorizationActivity) { backButtonClickedEvent ->
-                    backButtonClickedEvent.getContentIfNotHandled()?.let { command ->
-                        when (command) {
-                            is NavigationCommand.FinishActivity -> {
-                                finish()
-                            }
-                            else -> {
-                                return@let
-                            }
-                        }
-                    }
-                }
+            finishAuthorizationLiveEvent.observe(this@AuthorizationActivity) {
+                finish()
+            }
         }
 
     private fun navigateToMainActivityLocal() {

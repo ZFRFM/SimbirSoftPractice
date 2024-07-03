@@ -27,19 +27,18 @@ class AuthorizationViewModel : ViewModel() {
                 }
             }
 
-    private val _navigateToMainActivity = MutableLiveData<Event<NavigationCommand>>()
-    val navigateToMainActivity: LiveData<Event<NavigationCommand>> = _navigateToMainActivity
+    private val _navigateToMainLiveEvent = SingleLiveEvent<Unit>()
+    val navigateToMainLiveEvent: LiveData<Unit> = _navigateToMainLiveEvent
 
-    private val _finishAuthorizationActivity = MutableLiveData<Event<NavigationCommand>>()
-    val finishAuthorizationActivity: LiveData<Event<NavigationCommand>> =
-        _finishAuthorizationActivity
+    private val _finishAuthorizationLiveEvent = SingleLiveEvent<Unit>()
+    val finishAuthorizationLiveEvent: LiveData<Unit> = _finishAuthorizationLiveEvent
 
     fun navigateToMainActivity() {
-        _navigateToMainActivity.value = Event(NavigationCommand.ToMainActivity)
+        _navigateToMainLiveEvent.postValue(Unit)
     }
 
     fun finishAuthorizationActivity() {
-        _finishAuthorizationActivity.value = Event(NavigationCommand.FinishActivity)
+        _finishAuthorizationLiveEvent.postValue(Unit)
     }
 
     fun setEmailText(emailText: String) {
