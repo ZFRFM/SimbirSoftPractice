@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:background="@color/light_grey_two"
-    tools:context=".java.presentation.ui.activities.MainActivity">
+    tools:context=".java.presentation.ui.screens.main.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
@@ -66,7 +66,7 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <include
-        android:id="@+id/contentDetailDescription"
+        android:id="@+id/contentNewsFilter"
         layout="@layout/scrolling_news_filter_fragment" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

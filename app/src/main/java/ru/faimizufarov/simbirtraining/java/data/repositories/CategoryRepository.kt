@@ -14,12 +14,12 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.json.Json
 import retrofit2.HttpException
+import ru.faimizufarov.simbirtraining.java.data.local.AppDatabase
+import ru.faimizufarov.simbirtraining.java.data.local.CategoryEntity
 import ru.faimizufarov.simbirtraining.java.data.models.Category
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryAsset
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryResponse
-import ru.faimizufarov.simbirtraining.java.database.AppDatabase
-import ru.faimizufarov.simbirtraining.java.database.CategoryEntity
-import ru.faimizufarov.simbirtraining.java.network.AppApi
+import ru.faimizufarov.simbirtraining.java.data.network.AppApi
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileOutputStream
@@ -42,21 +42,28 @@ class CategoryRepository(
     suspend fun getCategoryList() =
         withContext(Dispatchers.IO) {
             try {
-                withTimeout(5000) {
+                withTimeout(2500) {
                     getCategoriesFromApi()
                 }
             } catch (httpException: HttpException) {
-                getCategoriesFromAssets()
+                loadCategoriesInOfflineMode()
             } catch (timeoutCancellationException: TimeoutCancellationException) {
-                getCategoriesFromAssets()
+                loadCategoriesInOfflineMode()
             }
         }
 
     private suspend fun getCategoriesFromApi() =
         if (isCategoriesCached()) {
-            loadCategoriesFromNetwork()
-        } else {
             loadCategoriesFromDatabase()
+        } else {
+            loadCategoriesFromNetwork()
+        }
+
+    private suspend fun loadCategoriesInOfflineMode() =
+        if (isCategoriesCached()) {
+            loadCategoriesFromDatabase()
+        } else {
+            getCategoriesFromAssets()
         }
 
     private suspend fun getCategoriesFromAssets() =
@@ -166,5 +173,5 @@ class CategoryRepository(
         return BitmapFactory.decodeFile(file.absolutePath)
     }
 
-    private suspend fun isCategoriesCached() = database.categoryDao().checkCategoriesCount() == 0
+    private suspend fun isCategoriesCached() = database.categoryDao().checkCategoriesCount() != 0
 }

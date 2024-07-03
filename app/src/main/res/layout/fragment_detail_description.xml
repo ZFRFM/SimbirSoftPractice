@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:fitsSystemWindows="true"
-    tools:context=".java.presentation.ui.activities.MainActivity">
+    tools:context=".java.presentation.ui.screens.main.MainActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBar"
@@ -67,6 +67,6 @@
 
     <include
         android:id="@+id/contentDetailDescription"
-        layout="@layout/scrolling_detail_desc" />
+        layout="@layout/scrolling_detail_description" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

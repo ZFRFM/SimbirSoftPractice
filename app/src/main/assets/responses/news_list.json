@@ -7,7 +7,7 @@
         "description": "Дубовская школа-интернат для детей с ограниченными возможностями здоровья стала первой в области …",
         "status": 0,
         "photos": [
-            "http://192.168.48.86:8080/news_dir/news_1_image.png"
+            "images/news/news_1_image.png"
         ],
         "categories": [
             "0"
@@ -25,7 +25,7 @@
         "description": "Дубовская школа-интернат для детей с ограниченными возможностями здоровья стала первой в области …",
         "status": 0,
         "photos": [
-            "http://192.168.48.86:8080/news_dir/news_2_image.png"
+            "images/news/news_2_image.png"
         ],
         "categories": [
             "0",
