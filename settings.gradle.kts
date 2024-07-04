@@ -15,4 +15,5 @@ dependencyResolutionManagement {
 
 rootProject.name = "SimbirSoftPractice"
 include(":app")
- 
+include(":data")
+include(":domain")
