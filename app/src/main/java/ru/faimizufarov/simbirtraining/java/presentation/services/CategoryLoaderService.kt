@@ -11,6 +11,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.faimizufarov.simbirtraining.java.data.repository.CategoryRepositoryImpl
 import ru.faimizufarov.simbirtraining.java.domain.models.Category
+import ru.faimizufarov.simbirtraining.java.domain.usecase.GetCategoriesUseCase
 
 class CategoryLoaderService : Service() {
     private val binder = LocalBinder()
@@ -18,6 +19,11 @@ class CategoryLoaderService : Service() {
     private val categoryRepositoryImpl by lazy {
         CategoryRepositoryImpl(applicationContext)
     }
+
+    private val getCategoriesUseCase: GetCategoriesUseCase by lazy {
+        GetCategoriesUseCase(categoryRepositoryImpl)
+    }
+
     private var coroutineScope: CoroutineScope? = null
 
     private var onListOfCategoryChanged: ((List<Category>) -> Unit)? = null
@@ -42,7 +48,7 @@ class CategoryLoaderService : Service() {
     ): Int {
         coroutineScope?.launch {
             delay(500)
-            val categoryList = categoryRepositoryImpl.getCategoryList()
+            val categoryList = getCategoriesUseCase.execute()
             onListOfCategoryChanged?.invoke(categoryList)
         }
 

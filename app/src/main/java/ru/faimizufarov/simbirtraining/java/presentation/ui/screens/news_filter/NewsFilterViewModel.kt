@@ -10,17 +10,17 @@ import kotlinx.coroutines.flow.map
 import ru.faimizufarov.simbirtraining.java.App
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilterItem
-import ru.faimizufarov.simbirtraining.java.data.repository.CategoryRepositoryImpl
 import ru.faimizufarov.simbirtraining.java.domain.models.Category
+import ru.faimizufarov.simbirtraining.java.domain.usecase.GetCategoriesUseCase
 import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.GlobalNewsFilter
 
 class NewsFilterViewModel(
-    private val categoriesRepository: CategoryRepositoryImpl,
+    private val getCategoriesUseCase: GetCategoriesUseCase,
     private val newsFilter: GlobalNewsFilter,
 ) : ViewModel() {
     val categoryFiltersLiveData: LiveData<List<CategoryFilterItem>> =
         newsFilter.queuedFiltersFlow.map { filters ->
-            val categories = categoriesRepository.getCategoryList()
+            val categories = getCategoriesUseCase.execute()
             categories.toFilteredItems(filters)
         }.asLiveData(Dispatchers.IO)
 
@@ -56,8 +56,10 @@ class NewsFilterViewModel(
         private val categoryRepository =
             (context.applicationContext as App).categoriesRepository
 
+        private val getCategoriesUseCase = GetCategoriesUseCase(categoryRepository)
+
         private val newsFilters = (context.applicationContext as App).newsFilters
 
-        override fun <T : ViewModel> create(modelClass: Class<T>): T = NewsFilterViewModel(categoryRepository, newsFilters) as T
+        override fun <T : ViewModel> create(modelClass: Class<T>): T = NewsFilterViewModel(getCategoriesUseCase, newsFilters) as T
     }
 }
