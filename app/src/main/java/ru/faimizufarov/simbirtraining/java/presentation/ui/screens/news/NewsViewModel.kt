@@ -14,11 +14,15 @@ import ru.faimizufarov.simbirtraining.java.App
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
 import ru.faimizufarov.simbirtraining.java.data.repository.NewsRepositoryImpl
 import ru.faimizufarov.simbirtraining.java.domain.models.News
+import ru.faimizufarov.simbirtraining.java.domain.usecase.GetNewsUseCase
+import ru.faimizufarov.simbirtraining.java.domain.usecase.SetBadgeCounterEmitValueUseCase
 import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.GlobalNewsFilter
 
 class NewsViewModel(
-    private val newsRepositoryImpl: NewsRepositoryImpl,
+    private val setBadgeCounterEmitValueUseCase: SetBadgeCounterEmitValueUseCase,
+    private val getNewsUseCase: GetNewsUseCase,
     private val newsFilters: GlobalNewsFilter,
+    newsRepositoryImpl: NewsRepositoryImpl,
 ) : ViewModel() {
     val newsLiveData: LiveData<List<News>> =
         combine(
@@ -28,7 +32,7 @@ class NewsViewModel(
             news.filterByCategoryId(filters)
         }
             .onEach { news ->
-                newsRepositoryImpl.setBadgeCounterEmitValue(news.size)
+                setBadgeCounterEmitValueUseCase.execute(news.size)
             }
             .asLiveData(Dispatchers.IO)
 
@@ -51,7 +55,7 @@ class NewsViewModel(
                         !readNewsIdsStateFlow.value.contains(news.id)
                     } ?: emptyList()
 
-                newsRepositoryImpl.setBadgeCounterEmitValue(unreadNews.size)
+                setBadgeCounterEmitValueUseCase.execute(unreadNews.size)
             }
         }
     }
@@ -61,7 +65,7 @@ class NewsViewModel(
             newsFilters.activeFiltersFlow
                 .map { filters -> filters.map(CategoryFilter::categoryId) }
                 .collect { ids ->
-                    newsRepositoryImpl.requestNewsList(ids)
+                    getNewsUseCase.execute(ids)
                 }
         }
     }
@@ -77,10 +81,15 @@ class NewsViewModel(
         private val newsRepository = (context.applicationContext as App).newsRepositoryImpl
         private val newsFilters = (context.applicationContext as App).newsFilters
 
+        private val getNewsUseCase = GetNewsUseCase(newsRepository)
+        private val setBadgeCounterEmitValueUseCase = SetBadgeCounterEmitValueUseCase(newsRepository)
+
         override fun <T : ViewModel> create(modelClass: Class<T>): T =
             NewsViewModel(
-                newsRepository,
+                setBadgeCounterEmitValueUseCase,
+                getNewsUseCase,
                 newsFilters,
+                newsRepository,
             ) as T
     }
 }

@@ -1,4 +1,12 @@
 package ru.faimizufarov.simbirtraining.java.domain.usecase
 
-class GetNewsUseCase {
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import ru.faimizufarov.simbirtraining.java.domain.repository.NewsRepository
+
+class GetNewsUseCase(private val newsRepository: NewsRepository) {
+    suspend fun execute(ids: List<String>) =
+        withContext(Dispatchers.IO) {
+            newsRepository.requestNewsList(ids)
+        }
 }
