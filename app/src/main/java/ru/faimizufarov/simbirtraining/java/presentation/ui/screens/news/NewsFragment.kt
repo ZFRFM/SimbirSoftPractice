@@ -13,7 +13,7 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsBinding
-import ru.faimizufarov.simbirtraining.java.data.models.News
+import ru.faimizufarov.simbirtraining.java.domain.models.News
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.detail_description.DetailDescriptionFragment
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news.adapters.NewsAdapter
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news_filter.NewsFilterFragment

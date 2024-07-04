@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import ru.faimizufarov.simbirtraining.databinding.ItemCategoryBinding
-import ru.faimizufarov.simbirtraining.java.data.models.Category
+import ru.faimizufarov.simbirtraining.java.domain.models.Category
 
 class CategoriesAdapter :
     ListAdapter<Category, CategoriesViewHolder>(ItemCallback) {

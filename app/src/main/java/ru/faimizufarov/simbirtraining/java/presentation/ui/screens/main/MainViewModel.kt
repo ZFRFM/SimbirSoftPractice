@@ -7,16 +7,16 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import kotlinx.coroutines.Dispatchers
 import ru.faimizufarov.simbirtraining.java.App
-import ru.faimizufarov.simbirtraining.java.data.repositories.NewsRepository
+import ru.faimizufarov.simbirtraining.java.data.repository.NewsRepositoryImpl
 
 class MainViewModel(
-    newsRepository: NewsRepository,
+    newsRepositoryImpl: NewsRepositoryImpl,
 ) : ViewModel() {
     val badgeCountLiveData: LiveData<Int> =
-        newsRepository.badgeCounterFlow.asLiveData(Dispatchers.IO)
+        newsRepositoryImpl.badgeCounterFlow.asLiveData(Dispatchers.IO)
 
     class Factory(context: Context) : ViewModelProvider.Factory {
-        private val newsRepository = (context.applicationContext as App).newsRepository
+        private val newsRepository = (context.applicationContext as App).newsRepositoryImpl
 
         override fun <T : ViewModel> create(modelClass: Class<T>): T = MainViewModel(newsRepository) as T
     }

@@ -3,7 +3,7 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.categories
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import ru.faimizufarov.simbirtraining.java.data.models.Category
+import ru.faimizufarov.simbirtraining.java.domain.models.Category
 
 class CategoriesViewModel : ViewModel() {
     private val _categoriesLiveData = MutableLiveData<List<Category>>()

@@ -12,23 +12,23 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import ru.faimizufarov.simbirtraining.java.App
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
-import ru.faimizufarov.simbirtraining.java.data.models.News
-import ru.faimizufarov.simbirtraining.java.data.repositories.NewsRepository
+import ru.faimizufarov.simbirtraining.java.data.repository.NewsRepositoryImpl
+import ru.faimizufarov.simbirtraining.java.domain.models.News
 import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.GlobalNewsFilter
 
 class NewsViewModel(
-    private val newsRepository: NewsRepository,
+    private val newsRepositoryImpl: NewsRepositoryImpl,
     private val newsFilters: GlobalNewsFilter,
 ) : ViewModel() {
     val newsLiveData: LiveData<List<News>> =
         combine(
-            newsRepository.newsListFlow,
+            newsRepositoryImpl.newsListFlow,
             newsFilters.activeFiltersFlow,
         ) { news, filters ->
             news.filterByCategoryId(filters)
         }
             .onEach { news ->
-                newsRepository.setBadgeCounterEmitValue(news.size)
+                newsRepositoryImpl.setBadgeCounterEmitValue(news.size)
             }
             .asLiveData(Dispatchers.IO)
 
@@ -51,7 +51,7 @@ class NewsViewModel(
                         !readNewsIdsStateFlow.value.contains(news.id)
                     } ?: emptyList()
 
-                newsRepository.setBadgeCounterEmitValue(unreadNews.size)
+                newsRepositoryImpl.setBadgeCounterEmitValue(unreadNews.size)
             }
         }
     }
@@ -61,7 +61,7 @@ class NewsViewModel(
             newsFilters.activeFiltersFlow
                 .map { filters -> filters.map(CategoryFilter::categoryId) }
                 .collect { ids ->
-                    newsRepository.requestNewsList(ids)
+                    newsRepositoryImpl.requestNewsList(ids)
                 }
         }
     }
@@ -74,7 +74,7 @@ class NewsViewModel(
         }
 
     class Factory(context: Context) : ViewModelProvider.Factory {
-        private val newsRepository = (context.applicationContext as App).newsRepository
+        private val newsRepository = (context.applicationContext as App).newsRepositoryImpl
         private val newsFilters = (context.applicationContext as App).newsFilters
 
         override fun <T : ViewModel> create(modelClass: Class<T>): T =

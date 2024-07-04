@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.data.models
+package ru.faimizufarov.simbirtraining.java.domain.models
 
 import android.graphics.Bitmap
 import android.os.Parcelable

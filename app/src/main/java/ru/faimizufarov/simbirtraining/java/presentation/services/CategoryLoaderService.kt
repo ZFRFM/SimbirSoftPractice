@@ -9,14 +9,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import ru.faimizufarov.simbirtraining.java.data.models.Category
-import ru.faimizufarov.simbirtraining.java.data.repositories.CategoryRepository
+import ru.faimizufarov.simbirtraining.java.data.repository.CategoryRepositoryImpl
+import ru.faimizufarov.simbirtraining.java.domain.models.Category
 
 class CategoryLoaderService : Service() {
     private val binder = LocalBinder()
 
-    private val categoryRepository by lazy {
-        CategoryRepository(applicationContext)
+    private val categoryRepositoryImpl by lazy {
+        CategoryRepositoryImpl(applicationContext)
     }
     private var coroutineScope: CoroutineScope? = null
 
@@ -42,7 +42,7 @@ class CategoryLoaderService : Service() {
     ): Int {
         coroutineScope?.launch {
             delay(500)
-            val categoryList = categoryRepository.getCategoryList()
+            val categoryList = categoryRepositoryImpl.getCategoryList()
             onListOfCategoryChanged?.invoke(categoryList)
         }
 

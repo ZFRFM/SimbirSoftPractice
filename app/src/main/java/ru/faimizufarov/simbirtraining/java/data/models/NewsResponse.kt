@@ -2,6 +2,7 @@ package ru.faimizufarov.simbirtraining.java.data.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import ru.faimizufarov.simbirtraining.java.domain.models.News
 
 @Serializable
 data class NewsResponse(

@@ -8,14 +8,14 @@ import androidx.lifecycle.asLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
 import ru.faimizufarov.simbirtraining.java.App
-import ru.faimizufarov.simbirtraining.java.data.models.Category
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilterItem
-import ru.faimizufarov.simbirtraining.java.data.repositories.CategoryRepository
+import ru.faimizufarov.simbirtraining.java.data.repository.CategoryRepositoryImpl
+import ru.faimizufarov.simbirtraining.java.domain.models.Category
 import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.GlobalNewsFilter
 
 class NewsFilterViewModel(
-    private val categoriesRepository: CategoryRepository,
+    private val categoriesRepository: CategoryRepositoryImpl,
     private val newsFilter: GlobalNewsFilter,
 ) : ViewModel() {
     val categoryFiltersLiveData: LiveData<List<CategoryFilterItem>> =

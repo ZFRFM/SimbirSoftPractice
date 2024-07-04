@@ -10,11 +10,11 @@ import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import ru.faimizufarov.simbirtraining.java.App
-import ru.faimizufarov.simbirtraining.java.data.models.News
-import ru.faimizufarov.simbirtraining.java.data.repositories.NewsRepository
+import ru.faimizufarov.simbirtraining.java.data.repository.NewsRepositoryImpl
+import ru.faimizufarov.simbirtraining.java.domain.models.News
 
 class SearchViewPagerEventsViewModel(
-    private val newsRepository: NewsRepository,
+    private val newsRepositoryImpl: NewsRepositoryImpl,
 ) : ViewModel() {
     private val _newsList = MutableLiveData<List<News>>()
     val newsList: LiveData<List<News>> = _newsList
@@ -36,14 +36,14 @@ class SearchViewPagerEventsViewModel(
 
     init {
         viewModelScope.launch {
-            newsRepository.newsListFlow.collect { collectedNewsList ->
+            newsRepositoryImpl.newsListFlow.collect { collectedNewsList ->
                 _newsList.value = collectedNewsList
             }
         }
     }
 
     class Factory(context: Context) : ViewModelProvider.Factory {
-        private val newsRepository = (context.applicationContext as App).newsRepository
+        private val newsRepository = (context.applicationContext as App).newsRepositoryImpl
 
         override fun <T : ViewModel> create(modelClass: Class<T>): T =
             SearchViewPagerEventsViewModel(

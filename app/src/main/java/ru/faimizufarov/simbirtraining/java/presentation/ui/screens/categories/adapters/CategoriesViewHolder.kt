@@ -2,7 +2,7 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.categories.a
 
 import androidx.recyclerview.widget.RecyclerView
 import ru.faimizufarov.simbirtraining.databinding.ItemCategoryBinding
-import ru.faimizufarov.simbirtraining.java.data.models.Category
+import ru.faimizufarov.simbirtraining.java.domain.models.Category
 
 class CategoriesViewHolder(
     private val itemBinding: ItemCategoryBinding,

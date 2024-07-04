@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.data.repositories
+package ru.faimizufarov.simbirtraining.java.data.repository
 
 import android.content.Context
 import android.content.res.AssetManager
@@ -16,10 +16,11 @@ import kotlinx.serialization.json.Json
 import retrofit2.HttpException
 import ru.faimizufarov.simbirtraining.java.data.local.AppDatabase
 import ru.faimizufarov.simbirtraining.java.data.local.CategoryEntity
-import ru.faimizufarov.simbirtraining.java.data.models.Category
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryAsset
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryResponse
 import ru.faimizufarov.simbirtraining.java.data.network.AppApi
+import ru.faimizufarov.simbirtraining.java.domain.models.Category
+import ru.faimizufarov.simbirtraining.java.domain.repository.CategoryRepository
 import java.io.BufferedReader
 import java.io.File
 import java.io.FileOutputStream
@@ -32,14 +33,14 @@ const val DIRECTORY_BITMAPS = "bitmaps"
 const val CATEGORY_PATTERN = "category_image_"
 const val EXTENSION = ".png"
 
-class CategoryRepository(
+class CategoryRepositoryImpl(
     private val context: Context,
-) {
+) : CategoryRepository {
     private val api = AppApi.retrofitService
     private val assetManager = context.assets
     private val database = AppDatabase.getDatabase(context)
 
-    suspend fun getCategoryList() =
+    override suspend fun getCategoryList() =
         withContext(Dispatchers.IO) {
             try {
                 withTimeout(2500) {

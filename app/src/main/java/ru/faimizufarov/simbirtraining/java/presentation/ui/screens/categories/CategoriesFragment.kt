@@ -10,7 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import ru.faimizufarov.simbirtraining.databinding.FragmentHelpCategoriesBinding
-import ru.faimizufarov.simbirtraining.java.data.models.Category
+import ru.faimizufarov.simbirtraining.java.domain.models.Category
 import ru.faimizufarov.simbirtraining.java.presentation.services.CategoryLoaderService
 import ru.faimizufarov.simbirtraining.java.presentation.services.CategoryLoaderServiceConnection
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.categories.adapters.CategoriesAdapter

@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.data.repositories
+package ru.faimizufarov.simbirtraining.java.data.repository
 
 import android.content.Context
 import kotlinx.coroutines.TimeoutCancellationException
@@ -10,15 +10,18 @@ import retrofit2.HttpException
 import ru.faimizufarov.simbirtraining.java.data.local.AppDatabase
 import ru.faimizufarov.simbirtraining.java.data.local.toNews
 import ru.faimizufarov.simbirtraining.java.data.local.toNewsEntity
-import ru.faimizufarov.simbirtraining.java.data.models.News
 import ru.faimizufarov.simbirtraining.java.data.models.NewsAsset
 import ru.faimizufarov.simbirtraining.java.data.models.mapToNews
 import ru.faimizufarov.simbirtraining.java.data.network.AppApi
+import ru.faimizufarov.simbirtraining.java.domain.models.News
+import ru.faimizufarov.simbirtraining.java.domain.repository.NewsRepository
 import java.io.BufferedReader
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
-class NewsRepository(private val context: Context) {
+class NewsRepositoryImpl(
+    private val context: Context,
+) : NewsRepository {
     private val database = AppDatabase.getDatabase(context)
     private val assetManager = context.assets
 
@@ -28,7 +31,7 @@ class NewsRepository(private val context: Context) {
     private val _badgeCounterFlow = MutableStateFlow(0)
     val badgeCounterFlow: StateFlow<Int> = _badgeCounterFlow
 
-    suspend fun requestNewsList(ids: List<String>) {
+    override suspend fun requestNewsList(ids: List<String>) {
         val newsList =
             try {
                 withTimeout(2500) {
@@ -109,7 +112,7 @@ class NewsRepository(private val context: Context) {
             organisationText = organisation,
         )
 
-    suspend fun setBadgeCounterEmitValue(emitValue: Int) {
+    override suspend fun setBadgeCounterEmitValue(emitValue: Int) {
         _badgeCounterFlow.emit(emitValue)
     }
 }

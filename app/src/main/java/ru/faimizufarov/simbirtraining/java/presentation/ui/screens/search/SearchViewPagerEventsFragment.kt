@@ -11,7 +11,7 @@ import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentSearchViewPagerEventsBinding
-import ru.faimizufarov.simbirtraining.java.data.models.News
+import ru.faimizufarov.simbirtraining.java.domain.models.News
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.search.adapters.SearchResultEventsAdapter
 
 class SearchViewPagerEventsFragment : Fragment() {

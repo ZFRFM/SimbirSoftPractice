@@ -3,7 +3,7 @@ package ru.faimizufarov.simbirtraining.java.presentation.services
 import android.content.ComponentName
 import android.content.ServiceConnection
 import android.os.IBinder
-import ru.faimizufarov.simbirtraining.java.data.models.Category
+import ru.faimizufarov.simbirtraining.java.domain.models.Category
 
 class CategoryLoaderServiceConnection(
     private val showCategories: (List<Category>) -> Unit,
