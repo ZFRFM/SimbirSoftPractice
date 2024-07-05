@@ -10,7 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import ru.faimizufarov.simbirtraining.databinding.FragmentHelpCategoriesBinding
-import ru.faimizufarov.simbirtraining.java.domain.models.Category
+import ru.faimizufarov.simbirtraining.java.presentation.models.CategoryPresentation
 import ru.faimizufarov.simbirtraining.java.presentation.services.CategoryLoaderService
 import ru.faimizufarov.simbirtraining.java.presentation.services.CategoryLoaderServiceConnection
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.categories.adapters.CategoriesAdapter
@@ -23,7 +23,7 @@ class CategoriesFragment : Fragment() {
 
     private val categoriesViewModel: CategoriesViewModel by viewModels()
 
-    private var listOfCategories: List<Category>? = null
+    private var listOfCategories: List<CategoryPresentation>? = null
 
     private var isServiceBound = false
     private val connection =
@@ -74,7 +74,7 @@ class CategoriesFragment : Fragment() {
         }
     }
 
-    private fun showCategories(categories: List<Category>) {
+    private fun showCategories(categories: List<CategoryPresentation>) {
         listOfCategories = categories
         categoriesAdapter.submitList(categories)
         categoriesViewModel.setCategories(categories)

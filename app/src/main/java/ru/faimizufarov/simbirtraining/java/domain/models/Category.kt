@@ -1,12 +1,10 @@
 package ru.faimizufarov.simbirtraining.java.domain.models
 
-import android.graphics.Bitmap
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
-@Parcelize
+@Serializable
 data class Category(
     val id: String,
     val title: String,
-    val image: Bitmap,
-) : Parcelable
+    val imagePath: String,
+)

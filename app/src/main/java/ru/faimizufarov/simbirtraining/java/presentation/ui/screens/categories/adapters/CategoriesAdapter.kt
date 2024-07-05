@@ -5,10 +5,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import ru.faimizufarov.simbirtraining.databinding.ItemCategoryBinding
-import ru.faimizufarov.simbirtraining.java.domain.models.Category
+import ru.faimizufarov.simbirtraining.java.presentation.models.CategoryPresentation
 
 class CategoriesAdapter :
-    ListAdapter<Category, CategoriesViewHolder>(ItemCallback) {
+    ListAdapter<CategoryPresentation, CategoriesViewHolder>(ItemCallback) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int,
@@ -33,15 +33,15 @@ class CategoriesAdapter :
         holder.bind(category)
     }
 
-    companion object ItemCallback : DiffUtil.ItemCallback<Category>() {
+    companion object ItemCallback : DiffUtil.ItemCallback<CategoryPresentation>() {
         override fun areItemsTheSame(
-            oldItem: Category,
-            newItem: Category,
+            oldItem: CategoryPresentation,
+            newItem: CategoryPresentation,
         ) = oldItem.id == newItem.id
 
         override fun areContentsTheSame(
-            oldItem: Category,
-            newItem: Category,
+            oldItem: CategoryPresentation,
+            newItem: CategoryPresentation,
         ) = oldItem == newItem
     }
 }

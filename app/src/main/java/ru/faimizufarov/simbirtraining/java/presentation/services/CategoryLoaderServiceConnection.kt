@@ -3,10 +3,10 @@ package ru.faimizufarov.simbirtraining.java.presentation.services
 import android.content.ComponentName
 import android.content.ServiceConnection
 import android.os.IBinder
-import ru.faimizufarov.simbirtraining.java.domain.models.Category
+import ru.faimizufarov.simbirtraining.java.presentation.models.CategoryPresentation
 
 class CategoryLoaderServiceConnection(
-    private val showCategories: (List<Category>) -> Unit,
+    private val showCategories: (List<CategoryPresentation>) -> Unit,
 ) : ServiceConnection {
     private var connectedService: CategoryLoaderService? = null
 
