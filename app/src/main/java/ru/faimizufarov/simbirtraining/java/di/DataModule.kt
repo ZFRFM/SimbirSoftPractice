@@ -1,0 +1,20 @@
+package ru.faimizufarov.simbirtraining.java.di
+
+import android.content.Context
+import dagger.Module
+import dagger.Provides
+import ru.faimizufarov.simbirtraining.java.data.repository.NewsRepositoryImpl
+import ru.faimizufarov.simbirtraining.java.domain.repository.NewsRepository
+import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.GlobalNewsFilter
+import javax.inject.Singleton
+
+@Module
+class DataModule {
+    @Provides
+    @Singleton
+    fun provideNewsRepository(context: Context): NewsRepository = NewsRepositoryImpl(context)
+
+    @Provides
+    @Singleton
+    fun provideNewsFilters() = GlobalNewsFilter()
+}

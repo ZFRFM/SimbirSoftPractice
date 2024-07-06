@@ -2,7 +2,6 @@
 
 package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news
 
-import android.content.Context
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,7 +9,6 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import ru.faimizufarov.simbirtraining.java.App
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
 import ru.faimizufarov.simbirtraining.java.data.repository.NewsRepositoryImpl
 import ru.faimizufarov.simbirtraining.java.domain.models.News
@@ -19,8 +17,8 @@ import ru.faimizufarov.simbirtraining.java.domain.usecase.SetBadgeCounterEmitVal
 import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.GlobalNewsFilter
 
 class NewsViewModel(
-    private val setBadgeCounterEmitValueUseCase: SetBadgeCounterEmitValueUseCase,
     private val getNewsUseCase: GetNewsUseCase,
+    private val setBadgeCounterEmitValueUseCase: SetBadgeCounterEmitValueUseCase,
     private val newsFilters: GlobalNewsFilter,
     newsRepositoryImpl: NewsRepositoryImpl,
 ) : ViewModel() {
@@ -76,20 +74,4 @@ class NewsViewModel(
                 filters.any { filter -> filter.categoryId in article.categoryIds }
             filters.isEmpty() || isFilteredIn
         }
-
-    class Factory(context: Context) : ViewModelProvider.Factory {
-        private val newsRepository = (context.applicationContext as App).newsRepositoryImpl
-        private val newsFilters = (context.applicationContext as App).newsFilters
-
-        private val getNewsUseCase = GetNewsUseCase(newsRepository)
-        private val setBadgeCounterEmitValueUseCase = SetBadgeCounterEmitValueUseCase(newsRepository)
-
-        override fun <T : ViewModel> create(modelClass: Class<T>): T =
-            NewsViewModel(
-                setBadgeCounterEmitValueUseCase,
-                getNewsUseCase,
-                newsFilters,
-                newsRepository,
-            ) as T
-    }
 }
