@@ -5,6 +5,7 @@ import dagger.Component
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.main.MainActivity
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news.NewsFragment
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news_filter.NewsFilterFragment
+import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.search.SearchViewPagerEventsFragment
 import javax.inject.Singleton
 
 @Singleton
@@ -17,6 +18,8 @@ interface AppComponent {
     fun injectNewsFragment(newsFragment: NewsFragment)
 
     fun injectNewsFilterFragment(newsFilterFragment: NewsFilterFragment)
+
+    fun injectSearchViewPagerEventsFragment(searchViewPagerEventsFragment: SearchViewPagerEventsFragment)
 
     @Component.Factory
     interface Factory {

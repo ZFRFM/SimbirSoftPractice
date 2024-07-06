@@ -8,17 +8,32 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentSearchViewPagerEventsBinding
+import ru.faimizufarov.simbirtraining.java.App
 import ru.faimizufarov.simbirtraining.java.domain.models.News
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.search.adapters.SearchResultEventsAdapter
+import javax.inject.Inject
 
 class SearchViewPagerEventsFragment : Fragment() {
-    private val searchViewPagerEventsViewModel: SearchViewPagerEventsViewModel
-        by viewModels { SearchViewPagerEventsViewModel.Factory(requireContext()) }
+    @Inject
+    lateinit var searchViewPagerEventsViewModelFactory: SearchViewPagerEventsViewModelFactory
+    private lateinit var searchViewPagerEventsViewModel: SearchViewPagerEventsViewModel
 
     private lateinit var binding: FragmentSearchViewPagerEventsBinding
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (requireActivity().applicationContext as App)
+            .appComponent
+            .injectSearchViewPagerEventsFragment(this)
+        searchViewPagerEventsViewModel =
+            ViewModelProvider(
+                this,
+                searchViewPagerEventsViewModelFactory,
+            )[SearchViewPagerEventsViewModel::class]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
