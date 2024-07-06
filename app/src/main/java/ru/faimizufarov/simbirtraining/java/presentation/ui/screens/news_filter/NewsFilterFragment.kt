@@ -6,18 +6,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DividerItemDecoration
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsFilterBinding
+import ru.faimizufarov.simbirtraining.java.App
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news_filter.adapters.CategoryFilterAdapter
+import javax.inject.Inject
 
 class NewsFilterFragment : Fragment() {
     private lateinit var binding: FragmentNewsFilterBinding
     private lateinit var itemDecoration: DividerItemDecoration
 
-    private val newsFilterViewModel:
-        NewsFilterViewModel by viewModels { NewsFilterViewModel.Factory(requireContext()) }
+    @Inject
+    lateinit var newsFilterViewModelFactory: NewsFilterViewModelFactory
+    private lateinit var newsFilterViewModel: NewsFilterViewModel
 
     private val categoryFilterAdapter =
         CategoryFilterAdapter { filterItem ->
@@ -27,6 +30,18 @@ class NewsFilterFragment : Fragment() {
                 newsFilterViewModel.setFilter(filterItem.categoryId)
             }
         }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (requireActivity().applicationContext as App)
+            .appComponent
+            .injectNewsFilterFragment(this)
+        newsFilterViewModel =
+            ViewModelProvider(
+                this,
+                newsFilterViewModelFactory,
+            )[NewsFilterViewModel::class]
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

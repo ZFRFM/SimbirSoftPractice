@@ -4,6 +4,7 @@ import android.app.Application
 import dagger.Component
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.main.MainActivity
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news.NewsFragment
+import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news_filter.NewsFilterFragment
 import javax.inject.Singleton
 
 @Singleton
@@ -14,6 +15,8 @@ interface AppComponent {
     fun injectMainActivity(mainActivity: MainActivity)
 
     fun injectNewsFragment(newsFragment: NewsFragment)
+
+    fun injectNewsFilterFragment(newsFilterFragment: NewsFilterFragment)
 
     @Component.Factory
     interface Factory {
