@@ -1,26 +1,23 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news_filter
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
-import ru.faimizufarov.simbirtraining.java.App
-import ru.faimizufarov.simbirtraining.java.data.models.Category
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilterItem
-import ru.faimizufarov.simbirtraining.java.data.repositories.CategoryRepository
+import ru.faimizufarov.simbirtraining.java.domain.models.Category
+import ru.faimizufarov.simbirtraining.java.domain.usecase.GetCategoriesUseCase
 import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.GlobalNewsFilter
 
 class NewsFilterViewModel(
-    private val categoriesRepository: CategoryRepository,
-    private val newsFilter: GlobalNewsFilter,
+    private val getCategoriesUseCase: GetCategoriesUseCase,
+    private val newsFilters: GlobalNewsFilter,
 ) : ViewModel() {
     val categoryFiltersLiveData: LiveData<List<CategoryFilterItem>> =
-        newsFilter.queuedFiltersFlow.map { filters ->
-            val categories = categoriesRepository.getCategoryList()
+        newsFilters.queuedFiltersFlow.map { filters ->
+            val categories = getCategoriesUseCase.execute()
             categories.toFilteredItems(filters)
         }.asLiveData(Dispatchers.IO)
 
@@ -37,27 +34,18 @@ class NewsFilterViewModel(
         }
 
     fun removeFilter(categoryId: String) {
-        newsFilter.removeFilter(categoryId)
+        newsFilters.removeFilter(categoryId)
     }
 
     fun setFilter(categoryId: String) {
-        newsFilter.setFilter(categoryId)
+        newsFilters.setFilter(categoryId)
     }
 
     fun confirmFilters() {
-        newsFilter.confirmFilters()
+        newsFilters.confirmFilters()
     }
 
     fun cancelFilters() {
-        newsFilter.cancelFilters()
-    }
-
-    class Factory(context: Context) : ViewModelProvider.Factory {
-        private val categoryRepository =
-            (context.applicationContext as App).categoriesRepository
-
-        private val newsFilters = (context.applicationContext as App).newsFilters
-
-        override fun <T : ViewModel> create(modelClass: Class<T>): T = NewsFilterViewModel(categoryRepository, newsFilters) as T
+        newsFilters.cancelFilters()
     }
 }

@@ -7,24 +7,38 @@ import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResult
-import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModelProvider
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsBinding
-import ru.faimizufarov.simbirtraining.java.data.models.News
+import ru.faimizufarov.simbirtraining.java.App
+import ru.faimizufarov.simbirtraining.java.domain.models.News
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.detail_description.DetailDescriptionFragment
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news.adapters.NewsAdapter
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news_filter.NewsFilterFragment
+import javax.inject.Inject
 
 class NewsFragment : Fragment() {
     private lateinit var binding: FragmentNewsBinding
 
+    @Inject
+    lateinit var newsViewModelFactory: NewsViewModelFactory
+    private lateinit var newsViewModel: NewsViewModel
+
     private val newsAdapter = NewsAdapter(onItemClick = ::updateFeed)
 
-    private val newsViewModel: NewsViewModel by viewModels {
-        NewsViewModel.Factory(requireContext())
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        (requireActivity().applicationContext as App)
+            .appComponent
+            .injectNewsFragment(this)
+        newsViewModel =
+            ViewModelProvider(
+                this,
+                newsViewModelFactory,
+            )[NewsViewModel::class]
     }
 
     override fun onCreateView(

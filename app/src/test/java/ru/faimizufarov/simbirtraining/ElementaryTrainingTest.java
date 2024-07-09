@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import ru.faimizufarov.simbirtraining.java.old_tasks.ElementaryTraining;
+import ru.faimizufarov.simbirtraining.language_tasks.old_tasks.ElementaryTraining;
 
 public class ElementaryTrainingTest {
 

@@ -8,4 +8,5 @@ import androidx.room.PrimaryKey
 data class CategoryEntity(
     @PrimaryKey val id: String,
     @ColumnInfo("title") val title: String,
+    @ColumnInfo("image_path") val imagePath: String,
 )

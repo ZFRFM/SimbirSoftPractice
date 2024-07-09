@@ -3,7 +3,7 @@ package ru.faimizufarov.simbirtraining.java.data.local
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ru.faimizufarov.simbirtraining.java.data.models.News
+import ru.faimizufarov.simbirtraining.java.domain.models.News
 
 @Entity(tableName = "news")
 data class NewsEntity(
