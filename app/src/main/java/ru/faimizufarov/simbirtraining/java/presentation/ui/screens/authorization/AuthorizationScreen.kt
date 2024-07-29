@@ -1,6 +1,8 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.authorization
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -60,6 +63,7 @@ fun AuthorizationScreen(
             modifier =
                 modifier
                     .verticalScroll(rememberScrollState())
+                    .background(colorResource(id = R.color.white))
                     .padding(horizontal = 20.dp)
                     .fillMaxSize()
                     .padding(innerPadding),
@@ -81,7 +85,11 @@ fun AuthorizationScreen(
                 modifier = modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
-                Image(painter = painterResource(R.drawable.vk), contentDescription = "")
+                Image(
+                    painter = painterResource(R.drawable.vk),
+                    contentDescription = "",
+                    modifier = modifier.clickable { login.invoke() },
+                )
                 Image(painter = painterResource(R.drawable.fb), contentDescription = "")
                 Image(painter = painterResource(R.drawable.ok), contentDescription = "")
             }
@@ -127,7 +135,8 @@ fun AuthorizationScreen(
             Spacer(modifier = modifier.height(2.dp))
 
             PasswordTextField(
-                password,
+                password = password,
+                modifier = modifier.fillMaxWidth(),
                 setPassword = {
                     authorizationViewModel.setPasswordText(it)
                     password = it
@@ -142,6 +151,7 @@ fun AuthorizationScreen(
                         .height(44.dp)
                         .fillMaxWidth(),
                 enabled = authorizationViewModel.isAuthEnabledLiveData.value == true,
+                shape = RoundedCornerShape(4.dp),
                 colors = ButtonDefaults.buttonColors(colorResource(id = R.color.leaf)),
                 onClick = {
                     login.invoke()

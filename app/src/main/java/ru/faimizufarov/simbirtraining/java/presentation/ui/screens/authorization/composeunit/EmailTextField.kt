@@ -2,8 +2,10 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.authorizatio
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -12,6 +14,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import ru.faimizufarov.simbirtraining.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun EmailTextField(
@@ -37,5 +40,13 @@ fun EmailTextField(
                 imeAction = ImeAction.Next,
             ),
         singleLine = true,
+        colors =
+            TextFieldDefaults.colors(
+                focusedIndicatorColor = colorResource(id = R.color.black),
+                unfocusedIndicatorColor = colorResource(id = R.color.black),
+                focusedContainerColor = colorResource(id = R.color.white),
+                unfocusedContainerColor = colorResource(id = R.color.white),
+                cursorColor = colorResource(id = R.color.black),
+            ),
     )
 }

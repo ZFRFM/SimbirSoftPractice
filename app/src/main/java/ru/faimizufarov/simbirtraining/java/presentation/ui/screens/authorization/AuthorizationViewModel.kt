@@ -1,31 +1,40 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.authorization
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 const val TEXT_LENGTH = 6
 
 class AuthorizationViewModel : ViewModel() {
-    private val _emailLiveData = MutableLiveData<String>()
-    val emailLiveData: LiveData<String> = _emailLiveData
+    private val emailLiveData = MutableLiveData<String>()
+    private val passwordLiveData = MutableLiveData<String>()
 
-    private val _passwordLiveData = MutableLiveData<String>()
-    val passwordLiveData: LiveData<String> = _passwordLiveData
+    private val _isAuthEnabledLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val isAuthEnabledLiveData: LiveData<Boolean> = _isAuthEnabledLiveData
 
-    val isAuthEnabledLiveData: LiveData<Boolean> =
-        MediatorLiveData<Boolean>()
-            .apply {
-                addSource(emailLiveData) { email ->
-                    val password = passwordLiveData.value ?: return@addSource
-                    value = email.length >= TEXT_LENGTH && password.length >= TEXT_LENGTH
-                }
-                addSource(passwordLiveData) { password ->
-                    val email = emailLiveData.value ?: return@addSource
-                    value = password.length >= TEXT_LENGTH && email.length >= TEXT_LENGTH
-                }
-            }
+    init {
+        emailLiveData.observeForever { _ ->
+            checkIsValidValue()
+        }
+        passwordLiveData.observeForever { _ ->
+            checkIsValidValue()
+        }
+    }
+
+    private fun checkIsValidValue() {
+        val isEmailValid =
+            emailLiveData.value?.let {
+                it.length >= TEXT_LENGTH
+            } ?: false
+
+        val isPasswordValid =
+            passwordLiveData.value?.let {
+                it.length >= TEXT_LENGTH
+            } ?: false
+
+        this._isAuthEnabledLiveData.value = isEmailValid && isPasswordValid
+    }
 
     private val _navigateToMainLiveEvent = SingleLiveEvent<Unit>()
     val navigateToMainLiveEvent: LiveData<Unit> = _navigateToMainLiveEvent
@@ -42,10 +51,10 @@ class AuthorizationViewModel : ViewModel() {
     }
 
     fun setEmailText(emailText: String) {
-        _emailLiveData.value = emailText
+        emailLiveData.value = emailText
     }
 
     fun setPasswordText(passwordText: String) {
-        _passwordLiveData.value = passwordText
+        passwordLiveData.value = passwordText
     }
 }
