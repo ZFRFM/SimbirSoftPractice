@@ -125,6 +125,11 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1-Beta")
 
+    //region Compose
+    implementation("androidx.compose.material:material-icons-core:1.6.8")
+    implementation("androidx.compose.material:material-icons-extended:1.6.8")
+    //endregion
+
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.mockito:mockito-core:2.22.0")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
