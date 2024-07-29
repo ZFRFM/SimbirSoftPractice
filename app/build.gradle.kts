@@ -61,6 +61,7 @@ android {
 
 dependencies {
     implementation("androidx.activity:activity:1.8.0")
+    implementation("androidx.compose.runtime:runtime-livedata:1.6.8")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
