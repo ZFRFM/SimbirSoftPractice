@@ -52,7 +52,6 @@ fun AuthorizationScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                modifier = modifier.fillMaxWidth(),
                 backPressed = {
                     closeApp.invoke()
                 },

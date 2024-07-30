@@ -72,7 +72,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.2")
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.8.2")
     implementation("androidx.activity:activity-compose:1.9.0")
-    implementation(platform("androidx.compose:compose-bom:2024.04.01"))
+    implementation(platform("androidx.compose:compose-bom:2024.06.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
@@ -82,8 +82,9 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:0.4.0")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 
-    implementation("com.github.bumptech.glide:glide:4.12.0")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+    implementation("com.github.bumptech.glide:glide:4.14.2")
+    implementation("com.github.bumptech.glide:compose:1.0.0-alpha.1")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.14.2")
 
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")

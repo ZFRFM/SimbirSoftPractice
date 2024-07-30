@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
@@ -17,6 +16,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.java.domain.models.News
+import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news.composeunit.NewsItem
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news.composeunit.TopAppBar
 
 @Suppress("ktlint:standard:function-naming")
@@ -32,7 +32,7 @@ fun NewsScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                modifier = Modifier,
+                modifier = modifier,
                 clickFilter = {
                     clickFilter.invoke()
                 },
@@ -49,7 +49,10 @@ fun NewsScreen(
         ) {
             items(newsList) { news ->
                 Spacer(modifier = modifier.height(8.dp))
-                Text(text = news.nameText)
+                NewsItem(
+                    news = news,
+                    clickItem = clickItem,
+                )
             }
         }
     }

@@ -5,7 +5,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -15,6 +14,7 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import ru.faimizufarov.simbirtraining.R
+import ru.faimizufarov.simbirtraining.databinding.FragmentNewsComposeBinding
 import ru.faimizufarov.simbirtraining.java.App
 import ru.faimizufarov.simbirtraining.java.domain.models.News
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.detail_description.DetailDescriptionFragment
@@ -22,6 +22,8 @@ import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news_filter.N
 import javax.inject.Inject
 
 class NewsFragment : Fragment() {
+    private lateinit var binding: FragmentNewsComposeBinding
+
     @Inject
     lateinit var newsViewModelFactory: NewsViewModelFactory
     private lateinit var newsViewModel: NewsViewModel
@@ -43,7 +45,8 @@ class NewsFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?,
     ): View {
-        return ComposeView(requireContext()).apply {
+        binding = FragmentNewsComposeBinding.inflate(layoutInflater, container, false)
+        binding.composeView.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
                 MaterialTheme {
@@ -55,6 +58,7 @@ class NewsFragment : Fragment() {
                 }
             }
         }
+        return binding.root
     }
 
     override fun onViewCreated(
