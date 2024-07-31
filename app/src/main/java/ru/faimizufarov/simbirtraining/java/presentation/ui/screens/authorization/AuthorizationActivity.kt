@@ -18,7 +18,8 @@ class AuthorizationActivity : AppCompatActivity() {
                 AuthorizationScreen(
                     authorizationViewModel,
                     login = { authorizationViewModel.navigateToMainActivity() },
-                ) { authorizationViewModel.finishAuthorizationActivity() }
+                    onBack = { authorizationViewModel.finishAuthorizationActivity() },
+                )
             }
         }
         with(authorizationViewModel) {

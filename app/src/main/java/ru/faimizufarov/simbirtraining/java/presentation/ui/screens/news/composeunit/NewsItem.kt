@@ -60,7 +60,7 @@ fun NewsItem(
             GlideImage(
                 model = imagePath,
                 contentDescription = null,
-                modifier = modifier,
+                modifier = Modifier,
                 contentScale = ContentScale.Fit,
             )
             Image(
@@ -71,7 +71,7 @@ fun NewsItem(
             )
             Text(
                 modifier =
-                    modifier
+                    Modifier
                         .fillMaxWidth()
                         .align(Alignment.BottomCenter)
                         .padding(start = 40.dp, end = 40.dp)
@@ -85,7 +85,7 @@ fun NewsItem(
         }
         Image(
             modifier =
-                modifier
+                Modifier
                     .padding(top = 52.dp)
                     .align(Alignment.CenterHorizontally),
             painter = painterResource(id = R.drawable.decor),
@@ -93,14 +93,10 @@ fun NewsItem(
         )
         Text(
             modifier =
-                modifier
+                Modifier
                     .fillMaxWidth()
-                    .padding(
-                        top = 10.dp,
-                        start = 24.dp,
-                        end = 24.dp,
-                        bottom = 16.dp,
-                    ),
+                    .padding(top = 10.dp, bottom = 16.dp)
+                    .padding(horizontal = 24.dp),
             text = news.descriptionText,
             textAlign = TextAlign.Center,
         )

@@ -11,12 +11,9 @@ import ru.faimizufarov.simbirtraining.R
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
-fun HyperlinkText(
-    text: String,
-    modifier: Modifier = Modifier,
-) {
+fun HyperlinkText(text: String) {
     Text(
-        modifier = modifier,
+        modifier = Modifier,
         text = text,
         fontSize = 14.sp,
         color = colorResource(id = R.color.leaf),

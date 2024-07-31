@@ -19,6 +19,8 @@ android {
         versionName = "1.0"
         multiDexEnabled = true
 
+        buildConfigField("String", "BASE_URL", "http://192.168.115.86:8080")
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         vectorDrawables {

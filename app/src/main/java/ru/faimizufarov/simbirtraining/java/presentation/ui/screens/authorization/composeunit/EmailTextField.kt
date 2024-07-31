@@ -1,6 +1,6 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.authorization.composeunit
 
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -19,17 +19,17 @@ import ru.faimizufarov.simbirtraining.R
 @Composable
 fun EmailTextField(
     email: String,
+    onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    setEmail: (String) -> Unit,
 ) {
     TextField(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier,
         value = email,
-        onValueChange = { setEmail(it) },
+        onValueChange = { onValueChange(it) },
         maxLines = 1,
         placeholder = {
             Text(
-                modifier = modifier,
+                modifier = Modifier.fillMaxSize(),
                 textAlign = TextAlign.Start,
                 text = stringResource(id = R.string.input_email),
                 color = colorResource(id = R.color.black_38),

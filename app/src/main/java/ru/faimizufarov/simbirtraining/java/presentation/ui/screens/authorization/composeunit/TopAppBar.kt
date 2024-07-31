@@ -52,7 +52,7 @@ fun TopAppBar(
                             .padding(end = 4.dp),
                     contentAlignment = Alignment.Center,
                 ) {
-                    IconButton(onClick = { backPressed.invoke() }) {
+                    IconButton(onClick = backPressed) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.authorization),
@@ -64,7 +64,7 @@ fun TopAppBar(
         )
         Text(
             modifier =
-                modifier
+                Modifier
                     .align(Alignment.Center),
             text = stringResource(R.string.authorization),
             color = Color.White,

@@ -42,35 +42,35 @@ import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.authorization
 @Composable
 fun AuthorizationScreen(
     authorizationViewModel: AuthorizationViewModel,
-    modifier: Modifier = Modifier,
     login: () -> Unit,
-    closeApp: () -> Unit,
+    onBack: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     var email by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
 
     Scaffold(
+        modifier =
+            modifier
+                .verticalScroll(rememberScrollState())
+                .background(colorResource(id = R.color.white))
+                .padding(horizontal = 20.dp)
+                .fillMaxSize(),
         topBar = {
             TopAppBar(
                 backPressed = {
-                    closeApp.invoke()
+                    onBack.invoke()
                 },
             )
         },
     ) { innerPadding ->
         Column(
-            modifier =
-                modifier
-                    .verticalScroll(rememberScrollState())
-                    .background(colorResource(id = R.color.white))
-                    .padding(horizontal = 20.dp)
-                    .fillMaxSize()
-                    .padding(innerPadding),
+            modifier = Modifier.padding(innerPadding),
         ) {
-            Spacer(modifier = modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(40.dp))
 
             Text(
-                modifier = modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.authorization_top_text),
                 textAlign = TextAlign.Center,
                 fontSize = 16.sp,
@@ -78,25 +78,25 @@ fun AuthorizationScreen(
                 color = colorResource(id = R.color.black_70),
             )
 
-            Spacer(modifier = modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             Row(
-                modifier = modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly,
             ) {
                 Image(
                     painter = painterResource(R.drawable.vk),
-                    contentDescription = "",
-                    modifier = modifier.clickable { login.invoke() },
+                    contentDescription = null,
+                    modifier = Modifier.clickable { login.invoke() },
                 )
-                Image(painter = painterResource(R.drawable.fb), contentDescription = "")
-                Image(painter = painterResource(R.drawable.ok), contentDescription = "")
+                Image(painter = painterResource(R.drawable.fb), contentDescription = null)
+                Image(painter = painterResource(R.drawable.ok), contentDescription = null)
             }
 
-            Spacer(modifier = modifier.height(40.dp))
+            Spacer(modifier = Modifier.height(40.dp))
 
             Text(
-                modifier = modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 text = stringResource(R.string.authorization_center_text),
                 textAlign = TextAlign.Center,
                 fontSize = 16.sp,
@@ -104,7 +104,7 @@ fun AuthorizationScreen(
                 color = colorResource(id = R.color.black_70),
             )
 
-            Spacer(modifier = modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             Text(
                 text = stringResource(R.string.email),
@@ -112,18 +112,18 @@ fun AuthorizationScreen(
                 fontSize = 14.sp,
             )
 
-            Spacer(modifier = modifier.height(2.dp))
+            Spacer(modifier = Modifier.height(2.dp))
 
             EmailTextField(
+                modifier = Modifier.fillMaxWidth(),
                 email = email,
-                modifier = modifier.fillMaxWidth(),
-                setEmail = {
+                onValueChange = {
                     authorizationViewModel.setEmailText(it)
                     email = it
                 },
             )
 
-            Spacer(modifier = modifier.height(28.dp))
+            Spacer(modifier = Modifier.height(28.dp))
 
             Text(
                 text = stringResource(R.string.password),
@@ -131,30 +131,28 @@ fun AuthorizationScreen(
                 fontSize = 14.sp,
             )
 
-            Spacer(modifier = modifier.height(2.dp))
+            Spacer(modifier = Modifier.height(2.dp))
 
             PasswordTextField(
+                modifier = Modifier.fillMaxWidth(),
                 password = password,
-                modifier = modifier.fillMaxWidth(),
-                setPassword = {
+                onValueChange = {
                     authorizationViewModel.setPasswordText(it)
                     password = it
                 },
             )
 
-            Spacer(modifier = modifier.height(28.dp))
+            Spacer(modifier = Modifier.height(28.dp))
 
             Button(
                 modifier =
-                    modifier
+                    Modifier
                         .height(44.dp)
                         .fillMaxWidth(),
                 enabled = authorizationViewModel.isAuthEnabledLiveData.value == true,
                 shape = RoundedCornerShape(4.dp),
                 colors = ButtonDefaults.buttonColors(colorResource(id = R.color.leaf)),
-                onClick = {
-                    login.invoke()
-                },
+                onClick = login,
             ) {
                 Text(
                     text = stringResource(id = R.string.sign_in).uppercase(),
@@ -163,10 +161,10 @@ fun AuthorizationScreen(
                 )
             }
 
-            Spacer(modifier = modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             Row(
-                modifier = modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 HyperlinkText(

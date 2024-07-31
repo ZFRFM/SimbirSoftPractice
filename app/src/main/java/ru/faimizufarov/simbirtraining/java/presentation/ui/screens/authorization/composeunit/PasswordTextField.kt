@@ -27,14 +27,14 @@ import ru.faimizufarov.simbirtraining.R
 @Composable
 fun PasswordTextField(
     password: String,
+    onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    setPassword: (String) -> Unit,
 ) {
     var passwordHidden by rememberSaveable { mutableStateOf(true) }
     TextField(
         modifier = modifier.fillMaxWidth(),
         value = password,
-        onValueChange = { setPassword(it) },
+        onValueChange = { onValueChange(it) },
         maxLines = 1,
         placeholder = {
             Text(
@@ -54,7 +54,12 @@ fun PasswordTextField(
                     } else {
                         Icons.Filled.VisibilityOff
                     }
-                val description = if (passwordHidden) "Show password" else "Hide password"
+                val description =
+                    if (passwordHidden) {
+                        stringResource(R.string.show_password)
+                    } else {
+                        stringResource(R.string.hide_password)
+                    }
                 Icon(imageVector = visibilityIcon, contentDescription = description)
             }
         },

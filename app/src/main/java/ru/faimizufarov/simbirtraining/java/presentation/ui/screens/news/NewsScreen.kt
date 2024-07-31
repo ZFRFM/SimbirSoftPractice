@@ -3,6 +3,7 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -30,9 +31,10 @@ fun NewsScreen(
     val newsList by newsViewModel.newsLiveData.observeAsState(emptyList())
 
     Scaffold(
+        modifier = modifier,
         topBar = {
             TopAppBar(
-                modifier = modifier,
+                modifier = Modifier,
                 clickFilter = {
                     clickFilter.invoke()
                 },
@@ -41,15 +43,16 @@ fun NewsScreen(
     ) { innerPadding ->
         LazyColumn(
             modifier =
-                modifier
+                Modifier
                     .fillMaxSize()
                     .background(color = colorResource(id = R.color.light_grey_two))
-                    .padding(innerPadding)
-                    .padding(horizontal = 8.dp),
+                    .padding(horizontal = 8.dp)
+                    .padding(innerPadding),
         ) {
             items(newsList) { news ->
-                Spacer(modifier = modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 NewsItem(
+                    modifier = Modifier.fillMaxWidth(),
                     news = news,
                     clickItem = clickItem,
                 )

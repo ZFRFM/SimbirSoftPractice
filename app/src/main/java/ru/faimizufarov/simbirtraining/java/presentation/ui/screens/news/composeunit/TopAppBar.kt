@@ -65,7 +65,7 @@ fun TopAppBar(
         )
         Text(
             modifier =
-                modifier
+                Modifier
                     .align(Alignment.Center),
             text = stringResource(id = R.string.news),
             color = Color.White,

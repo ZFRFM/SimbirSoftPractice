@@ -33,7 +33,7 @@ class AuthorizationViewModel : ViewModel() {
                 it.length >= TEXT_LENGTH
             } ?: false
 
-        this._isAuthEnabledLiveData.value = isEmailValid && isPasswordValid
+        _isAuthEnabledLiveData.value = isEmailValid && isPasswordValid
     }
 
     private val _navigateToMainLiveEvent = SingleLiveEvent<Unit>()
