@@ -15,11 +15,7 @@ class AuthorizationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             HelpTheme {
-                AuthorizationScreen(
-                    authorizationViewModel,
-                    login = { authorizationViewModel.navigateToMainActivity() },
-                    onBack = { authorizationViewModel.finishAuthorizationActivity() },
-                )
+                AuthorizationScreen()
             }
         }
         with(authorizationViewModel) {

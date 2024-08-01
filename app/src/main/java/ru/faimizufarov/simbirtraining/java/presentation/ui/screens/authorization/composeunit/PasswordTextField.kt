@@ -25,7 +25,6 @@ import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.black
 import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.black_38
 import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.white
 
-@Suppress("ktlint:standard:function-naming")
 @Composable
 fun PasswordTextField(
     password: String,

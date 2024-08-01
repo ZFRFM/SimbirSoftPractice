@@ -2,7 +2,6 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.authorizatio
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -16,8 +15,6 @@ import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.black
 import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.black_38
 import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.white
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Suppress("ktlint:standard:function-naming")
 @Composable
 fun EmailTextField(
     email: String,

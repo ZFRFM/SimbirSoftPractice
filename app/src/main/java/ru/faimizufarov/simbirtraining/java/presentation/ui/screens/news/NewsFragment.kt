@@ -51,7 +51,6 @@ class NewsFragment : Fragment() {
             setContent {
                 MaterialTheme {
                     NewsScreen(
-                        newsViewModel = newsViewModel,
                         clickFilter = { openFilterFragment() },
                         clickItem = { updateFeed(it) },
                     )

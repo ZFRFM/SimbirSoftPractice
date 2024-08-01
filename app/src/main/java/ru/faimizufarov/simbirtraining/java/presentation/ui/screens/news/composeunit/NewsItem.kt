@@ -39,7 +39,6 @@ import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.twenty_first_fo
 import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.white
 
 @OptIn(ExperimentalGlideComposeApi::class)
-@Suppress("ktlint:standard:function-naming")
 @Composable
 fun NewsItem(
     news: News,
