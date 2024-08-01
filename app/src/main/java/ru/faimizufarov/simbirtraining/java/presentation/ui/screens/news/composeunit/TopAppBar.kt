@@ -14,19 +14,17 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import ru.faimizufarov.simbirtraining.R
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.leaf
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.officina_sans_extra_bold_c
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.twenty_first_font
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.white
 
 @Suppress("ktlint:standard:function-naming")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -40,7 +38,7 @@ fun TopAppBar(
             modifier = modifier.height(findActionBarThemeHeightInDp()),
             colors =
                 TopAppBarDefaults.centerAlignedTopAppBarColors(
-                    containerColor = colorResource(id = R.color.leaf),
+                    containerColor = leaf,
                 ),
             title = { },
             actions = {
@@ -57,7 +55,7 @@ fun TopAppBar(
                         Icon(
                             painter = painterResource(id = R.drawable.baseline_filter_24),
                             contentDescription = stringResource(id = R.string.filter),
-                            tint = colorResource(id = R.color.white),
+                            tint = white,
                         )
                     }
                 }
@@ -68,15 +66,9 @@ fun TopAppBar(
                 Modifier
                     .align(Alignment.Center),
             text = stringResource(id = R.string.news),
-            color = Color.White,
-            fontFamily =
-                FontFamily(
-                    Font(
-                        R.font.officina_sans_extra_bold_c,
-                        FontWeight.ExtraBold,
-                    ),
-                ),
-            fontSize = 21.sp,
+            color = white,
+            fontFamily = officina_sans_extra_bold_c,
+            fontSize = twenty_first_font,
             textAlign = TextAlign.Center,
         )
     }

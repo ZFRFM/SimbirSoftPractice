@@ -8,11 +8,13 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.style.TextAlign
 import ru.faimizufarov.simbirtraining.R
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.black
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.black_38
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.white
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Suppress("ktlint:standard:function-naming")
@@ -32,7 +34,7 @@ fun EmailTextField(
                 modifier = Modifier.fillMaxSize(),
                 textAlign = TextAlign.Start,
                 text = stringResource(id = R.string.input_email),
-                color = colorResource(id = R.color.black_38),
+                color = black_38,
             )
         },
         keyboardOptions =
@@ -42,11 +44,11 @@ fun EmailTextField(
         singleLine = true,
         colors =
             TextFieldDefaults.colors(
-                focusedIndicatorColor = colorResource(id = R.color.black),
-                unfocusedIndicatorColor = colorResource(id = R.color.black),
-                focusedContainerColor = colorResource(id = R.color.white),
-                unfocusedContainerColor = colorResource(id = R.color.white),
-                cursorColor = colorResource(id = R.color.black),
+                focusedIndicatorColor = black,
+                unfocusedIndicatorColor = black,
+                focusedContainerColor = white,
+                unfocusedContainerColor = white,
+                cursorColor = black,
             ),
     )
 }

@@ -19,11 +19,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -34,14 +31,20 @@ import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.todayIn
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.java.domain.models.News
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.blue_grey
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.officina_sans_extra_bold_c
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.turtle_green
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.twelfth_font
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.twenty_first_font
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.white
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun NewsItem(
-    modifier: Modifier = Modifier,
     news: News,
     clickItem: (News) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val imagePath =
         if (news.newsImages.first().contains("http")) {
@@ -77,9 +80,9 @@ fun NewsItem(
                         .padding(start = 40.dp, end = 40.dp)
                         .offset(y = 44.dp),
                 text = news.nameText,
-                color = colorResource(id = R.color.blue_grey),
-                fontSize = 21.sp,
-                fontFamily = FontFamily(Font(R.font.officina_sans_extra_bold_c)),
+                color = blue_grey,
+                fontSize = twenty_first_font,
+                fontFamily = officina_sans_extra_bold_c,
                 textAlign = TextAlign.Center,
             )
         }
@@ -103,7 +106,7 @@ fun NewsItem(
         Row(
             modifier =
                 Modifier
-                    .background(colorResource(id = R.color.turtle_green))
+                    .background(turtle_green)
                     .fillMaxWidth()
                     .height(32.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -119,8 +122,8 @@ fun NewsItem(
                     Modifier
                         .align(Alignment.CenterVertically),
                 text = computeRemainingTime(news = news),
-                color = colorResource(id = R.color.white),
-                fontSize = 12.sp,
+                color = white,
+                fontSize = twelfth_font,
             )
         }
     }

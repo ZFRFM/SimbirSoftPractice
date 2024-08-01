@@ -13,20 +13,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
-import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.java.domain.models.News
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news.composeunit.NewsItem
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news.composeunit.TopAppBar
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.light_grey_two
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
 fun NewsScreen(
     newsViewModel: NewsViewModel,
-    modifier: Modifier = Modifier,
     clickFilter: () -> Unit,
     clickItem: (News) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val newsList by newsViewModel.newsLiveData.observeAsState(emptyList())
 
@@ -45,7 +44,7 @@ fun NewsScreen(
             modifier =
                 Modifier
                     .fillMaxSize()
-                    .background(color = colorResource(id = R.color.light_grey_two))
+                    .background(color = light_grey_two)
                     .padding(horizontal = 8.dp)
                     .padding(innerPadding),
         ) {

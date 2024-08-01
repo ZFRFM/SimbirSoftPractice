@@ -16,12 +16,14 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import ru.faimizufarov.simbirtraining.R
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.black
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.black_38
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.white
 
 @Suppress("ktlint:standard:function-naming")
 @Composable
@@ -39,7 +41,7 @@ fun PasswordTextField(
         placeholder = {
             Text(
                 text = stringResource(id = R.string.input_password),
-                color = colorResource(id = R.color.black_38),
+                color = black_38,
             )
         },
         singleLine = true,
@@ -65,10 +67,10 @@ fun PasswordTextField(
         },
         colors =
             TextFieldDefaults.colors(
-                focusedIndicatorColor = colorResource(id = R.color.black),
-                unfocusedIndicatorColor = colorResource(id = R.color.black),
-                focusedContainerColor = colorResource(id = R.color.white),
-                unfocusedContainerColor = colorResource(id = R.color.white),
+                focusedIndicatorColor = black,
+                unfocusedIndicatorColor = black,
+                focusedContainerColor = white,
+                unfocusedContainerColor = white,
             ),
     )
 }

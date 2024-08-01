@@ -20,14 +20,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import ru.faimizufarov.simbirtraining.R
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.officina_sans_extra_bold_c
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.twenty_first_font
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.white
 
 @Suppress("ktlint:standard:function-naming")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -56,7 +55,7 @@ fun TopAppBar(
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.authorization),
-                            tint = colorResource(id = R.color.white),
+                            tint = white,
                         )
                     }
                 }
@@ -68,14 +67,8 @@ fun TopAppBar(
                     .align(Alignment.Center),
             text = stringResource(R.string.authorization),
             color = Color.White,
-            fontFamily =
-                FontFamily(
-                    Font(
-                        R.font.officina_sans_extra_bold_c,
-                        FontWeight.ExtraBold,
-                    ),
-                ),
-            fontSize = 21.sp,
+            fontFamily = officina_sans_extra_bold_c,
+            fontSize = twenty_first_font,
             textAlign = TextAlign.Center,
         )
     }

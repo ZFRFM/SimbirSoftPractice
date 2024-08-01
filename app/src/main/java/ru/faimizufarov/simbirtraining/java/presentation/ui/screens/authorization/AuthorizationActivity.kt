@@ -5,8 +5,8 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material3.MaterialTheme
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.main.MainActivity
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.HelpTheme
 
 class AuthorizationActivity : AppCompatActivity() {
     private val authorizationViewModel: AuthorizationViewModel by viewModels()
@@ -14,7 +14,7 @@ class AuthorizationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MaterialTheme {
+            HelpTheme {
                 AuthorizationScreen(
                     authorizationViewModel,
                     login = { authorizationViewModel.navigateToMainActivity() },
