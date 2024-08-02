@@ -1,6 +1,7 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.authorization
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
@@ -10,31 +11,18 @@ class AuthorizationViewModel : ViewModel() {
     private val emailLiveData = MutableLiveData<String>()
     private val passwordLiveData = MutableLiveData<String>()
 
-    private val _isAuthEnabledLiveData: MutableLiveData<Boolean> = MutableLiveData()
-    val isAuthEnabledLiveData: LiveData<Boolean> = _isAuthEnabledLiveData
-
-    init {
-        emailLiveData.observeForever { _ ->
-            checkIsValidValue()
-        }
-        passwordLiveData.observeForever { _ ->
-            checkIsValidValue()
-        }
-    }
-
-    private fun checkIsValidValue() {
-        val isEmailValid =
-            emailLiveData.value?.let {
-                it.length >= TEXT_LENGTH
-            } ?: false
-
-        val isPasswordValid =
-            passwordLiveData.value?.let {
-                it.length >= TEXT_LENGTH
-            } ?: false
-
-        _isAuthEnabledLiveData.value = isEmailValid && isPasswordValid
-    }
+    val isAuthEnabledLiveData: LiveData<Boolean> =
+        MediatorLiveData<Boolean>()
+            .apply {
+                addSource(emailLiveData) { email ->
+                    val password = passwordLiveData.value ?: return@addSource
+                    value = email.length >= TEXT_LENGTH && password.length >= TEXT_LENGTH
+                }
+                addSource(passwordLiveData) { password ->
+                    val email = emailLiveData.value ?: return@addSource
+                    value = password.length >= TEXT_LENGTH && email.length >= TEXT_LENGTH
+                }
+            }
 
     private val _navigateToMainLiveEvent = SingleLiveEvent<Unit>()
     val navigateToMainLiveEvent: LiveData<Unit> = _navigateToMainLiveEvent
