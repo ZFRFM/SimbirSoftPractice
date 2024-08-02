@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import ru.faimizufarov.simbirtraining.java.domain.models.News
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.light_grey_two
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.Colors
 
 @Composable
 fun NewsScreenBase(
@@ -22,9 +22,9 @@ fun NewsScreenBase(
 ) {
     LazyColumn(
         modifier =
-            Modifier
+            modifier
                 .fillMaxSize()
-                .background(color = light_grey_two)
+                .background(color = Colors.light_grey_two)
                 .padding(horizontal = 8.dp),
     ) {
         items(newsList) { news ->

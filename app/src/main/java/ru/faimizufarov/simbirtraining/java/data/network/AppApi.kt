@@ -9,8 +9,6 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import ru.faimizufarov.simbirtraining.BuildConfig
 
-private const val BASE_URL = BuildConfig.BASE_URL
-
 private val loggingInterceptor =
     HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
@@ -27,7 +25,7 @@ private val retrofit =
             Json.asConverterFactory("application/json".toMediaType()),
         )
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-        .baseUrl(BASE_URL)
+        .baseUrl(BuildConfig.BASE_URL)
         .client(httpClient)
         .build()
 

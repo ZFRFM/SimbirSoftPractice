@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
@@ -22,13 +21,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.faimizufarov.simbirtraining.R
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.Colors
 import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.HelpTheme
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.leaf
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.officina_sans_extra_bold_c
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.twenty_first_font
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.white
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.Typography
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AuthorizationTopAppBar(
     backPressed: () -> Unit,
@@ -37,7 +33,7 @@ fun AuthorizationTopAppBar(
     Box(
         modifier =
             modifier
-                .background(leaf)
+                .background(Colors.leaf)
                 .height(56.dp)
                 .fillMaxWidth(),
     ) {
@@ -53,7 +49,7 @@ fun AuthorizationTopAppBar(
                     modifier = Modifier.size(24.dp),
                     imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = stringResource(R.string.authorization),
-                    tint = white,
+                    tint = Colors.white,
                 )
             }
         }
@@ -61,8 +57,8 @@ fun AuthorizationTopAppBar(
             modifier = Modifier.align(Alignment.Center),
             text = stringResource(R.string.authorization),
             color = Color.White,
-            fontFamily = officina_sans_extra_bold_c,
-            fontSize = twenty_first_font,
+            fontFamily = Typography.officina_sans_extra_bold_c,
+            fontSize = Typography.twenty_first_font,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )

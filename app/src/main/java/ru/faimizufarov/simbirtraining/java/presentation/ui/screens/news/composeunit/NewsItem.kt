@@ -31,12 +31,8 @@ import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.todayIn
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.java.domain.models.News
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.blue_grey
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.officina_sans_extra_bold_c
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.turtle_green
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.twelfth_font
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.twenty_first_font
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.white
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.Colors
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.Typography
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -79,9 +75,9 @@ fun NewsItem(
                         .padding(start = 40.dp, end = 40.dp)
                         .offset(y = 44.dp),
                 text = news.nameText,
-                color = blue_grey,
-                fontSize = twenty_first_font,
-                fontFamily = officina_sans_extra_bold_c,
+                color = Colors.blue_grey,
+                fontSize = Typography.twenty_first_font,
+                fontFamily = Typography.officina_sans_extra_bold_c,
                 textAlign = TextAlign.Center,
             )
         }
@@ -105,7 +101,7 @@ fun NewsItem(
         Row(
             modifier =
                 Modifier
-                    .background(turtle_green)
+                    .background(Colors.turtle_green)
                     .fillMaxWidth()
                     .height(32.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -121,8 +117,8 @@ fun NewsItem(
                     Modifier
                         .align(Alignment.CenterVertically),
                 text = computeRemainingTime(news = news),
-                color = white,
-                fontSize = twelfth_font,
+                color = Colors.white,
+                fontSize = Typography.twelfth_font,
             )
         }
     }

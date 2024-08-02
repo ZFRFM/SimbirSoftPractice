@@ -23,7 +23,6 @@ fun NewsScreen(
         modifier = modifier,
         topBar = {
             NewsTopAppBar(
-                modifier = Modifier,
                 clickFilter = {
                     clickFilter.invoke()
                 },
@@ -31,9 +30,9 @@ fun NewsScreen(
         },
     ) { innerPadding ->
         NewsScreenBase(
+            modifier = Modifier.padding(innerPadding),
             newsList = newsList.value,
             clickItem = clickItem,
-            modifier = Modifier.padding(innerPadding),
         )
     }
 }

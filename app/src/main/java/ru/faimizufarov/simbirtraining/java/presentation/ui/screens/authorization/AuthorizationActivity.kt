@@ -5,6 +5,10 @@ import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.Modifier
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.main.MainActivity
 import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.HelpTheme
 
@@ -15,7 +19,12 @@ class AuthorizationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             HelpTheme {
-                AuthorizationScreen()
+                AuthorizationScreen(
+                    modifier =
+                        Modifier
+                            .background(MaterialTheme.colorScheme.background)
+                            .fillMaxSize(),
+                )
             }
         }
         with(authorizationViewModel) {

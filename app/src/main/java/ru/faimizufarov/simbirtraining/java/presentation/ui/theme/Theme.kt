@@ -20,16 +20,16 @@ import androidx.core.view.WindowCompat
 
 private val DarkColorScheme =
     darkColorScheme(
-        surfaceVariant = black,
-        onSurfaceVariant = black_38,
-        background = black_54,
+        surfaceVariant = Colors.black,
+        onSurfaceVariant = Colors.black_38,
+        background = Colors.black_54,
     )
 
 private val LightColorScheme =
     lightColorScheme(
-        surfaceVariant = white,
-        onSurfaceVariant = white_70,
-        background = white,
+        surfaceVariant = Colors.white,
+        onSurfaceVariant = Colors.white_70,
+        background = Colors.white,
     )
 
 private val typography =
