@@ -12,17 +12,21 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.faimizufarov.simbirtraining.java.domain.models.News
+import ru.faimizufarov.simbirtraining.java.presentation.models.NewsCompose
+import ru.faimizufarov.simbirtraining.java.presentation.models.toNewsCompose
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news.composeunit.NewsItem
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news.composeunit.NewsTopAppBar
 import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.Colors
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.HelpTheme
 
 @Composable
 fun NewsScreen(
     clickFilter: () -> Unit,
-    clickItem: (News) -> Unit,
+    clickItem: (NewsCompose) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val newsViewModel: NewsViewModel = viewModel()
@@ -40,7 +44,7 @@ fun NewsScreen(
     ) { innerPadding ->
         NewsScreenBase(
             modifier = Modifier.padding(innerPadding),
-            newsList = newsList.value,
+            newsList = newsList.value.map { news -> news.toNewsCompose() },
             clickItem = clickItem,
         )
     }
@@ -48,8 +52,8 @@ fun NewsScreen(
 
 @Composable
 fun NewsScreenBase(
-    newsList: List<News>,
-    clickItem: (News) -> Unit,
+    newsList: List<NewsCompose>,
+    clickItem: (NewsCompose) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -69,3 +73,27 @@ fun NewsScreenBase(
         }
     }
 }
+
+@Preview
+@Composable
+fun NewsScreen_Preview() =
+    HelpTheme {
+        val newsList =
+            listOf(
+                NewsCompose(
+                    id = "id",
+                    nameText = "nameText",
+                    startDate = 0L,
+                    finishDate = 0L,
+                    descriptionText = "descriptionText",
+                    status = 0L,
+                    newsImages = listOf("images"),
+                    categoryIds = listOf("1", "2"),
+                    createAt = 1L,
+                    phoneText = "8920*******",
+                    addressText = "ул. Ново-Садовая 160М",
+                    organisationText = "Check",
+                ),
+            )
+        NewsScreenBase(newsList = newsList, clickItem = { })
+    }

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,6 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
@@ -31,14 +33,16 @@ import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.todayIn
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.java.domain.models.News
+import ru.faimizufarov.simbirtraining.java.presentation.models.NewsCompose
 import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.Colors
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.HelpTheme
 import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.Typography
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun NewsItem(
-    news: News,
-    clickItem: (News) -> Unit,
+    news: NewsCompose,
+    clickItem: (NewsCompose) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val imagePath =
@@ -124,8 +128,35 @@ fun NewsItem(
     }
 }
 
+@Preview
 @Composable
-fun computeRemainingTime(news: News): String {
+fun NewsItem_Preview() =
+    HelpTheme {
+        val news =
+            NewsCompose(
+                id = "id",
+                nameText = "nameText",
+                startDate = 0L,
+                finishDate = 0L,
+                descriptionText = "descriptionText",
+                status = 0L,
+                newsImages = listOf("images"),
+                categoryIds = listOf("1", "2"),
+                createAt = 1L,
+                phoneText = "8920*******",
+                addressText = "ул. Ново-Садовая 160М",
+                organisationText = "Check",
+            )
+        Surface {
+            NewsItem(
+                news = news,
+                clickItem = { },
+            )
+        }
+    }
+
+@Composable
+fun computeRemainingTime(news: NewsCompose): String {
     val startDate =
         Instant.fromEpochMilliseconds(news.startDate)
             .toLocalDateTime(TimeZone.currentSystemDefault())

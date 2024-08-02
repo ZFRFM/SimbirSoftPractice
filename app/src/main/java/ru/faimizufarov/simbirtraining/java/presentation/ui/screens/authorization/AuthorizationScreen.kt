@@ -321,6 +321,26 @@ private fun PasswordTextField(
 
 @Preview
 @Composable
+private fun EmailTextField_Preview() =
+    HelpTheme {
+        EmailTextField(
+            email = "email",
+            onValueChange = { },
+        )
+    }
+
+@Preview
+@Composable
+private fun PasswordTextField_Preview() =
+    HelpTheme {
+        PasswordTextField(
+            password = "password",
+            onValueChange = { }
+        )
+    }
+
+@Preview
+@Composable
 private fun AuthorizationScreen_Preview() =
     HelpTheme {
         var email by remember { mutableStateOf("") }
@@ -347,8 +367,8 @@ fun AuthorizationScreenBasePreview() =
             AuthorizationScreenBase(
                 login = { /*TODO*/ },
                 isSignInButtonEnabled = email.isNotEmpty() && password.isNotEmpty(),
-                setEmailText = {  },
-                setPasswordText = {  },
+                setEmailText = { },
+                setPasswordText = { },
             )
         }
     }

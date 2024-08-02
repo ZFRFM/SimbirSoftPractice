@@ -17,6 +17,7 @@ import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsComposeBinding
 import ru.faimizufarov.simbirtraining.java.App
 import ru.faimizufarov.simbirtraining.java.domain.models.News
+import ru.faimizufarov.simbirtraining.java.presentation.models.toNews
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.detail_description.DetailDescriptionFragment
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news_filter.NewsFilterFragment
 import javax.inject.Inject
@@ -52,7 +53,7 @@ class NewsFragment : Fragment() {
                 MaterialTheme {
                     NewsScreen(
                         clickFilter = { openFilterFragment() },
-                        clickItem = { updateFeed(it) },
+                        clickItem = { updateFeed(it.toNews()) },
                     )
                 }
             }
