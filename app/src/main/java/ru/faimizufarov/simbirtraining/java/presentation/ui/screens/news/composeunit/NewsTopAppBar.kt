@@ -8,21 +8,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.faimizufarov.simbirtraining.R
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.Colors
 import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.HelpTheme
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.Typography
 
 @Composable
 fun NewsTopAppBar(
@@ -32,7 +30,7 @@ fun NewsTopAppBar(
     Box(
         modifier =
             modifier
-                .background(Colors.leaf)
+                .background(MaterialTheme.colorScheme.primary)
                 .height(56.dp)
                 .fillMaxWidth(),
     ) {
@@ -48,16 +46,14 @@ fun NewsTopAppBar(
                     modifier = Modifier.size(24.dp),
                     painter = painterResource(id = R.drawable.baseline_filter_24),
                     contentDescription = stringResource(id = R.string.filter),
-                    tint = Colors.white,
+                    tint = MaterialTheme.colorScheme.onPrimary,
                 )
             }
         }
         Text(
             modifier = Modifier.align(Alignment.Center),
             text = stringResource(R.string.news),
-            color = Color.White,
-            fontFamily = Typography.officina_sans_extra_bold_c,
-            fontSize = Typography.twenty_first_font,
+            style = MaterialTheme.typography.headlineMedium,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
         )

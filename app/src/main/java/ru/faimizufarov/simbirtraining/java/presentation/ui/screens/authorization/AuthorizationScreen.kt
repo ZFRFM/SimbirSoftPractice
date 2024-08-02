@@ -21,6 +21,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -36,7 +37,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -50,7 +50,6 @@ import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.authorization.composeunit.AuthorizationTopAppBar
 import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.Colors
 import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.HelpTheme
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.Typography
 
 @Composable
 fun AuthorizationScreen(modifier: Modifier = Modifier) {
@@ -117,9 +116,7 @@ private fun AuthorizationScreenBase(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.authorization_top_text),
             textAlign = TextAlign.Center,
-            fontSize = Typography.sixteenth_font,
-            fontFamily = Typography.sans_serif_family,
-            color = Colors.black_70,
+            style = MaterialTheme.typography.bodyMedium,
         )
 
         Spacer(modifier = Modifier.height(20.dp))
@@ -143,17 +140,14 @@ private fun AuthorizationScreenBase(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(R.string.authorization_center_text),
             textAlign = TextAlign.Center,
-            fontSize = Typography.sixteenth_font,
-            fontFamily = Typography.sans_serif_family,
-            color = Colors.black_70,
+            style = MaterialTheme.typography.bodyMedium,
         )
 
         Spacer(modifier = Modifier.height(20.dp))
 
         Text(
             text = stringResource(R.string.email),
-            color = Colors.black_38,
-            fontSize = Typography.fourteenth_font,
+            style = MaterialTheme.typography.labelSmall,
         )
 
         Spacer(modifier = Modifier.height(2.dp))
@@ -171,8 +165,7 @@ private fun AuthorizationScreenBase(
 
         Text(
             text = stringResource(R.string.password),
-            color = Colors.black_38,
-            fontSize = Typography.fourteenth_font,
+            style = MaterialTheme.typography.labelSmall,
         )
 
         Spacer(modifier = Modifier.height(2.dp))
@@ -195,13 +188,19 @@ private fun AuthorizationScreenBase(
                     .fillMaxWidth(),
             enabled = isSignInButtonEnabled,
             shape = RoundedCornerShape(4.dp),
-            colors = ButtonDefaults.buttonColors(Colors.leaf),
+            colors =
+                ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                ),
             onClick = login,
         ) {
             Text(
                 text = stringResource(id = R.string.sign_in).uppercase(),
-                fontSize = Typography.sixteenth_font,
-                color = Colors.white,
+                style =
+                    MaterialTheme.typography.bodyMedium.copy(
+                        fontFamily = null,
+                    ),
+                color = MaterialTheme.colorScheme.onPrimary,
             )
         }
 
@@ -214,20 +213,18 @@ private fun AuthorizationScreenBase(
             Text(
                 modifier = Modifier,
                 text = stringResource(id = R.string.forgot_password),
-                fontSize = Typography.fourteenth_font,
-                color = Colors.leaf,
                 style =
-                    TextStyle(
+                    MaterialTheme.typography.labelSmall.copy(
+                        color = MaterialTheme.colorScheme.primary,
                         textDecoration = TextDecoration.Underline,
                     ),
             )
             Text(
                 modifier = Modifier,
                 text = stringResource(id = R.string.sign_up),
-                fontSize = Typography.fourteenth_font,
-                color = Colors.leaf,
                 style =
-                    TextStyle(
+                    MaterialTheme.typography.labelSmall.copy(
+                        color = MaterialTheme.colorScheme.primary,
                         textDecoration = TextDecoration.Underline,
                     ),
             )
@@ -251,7 +248,7 @@ private fun EmailTextField(
                 modifier = Modifier.fillMaxSize(),
                 textAlign = TextAlign.Start,
                 text = stringResource(id = R.string.input_email),
-                color = Colors.black_38,
+                color = Colors.black38,
             )
         },
         keyboardOptions =
@@ -261,11 +258,11 @@ private fun EmailTextField(
         singleLine = true,
         colors =
             TextFieldDefaults.colors(
-                focusedIndicatorColor = Colors.black,
-                unfocusedIndicatorColor = Colors.black,
-                focusedContainerColor = Colors.white,
-                unfocusedContainerColor = Colors.white,
-                cursorColor = Colors.black,
+                focusedIndicatorColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface,
+                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                cursorColor = MaterialTheme.colorScheme.onSurface,
             ),
     )
 }
@@ -285,7 +282,7 @@ private fun PasswordTextField(
         placeholder = {
             Text(
                 text = stringResource(id = R.string.input_password),
-                color = Colors.black_38,
+                color = Colors.black38,
             )
         },
         singleLine = true,
@@ -311,10 +308,11 @@ private fun PasswordTextField(
         },
         colors =
             TextFieldDefaults.colors(
-                focusedIndicatorColor = Colors.black,
-                unfocusedIndicatorColor = Colors.black,
-                focusedContainerColor = Colors.white,
-                unfocusedContainerColor = Colors.white,
+                focusedIndicatorColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedIndicatorColor = MaterialTheme.colorScheme.onSurface,
+                focusedContainerColor = MaterialTheme.colorScheme.surface,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surface,
+                cursorColor = MaterialTheme.colorScheme.onSurface,
             ),
     )
 }
@@ -335,7 +333,7 @@ private fun PasswordTextField_Preview() =
     HelpTheme {
         PasswordTextField(
             password = "password",
-            onValueChange = { }
+            onValueChange = { },
         )
     }
 

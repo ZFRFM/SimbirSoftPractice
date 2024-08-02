@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -18,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -32,11 +33,9 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.todayIn
 import ru.faimizufarov.simbirtraining.R
-import ru.faimizufarov.simbirtraining.java.domain.models.News
 import ru.faimizufarov.simbirtraining.java.presentation.models.NewsCompose
 import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.Colors
 import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.HelpTheme
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.Typography
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -55,14 +54,18 @@ fun NewsItem(
     Column(
         modifier =
             modifier
-                .background(colorResource(id = R.color.white))
+                .background(MaterialTheme.colorScheme.background)
                 .clickable { clickItem.invoke(news) },
     ) {
-        Box(modifier = Modifier.fillMaxWidth()) {
+        Box(
+            modifier =
+                Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 222.dp),
+        ) {
             GlideImage(
                 model = imagePath,
                 contentDescription = null,
-                modifier = Modifier,
                 contentScale = ContentScale.Fit,
             )
             Image(
@@ -79,9 +82,8 @@ fun NewsItem(
                         .padding(start = 40.dp, end = 40.dp)
                         .offset(y = 44.dp),
                 text = news.nameText,
-                color = Colors.blue_grey,
-                fontSize = Typography.twenty_first_font,
-                fontFamily = Typography.officina_sans_extra_bold_c,
+                color = Colors.blueGray,
+                style = MaterialTheme.typography.headlineMedium,
                 textAlign = TextAlign.Center,
             )
         }
@@ -105,7 +107,7 @@ fun NewsItem(
         Row(
             modifier =
                 Modifier
-                    .background(Colors.turtle_green)
+                    .background(MaterialTheme.colorScheme.secondary)
                     .fillMaxWidth()
                     .height(32.dp),
             verticalAlignment = Alignment.CenterVertically,
@@ -121,8 +123,8 @@ fun NewsItem(
                     Modifier
                         .align(Alignment.CenterVertically),
                 text = computeRemainingTime(news = news),
-                color = Colors.white,
-                fontSize = Typography.twelfth_font,
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onPrimary,
             )
         }
     }
@@ -132,22 +134,22 @@ fun NewsItem(
 @Composable
 fun NewsItem_Preview() =
     HelpTheme {
-        val news =
-            NewsCompose(
-                id = "id",
-                nameText = "nameText",
-                startDate = 0L,
-                finishDate = 0L,
-                descriptionText = "descriptionText",
-                status = 0L,
-                newsImages = listOf("images"),
-                categoryIds = listOf("1", "2"),
-                createAt = 1L,
-                phoneText = "8920*******",
-                addressText = "ул. Ново-Садовая 160М",
-                organisationText = "Check",
-            )
         Surface {
+            val news =
+                NewsCompose(
+                    id = "id",
+                    nameText = "nameText",
+                    startDate = 0L,
+                    finishDate = 0L,
+                    descriptionText = "descriptionText",
+                    status = 0L,
+                    newsImages = listOf("images"),
+                    categoryIds = listOf("1", "2"),
+                    createAt = 1L,
+                    phoneText = "8920*******",
+                    addressText = "ул. Ново-Садовая 160М",
+                    organisationText = "Check",
+                )
             NewsItem(
                 news = news,
                 clickItem = { },
