@@ -22,10 +22,13 @@ import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.Colors
 import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.Typography
 
 @Composable
-fun NewsTopAppBar(clickFilter: () -> Unit) {
+fun NewsTopAppBar(
+    clickFilter: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     Box(
         modifier =
-            Modifier
+            modifier
                 .background(Colors.leaf)
                 .height(56.dp)
                 .fillMaxWidth(),
@@ -33,8 +36,8 @@ fun NewsTopAppBar(clickFilter: () -> Unit) {
         Box(
             modifier =
                 Modifier
-                    .align(Alignment.CenterStart)
-                    .padding(end = 16.dp),
+                    .align(Alignment.CenterEnd)
+                    .padding(end = 12.dp),
             contentAlignment = Alignment.Center,
         ) {
             IconButton(onClick = clickFilter) {
