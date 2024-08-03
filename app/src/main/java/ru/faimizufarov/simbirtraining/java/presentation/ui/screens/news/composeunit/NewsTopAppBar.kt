@@ -25,11 +25,10 @@ import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.HelpTheme
 @Composable
 fun NewsTopAppBar(
     clickFilter: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier =
-            modifier
+            Modifier
                 .background(MaterialTheme.colorScheme.primary)
                 .height(56.dp)
                 .fillMaxWidth(),
@@ -66,7 +65,6 @@ private fun NewsTopAppBar_Preview() =
     HelpTheme {
         Surface {
             NewsTopAppBar(
-                modifier = Modifier.fillMaxWidth(),
                 clickFilter = { },
             )
         }

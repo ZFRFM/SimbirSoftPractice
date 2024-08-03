@@ -1,7 +1,9 @@
 package ru.faimizufarov.simbirtraining.java.presentation.models
 
+import androidx.compose.runtime.Immutable
 import ru.faimizufarov.simbirtraining.java.domain.models.News
 
+@Immutable
 data class NewsCompose(
     val id: String,
     val nameText: String,
@@ -30,7 +32,7 @@ fun News.toNewsCompose() =
         createAt = createAt,
         phoneText = phoneText,
         addressText = addressText,
-        organisationText = organisationText
+        organisationText = organisationText,
     )
 
 fun NewsCompose.toNews() =
@@ -46,5 +48,5 @@ fun NewsCompose.toNews() =
         createAt = createAt,
         phoneText = phoneText,
         addressText = addressText,
-        organisationText = organisationText
+        organisationText = organisationText,
     )

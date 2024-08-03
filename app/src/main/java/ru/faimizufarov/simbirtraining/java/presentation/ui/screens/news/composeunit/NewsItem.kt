@@ -7,11 +7,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -51,81 +54,95 @@ fun NewsItem(
             "file:///android_asset/${news.newsImages.first()}"
         }
 
-    Column(
-        modifier =
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(4.dp),
+        elevation = CardDefaults.cardElevation(4.dp),
+    ) {
+        Column(
+            modifier =
             modifier
                 .background(MaterialTheme.colorScheme.background)
                 .clickable { clickItem.invoke(news) },
-    ) {
-        Box(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .heightIn(max = 222.dp),
         ) {
-            GlideImage(
-                model = imagePath,
-                contentDescription = null,
-                contentScale = ContentScale.Fit,
-            )
+            Box(
+                modifier =
+                    Modifier
+                        .fillMaxWidth(),
+            ) {
+                GlideImage(
+                    model = imagePath,
+                    contentDescription = null,
+                    modifier =
+                        Modifier
+                            .fillMaxSize()
+                            .padding(top = 4.dp)
+                            .padding(horizontal = 4.dp),
+                    contentScale = ContentScale.Fit,
+                )
+                Image(
+                    painter = painterResource(id = R.drawable.fade),
+                    contentDescription = null,
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(top = 4.dp)
+                            .padding(horizontal = 4.dp),
+                    contentScale = ContentScale.Crop,
+                )
+                Text(
+                    modifier =
+                        Modifier
+                            .fillMaxWidth()
+                            .align(Alignment.BottomCenter)
+                            .padding(start = 40.dp, end = 40.dp)
+                            .offset(y = 60.dp),
+                    text = news.nameText,
+                    color = Colors.blueGray,
+                    style = MaterialTheme.typography.headlineMedium,
+                    textAlign = TextAlign.Center,
+                )
+            }
             Image(
-                painter = painterResource(id = R.drawable.fade),
+                modifier =
+                    Modifier
+                        .padding(top = 68.dp)
+                        .align(Alignment.CenterHorizontally),
+                painter = painterResource(id = R.drawable.decor),
                 contentDescription = null,
-                modifier = Modifier.fillMaxWidth(),
-                contentScale = ContentScale.Crop,
             )
             Text(
                 modifier =
                     Modifier
                         .fillMaxWidth()
-                        .align(Alignment.BottomCenter)
-                        .padding(start = 40.dp, end = 40.dp)
-                        .offset(y = 44.dp),
-                text = news.nameText,
-                color = Colors.blueGray,
-                style = MaterialTheme.typography.headlineMedium,
+                        .padding(top = 10.dp, bottom = 16.dp)
+                        .padding(horizontal = 24.dp),
+                text = news.descriptionText,
                 textAlign = TextAlign.Center,
             )
-        }
-        Image(
-            modifier =
-                Modifier
-                    .padding(top = 52.dp)
-                    .align(Alignment.CenterHorizontally),
-            painter = painterResource(id = R.drawable.decor),
-            contentDescription = null,
-        )
-        Text(
-            modifier =
-                Modifier
-                    .fillMaxWidth()
-                    .padding(top = 10.dp, bottom = 16.dp)
-                    .padding(horizontal = 24.dp),
-            text = news.descriptionText,
-            textAlign = TextAlign.Center,
-        )
-        Row(
-            modifier =
-                Modifier
-                    .background(MaterialTheme.colorScheme.secondary)
-                    .fillMaxWidth()
-                    .height(32.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Absolute.Center,
-        ) {
-            Image(
-                modifier = Modifier.align(Alignment.CenterVertically),
-                painter = painterResource(id = R.drawable.icon_calendar),
-                contentDescription = null,
-            )
-            Text(
+            Row(
                 modifier =
                     Modifier
-                        .align(Alignment.CenterVertically),
-                text = computeRemainingTime(news = news),
-                style = MaterialTheme.typography.bodySmall,
-                color = MaterialTheme.colorScheme.onPrimary,
-            )
+                        .background(MaterialTheme.colorScheme.secondary)
+                        .fillMaxWidth()
+                        .height(32.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Absolute.Center,
+            ) {
+                Image(
+                    modifier = Modifier.align(Alignment.CenterVertically),
+                    painter = painterResource(id = R.drawable.icon_calendar),
+                    contentDescription = null,
+                )
+                Text(
+                    modifier =
+                        Modifier
+                            .align(Alignment.CenterVertically),
+                    text = computeRemainingTime(news = news),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                )
+            }
         }
     }
 }
@@ -138,10 +155,10 @@ fun NewsItem_Preview() =
             val news =
                 NewsCompose(
                     id = "id",
-                    nameText = "nameText",
+                    nameText = "Выставка произведений искусства",
                     startDate = 0L,
                     finishDate = 0L,
-                    descriptionText = "descriptionText",
+                    descriptionText = "Данный текст является описанием вышеуказанного события и полностью его описывает",
                     status = 0L,
                     newsImages = listOf("images"),
                     categoryIds = listOf("1", "2"),

@@ -27,11 +27,10 @@ import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.HelpTheme
 @Composable
 fun AuthorizationTopAppBar(
     backPressed: () -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier =
-            modifier
+            Modifier
                 .background(MaterialTheme.colorScheme.primary)
                 .height(56.dp)
                 .fillMaxWidth(),
@@ -68,7 +67,6 @@ private fun AuthorizationTopAppBar_Preview() =
     HelpTheme {
         Surface {
             AuthorizationTopAppBar(
-                modifier = Modifier.fillMaxWidth(),
                 backPressed = {},
             )
         }

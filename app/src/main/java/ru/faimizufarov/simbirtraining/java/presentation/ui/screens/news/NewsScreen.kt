@@ -8,11 +8,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -26,13 +28,11 @@ import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.HelpTheme
 fun NewsScreen(
     clickFilter: () -> Unit,
     clickItem: (NewsCompose) -> Unit,
-    modifier: Modifier = Modifier,
 ) {
     val newsViewModel: NewsViewModel = viewModel()
     val newsList = newsViewModel.newsLiveData.observeAsState(emptyList())
 
     Scaffold(
-        modifier = modifier,
         topBar = {
             NewsTopAppBar(
                 clickFilter = {
@@ -65,7 +65,9 @@ fun NewsScreenBase(
         items(newsList) { news ->
             Spacer(modifier = Modifier.height(8.dp))
             NewsItem(
-                modifier = Modifier.fillMaxWidth(),
+                modifier =
+                    Modifier
+                        .fillMaxWidth(),
                 news = news,
                 clickItem = clickItem,
             )

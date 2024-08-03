@@ -1,6 +1,7 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.authorization
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -76,7 +77,9 @@ private fun AuthorizationScreen(
     modifier: Modifier = Modifier,
 ) {
     Scaffold(
-        modifier = modifier,
+        modifier =
+            modifier
+                .background(MaterialTheme.colorScheme.background),
         topBar = {
             AuthorizationTopAppBar(
                 backPressed = finish,
@@ -211,7 +214,6 @@ private fun AuthorizationScreenBase(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
-                modifier = Modifier,
                 text = stringResource(id = R.string.forgot_password),
                 style =
                     MaterialTheme.typography.labelSmall.copy(
@@ -220,7 +222,6 @@ private fun AuthorizationScreenBase(
                     ),
             )
             Text(
-                modifier = Modifier,
                 text = stringResource(id = R.string.sign_up),
                 style =
                     MaterialTheme.typography.labelSmall.copy(
