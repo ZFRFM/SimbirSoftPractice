@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -20,6 +19,7 @@ import ru.faimizufarov.simbirtraining.java.domain.models.News
 import ru.faimizufarov.simbirtraining.java.presentation.models.toNews
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.detail_description.DetailDescriptionFragment
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news_filter.NewsFilterFragment
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.HelpTheme
 import javax.inject.Inject
 
 class NewsFragment : Fragment() {
@@ -50,7 +50,7 @@ class NewsFragment : Fragment() {
         binding.composeView.apply {
             setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
             setContent {
-                MaterialTheme {
+                HelpTheme {
                     NewsScreen(
                         clickFilter = { openFilterFragment() },
                         clickItem = { updateFeed(it.toNews()) },

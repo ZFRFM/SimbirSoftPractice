@@ -58,7 +58,6 @@ private val typography =
             ),
     )
 
-@Suppress("ktlint:standard:function-naming")
 @Composable
 fun HelpTheme(content: @Composable () -> Unit) {
     val view = LocalView.current

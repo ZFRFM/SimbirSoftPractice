@@ -134,6 +134,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-extended:1.6.8")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.8.4")
     implementation("androidx.compose.runtime:runtime-livedata:1.6.8")
+    implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     //endregion
 
     testImplementation("junit:junit:4.13.2")
