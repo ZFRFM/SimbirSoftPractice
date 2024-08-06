@@ -8,11 +8,8 @@ import androidx.lifecycle.ViewModel
 const val TEXT_LENGTH = 6
 
 class AuthorizationViewModel : ViewModel() {
-    private val _emailLiveData = MutableLiveData<String>()
-    val emailLiveData: LiveData<String> = _emailLiveData
-
-    private val _passwordLiveData = MutableLiveData<String>()
-    val passwordLiveData: LiveData<String> = _passwordLiveData
+    private val emailLiveData = MutableLiveData<String>()
+    private val passwordLiveData = MutableLiveData<String>()
 
     val isAuthEnabledLiveData: LiveData<Boolean> =
         MediatorLiveData<Boolean>()
@@ -42,10 +39,10 @@ class AuthorizationViewModel : ViewModel() {
     }
 
     fun setEmailText(emailText: String) {
-        _emailLiveData.value = emailText
+        emailLiveData.value = emailText
     }
 
     fun setPasswordText(passwordText: String) {
-        _passwordLiveData.value = passwordText
+        passwordLiveData.value = passwordText
     }
 }

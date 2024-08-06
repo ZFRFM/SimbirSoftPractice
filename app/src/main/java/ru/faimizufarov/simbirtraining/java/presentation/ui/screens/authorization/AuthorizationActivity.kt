@@ -2,67 +2,27 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.authorizatio
 
 import android.content.Intent
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.jakewharton.rxbinding4.widget.textChanges
-import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import ru.faimizufarov.simbirtraining.databinding.ActivityAuthorizationBinding
-import ru.faimizufarov.simbirtraining.databinding.ScrollingAuthorizationActivityBinding
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.main.MainActivity
+import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.HelpTheme
 
 class AuthorizationActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityAuthorizationBinding
-    private val contentBinding: ScrollingAuthorizationActivityBinding
-        get() = binding.contentAuthorizationActivity
-
-    private val disposables = CompositeDisposable()
     private val authorizationViewModel: AuthorizationViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityAuthorizationBinding.inflate(layoutInflater)
-        setContentView(binding.root)
-
-        setAuthData()
-        observeViewModel()
-
-        contentBinding.buttonSignIn.setOnClickListener {
-            authorizationViewModel.navigateToMainActivity()
+        setContent {
+            HelpTheme {
+                AuthorizationScreen(
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
         }
-
-        contentBinding.vk.setOnClickListener {
-            authorizationViewModel.navigateToMainActivity()
-        }
-
-        binding.imageViewBack.setOnClickListener {
-            authorizationViewModel.finishAuthorizationActivity()
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        disposables.dispose()
-    }
-
-    private fun observeViewModel() =
         with(authorizationViewModel) {
-            isAuthEnabledLiveData.observe(this@AuthorizationActivity) { isEnabled ->
-                contentBinding.buttonSignIn.isEnabled = isEnabled
-            }
-
-            emailLiveData.observe(this@AuthorizationActivity) { emailText ->
-                if (contentBinding.editTextEmail.text.toString() != emailText) {
-                    contentBinding.editTextEmail.setText(emailText)
-                }
-            }
-
-            passwordLiveData.observe(this@AuthorizationActivity) { passwordText ->
-                if (contentBinding.editTextPassword.text?.toString() != passwordText) {
-                    contentBinding.editTextPassword.setText(passwordText)
-                }
-            }
-
             navigateToMainLiveEvent.observe(this@AuthorizationActivity) {
                 navigateToMainActivityLocal()
             }
@@ -71,29 +31,11 @@ class AuthorizationActivity : AppCompatActivity() {
                 finish()
             }
         }
+    }
 
     private fun navigateToMainActivityLocal() {
         val intent = Intent(this, MainActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
-    }
-
-    private fun setAuthData() {
-        binding
-            .contentAuthorizationActivity
-            .editTextEmail
-            .textChanges()
-            .subscribe {
-                authorizationViewModel.setEmailText(it.toString())
-            }.let { disposables.add(it) }
-
-        binding
-            .contentAuthorizationActivity
-            .textInputLayoutPassword
-            .editText
-            ?.textChanges()
-            ?.subscribe {
-                authorizationViewModel.setPasswordText(it.toString())
-            }.let { disposables.add(it ?: Observable.just(false).subscribe()) }
     }
 }

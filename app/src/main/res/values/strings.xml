@@ -220,4 +220,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="zero">0</string>
     <string name="search_item_click_exception">Возникла ошибка загрузки мероприятия</string>
+    <string name="show_password">Показать пароль</string>
+    <string name="hide_password">Скрыть пароль</string>
 </resources>

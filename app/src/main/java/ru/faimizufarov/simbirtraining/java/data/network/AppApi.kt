@@ -7,8 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
-
-private const val BASE_URL = "http://192.168.201.86:8080"
+import ru.faimizufarov.simbirtraining.BuildConfig
 
 private val loggingInterceptor =
     HttpLoggingInterceptor().apply {
@@ -26,7 +25,7 @@ private val retrofit =
             Json.asConverterFactory("application/json".toMediaType()),
         )
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-        .baseUrl(BASE_URL)
+        .baseUrl(BuildConfig.BASE_URL)
         .client(httpClient)
         .build()
 
