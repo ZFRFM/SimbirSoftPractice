@@ -2,6 +2,7 @@ plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
     id("kotlinx-serialization")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -60,6 +61,13 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
     implementation("io.coil-kt:coil-compose:2.4.0")
+    //endregion
+
+    //region Room
+    implementation("androidx.room:room-runtime:2.6.1")
+    implementation("androidx.room:room-ktx:2.6.1")
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
+    ksp("androidx.room:room-compiler:2.6.1")
     //endregion
 
     testImplementation("junit:junit:4.13.2")
