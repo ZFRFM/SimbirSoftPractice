@@ -9,9 +9,9 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.todayIn
+import ru.faimizufarov.domain.models.News
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.ItemNewsFragmentBinding
-import ru.faimizufarov.simbirtraining.java.domain.models.News
 
 class NewsViewHolder(
     private val itemBinding: ItemNewsFragmentBinding,

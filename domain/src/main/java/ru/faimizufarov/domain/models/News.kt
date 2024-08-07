@@ -1,9 +1,8 @@
-package ru.faimizufarov.simbirtraining.java.domain.models
+package ru.faimizufarov.domain.models
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
-@Parcelize
+@Serializable
 data class News(
     val id: String,
     val nameText: String,
@@ -17,4 +16,4 @@ data class News(
     val phoneText: String,
     val addressText: String,
     val organisationText: String,
-) : Parcelable
+)

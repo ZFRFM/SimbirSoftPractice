@@ -1,8 +1,8 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.search.adapters
 
 import androidx.recyclerview.widget.RecyclerView
+import ru.faimizufarov.domain.models.News
 import ru.faimizufarov.simbirtraining.databinding.ItemSearchResultBinding
-import ru.faimizufarov.simbirtraining.java.domain.models.News
 
 class SearchResultEventsViewHolder(
     private val itemBinding: ItemSearchResultBinding,
