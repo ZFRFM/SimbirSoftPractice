@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.data.models
+package ru.faimizufarov.data.models
 
 data class CategoryFilter(
     val categoryId: String,

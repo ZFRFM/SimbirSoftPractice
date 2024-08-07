@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import ru.faimizufarov.data.models.CategoryFilter
 import ru.faimizufarov.domain.models.News
 import ru.faimizufarov.domain.usecase.GetNewsUseCase
 import ru.faimizufarov.domain.usecase.SetBadgeCounterEmitValueUseCase
-import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
 import ru.faimizufarov.simbirtraining.java.data.repository.NewsRepositoryImpl
 import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.GlobalNewsFilter
 

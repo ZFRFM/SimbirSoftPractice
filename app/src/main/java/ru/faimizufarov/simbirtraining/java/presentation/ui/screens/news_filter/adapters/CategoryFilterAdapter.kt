@@ -3,8 +3,8 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news_filter.
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
+import ru.faimizufarov.data.models.CategoryFilterItem
 import ru.faimizufarov.simbirtraining.databinding.ItemNewsFilterFragmentBinding
-import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilterItem
 
 class CategoryFilterAdapter(
     private val onFilterClick: (CategoryFilterItem) -> Unit,

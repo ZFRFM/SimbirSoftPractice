@@ -2,7 +2,7 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.holders
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
+import ru.faimizufarov.data.models.CategoryFilter
 
 class GlobalNewsFilter : NewsFilter {
     private val _activeFiltersFlow = MutableStateFlow(emptyList<CategoryFilter>())

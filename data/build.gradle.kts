@@ -11,6 +11,8 @@ android {
     defaultConfig {
         minSdk = 24
 
+        buildConfigField("String", "BASE_URL", "http://192.168.115.86:8080")
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -36,6 +38,8 @@ android {
 }
 
 dependencies {
+    implementation(project(path = ":domain"))
+
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.appcompat:appcompat:1.7.0")
     implementation("com.google.android.material:material:1.12.0")

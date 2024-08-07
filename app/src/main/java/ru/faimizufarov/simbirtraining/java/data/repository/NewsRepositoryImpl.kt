@@ -7,14 +7,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.json.Json
 import retrofit2.HttpException
+import ru.faimizufarov.data.models.NewsAsset
+import ru.faimizufarov.data.models.NewsResponse
+import ru.faimizufarov.data.network.AppApi
 import ru.faimizufarov.domain.models.News
 import ru.faimizufarov.domain.repository.NewsRepository
 import ru.faimizufarov.simbirtraining.java.data.local.AppDatabase
 import ru.faimizufarov.simbirtraining.java.data.local.toNews
 import ru.faimizufarov.simbirtraining.java.data.local.toNewsEntity
-import ru.faimizufarov.simbirtraining.java.data.models.NewsAsset
-import ru.faimizufarov.simbirtraining.java.data.models.mapToNews
-import ru.faimizufarov.simbirtraining.java.data.network.AppApi
 import java.io.BufferedReader
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
@@ -110,6 +110,22 @@ class NewsRepositoryImpl(
             phoneText = phone,
             addressText = address,
             organisationText = organisation,
+        )
+
+    private fun NewsResponse.mapToNews() =
+        News(
+            id,
+            nameText,
+            startDate,
+            finishDate,
+            descriptionText,
+            status,
+            newsImages,
+            categoryIds,
+            createAt,
+            phone,
+            address,
+            organisation,
         )
 
     override suspend fun setBadgeCounterEmitValue(emitValue: Int) {

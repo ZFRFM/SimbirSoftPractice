@@ -8,6 +8,8 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 
+private const val BASE_URL = "http://192.168.48.86:8080"
+
 private val loggingInterceptor =
     HttpLoggingInterceptor().apply {
         level = HttpLoggingInterceptor.Level.BODY
@@ -24,9 +26,11 @@ private val retrofit =
             Json.asConverterFactory("application/json".toMediaType()),
         )
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-        .baseUrl(BuildConfig.BASE_URL)
+        .baseUrl(BASE_URL)
         .client(httpClient)
         .build()
+
+// FIXME: BuildConfig is not generated
 
 object AppApi {
     val retrofitService: AppApiInterface by lazy {
