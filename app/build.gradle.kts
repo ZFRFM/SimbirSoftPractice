@@ -19,8 +19,6 @@ android {
         versionName = "1.0"
         multiDexEnabled = true
 
-        buildConfigField("String", "BASE_URL", "http://192.168.115.86:8080")
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         vectorDrawables {
@@ -29,11 +27,7 @@ android {
     }
 
     buildTypes {
-        debug {
-            buildConfigField("String", "BASE_URL", "\"http://192.168.48.86:8080\"")
-        }
         release {
-            buildConfigField("String", "BASE_URL", "\"http://192.168.48.86:8080\"")
             isMinifyEnabled = false
             @Suppress("ktlint:standard:trailing-comma-on-call-site")
             proguardFiles(
