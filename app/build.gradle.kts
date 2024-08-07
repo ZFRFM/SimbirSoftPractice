@@ -62,6 +62,8 @@ android {
 }
 
 dependencies {
+    implementation(project(path = ":domain"))
+
     implementation("androidx.activity:activity:1.8.0")
     implementation("androidx.compose.runtime:runtime-livedata:1.6.8")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
