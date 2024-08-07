@@ -15,9 +15,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.faimizufarov.data.repository.CategoryRepositoryImpl
 import ru.faimizufarov.domain.models.Category
 import ru.faimizufarov.domain.usecase.GetCategoriesUseCase
-import ru.faimizufarov.simbirtraining.java.data.repository.CategoryRepositoryImpl
 import ru.faimizufarov.simbirtraining.java.presentation.models.CategoryPresentation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException

@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.data.repository
+package ru.faimizufarov.data.repository
 
 import android.content.Context
 import kotlinx.coroutines.Dispatchers
@@ -7,13 +7,13 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.json.Json
 import retrofit2.HttpException
+import ru.faimizufarov.data.local.AppDatabase
+import ru.faimizufarov.data.local.CategoryEntity
 import ru.faimizufarov.data.models.CategoryAsset
 import ru.faimizufarov.data.models.CategoryResponse
 import ru.faimizufarov.data.network.AppApi
 import ru.faimizufarov.domain.models.Category
 import ru.faimizufarov.domain.repository.CategoryRepository
-import ru.faimizufarov.simbirtraining.java.data.local.AppDatabase
-import ru.faimizufarov.simbirtraining.java.data.local.CategoryEntity
 import java.io.BufferedReader
 import java.util.Locale
 import kotlin.coroutines.resume

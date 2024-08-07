@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.data.repository
+package ru.faimizufarov.data.repository
 
 import android.content.Context
 import kotlinx.coroutines.TimeoutCancellationException
@@ -7,14 +7,14 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.json.Json
 import retrofit2.HttpException
+import ru.faimizufarov.data.local.AppDatabase
+import ru.faimizufarov.data.local.toNews
+import ru.faimizufarov.data.local.toNewsEntity
 import ru.faimizufarov.data.models.NewsAsset
 import ru.faimizufarov.data.models.NewsResponse
 import ru.faimizufarov.data.network.AppApi
 import ru.faimizufarov.domain.models.News
 import ru.faimizufarov.domain.repository.NewsRepository
-import ru.faimizufarov.simbirtraining.java.data.local.AppDatabase
-import ru.faimizufarov.simbirtraining.java.data.local.toNews
-import ru.faimizufarov.simbirtraining.java.data.local.toNewsEntity
 import java.io.BufferedReader
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine

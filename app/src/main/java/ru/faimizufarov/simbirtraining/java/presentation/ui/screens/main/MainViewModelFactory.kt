@@ -2,8 +2,8 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import ru.faimizufarov.data.repository.NewsRepositoryImpl
 import ru.faimizufarov.domain.repository.NewsRepository
-import ru.faimizufarov.simbirtraining.java.data.repository.NewsRepositoryImpl
 import javax.inject.Inject
 
 class MainViewModelFactory

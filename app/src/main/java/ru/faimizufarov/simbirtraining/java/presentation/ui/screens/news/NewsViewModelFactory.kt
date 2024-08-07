@@ -2,10 +2,10 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import ru.faimizufarov.data.repository.NewsRepositoryImpl
 import ru.faimizufarov.domain.repository.NewsRepository
 import ru.faimizufarov.domain.usecase.GetNewsUseCase
 import ru.faimizufarov.domain.usecase.SetBadgeCounterEmitValueUseCase
-import ru.faimizufarov.simbirtraining.java.data.repository.NewsRepositoryImpl
 import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.GlobalNewsFilter
 import javax.inject.Inject
 

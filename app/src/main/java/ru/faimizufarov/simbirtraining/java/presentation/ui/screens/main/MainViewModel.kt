@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import kotlinx.coroutines.Dispatchers
-import ru.faimizufarov.simbirtraining.java.data.repository.NewsRepositoryImpl
+import ru.faimizufarov.data.repository.NewsRepositoryImpl
 
 class MainViewModel(
     newsRepositoryImpl: NewsRepositoryImpl,

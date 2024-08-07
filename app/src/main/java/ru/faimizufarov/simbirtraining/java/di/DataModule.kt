@@ -3,10 +3,10 @@ package ru.faimizufarov.simbirtraining.java.di
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import ru.faimizufarov.data.repository.CategoryRepositoryImpl
+import ru.faimizufarov.data.repository.NewsRepositoryImpl
 import ru.faimizufarov.domain.repository.CategoryRepository
 import ru.faimizufarov.domain.repository.NewsRepository
-import ru.faimizufarov.simbirtraining.java.data.repository.CategoryRepositoryImpl
-import ru.faimizufarov.simbirtraining.java.data.repository.NewsRepositoryImpl
 import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.GlobalNewsFilter
 import javax.inject.Singleton
 
