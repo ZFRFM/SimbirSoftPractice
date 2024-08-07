@@ -114,18 +114,18 @@ class NewsRepositoryImpl(
 
     private fun NewsResponse.mapToNews() =
         News(
-            id,
-            nameText,
-            startDate,
-            finishDate,
-            descriptionText,
-            status,
-            newsImages,
-            categoryIds,
-            createAt,
-            phone,
-            address,
-            organisation,
+            id = id,
+            nameText = nameText,
+            startDate = startDate,
+            finishDate = finishDate,
+            descriptionText = descriptionText,
+            status = status,
+            newsImages = newsImages,
+            categoryIds = categoryIds,
+            createAt = createAt,
+            phoneText = phone,
+            addressText = address,
+            organisationText = organisation,
         )
 
     override suspend fun setBadgeCounterEmitValue(emitValue: Int) {
