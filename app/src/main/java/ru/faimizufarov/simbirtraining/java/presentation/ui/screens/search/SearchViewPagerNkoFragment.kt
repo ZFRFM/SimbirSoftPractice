@@ -6,9 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
+import ru.faimizufarov.data.models.Organization
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentSearchViewPagerNkoBinding
-import ru.faimizufarov.simbirtraining.java.data.models.Organization
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.search.adapters.SearchResultNkoAdapter
 import kotlin.random.Random
 

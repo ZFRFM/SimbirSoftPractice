@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.data.local
+package ru.faimizufarov.data.local
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

@@ -1,8 +1,7 @@
-package ru.faimizufarov.simbirtraining.java.data.models
+package ru.faimizufarov.data.models
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import ru.faimizufarov.domain.models.News
 
 @Serializable
 data class NewsResponse(
@@ -31,19 +30,3 @@ data class NewsResponse(
     @SerialName("organisation")
     val organisation: String,
 )
-
-fun NewsResponse.mapToNews() =
-    News(
-        id,
-        nameText,
-        startDate,
-        finishDate,
-        descriptionText,
-        status,
-        newsImages,
-        categoryIds,
-        createAt,
-        phone,
-        address,
-        organisation,
-    )

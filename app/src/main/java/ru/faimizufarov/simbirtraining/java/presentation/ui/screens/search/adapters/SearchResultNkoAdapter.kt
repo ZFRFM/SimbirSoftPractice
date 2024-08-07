@@ -4,8 +4,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
+import ru.faimizufarov.data.models.Organization
 import ru.faimizufarov.simbirtraining.databinding.ItemSearchResultBinding
-import ru.faimizufarov.simbirtraining.java.data.models.Organization
 
 class SearchResultNkoAdapter :
     ListAdapter<Organization, SearchResultNkoViewHolder>(ItemCallback) {

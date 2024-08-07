@@ -1,8 +1,8 @@
 package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news_filter.adapters
 
 import androidx.recyclerview.widget.RecyclerView
+import ru.faimizufarov.data.models.CategoryFilterItem
 import ru.faimizufarov.simbirtraining.databinding.ItemNewsFilterFragmentBinding
-import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilterItem
 
 class CategoryFilterViewHolder(
     private val itemBinding: ItemNewsFilterFragmentBinding,

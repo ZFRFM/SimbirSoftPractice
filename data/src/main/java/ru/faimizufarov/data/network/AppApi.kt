@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.data.network
+package ru.faimizufarov.data.network
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import kotlinx.serialization.json.Json
@@ -7,7 +7,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
-import ru.faimizufarov.simbirtraining.BuildConfig
+import ru.faimizufarov.data.BuildConfig
 
 private val loggingInterceptor =
     HttpLoggingInterceptor().apply {
