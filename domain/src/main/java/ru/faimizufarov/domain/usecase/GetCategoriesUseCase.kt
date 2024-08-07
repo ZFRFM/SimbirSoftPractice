@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.domain.usecase
+package ru.faimizufarov.domain.usecase
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext

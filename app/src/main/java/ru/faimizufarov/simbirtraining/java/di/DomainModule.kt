@@ -4,9 +4,9 @@ import dagger.Module
 import dagger.Provides
 import ru.faimizufarov.domain.repository.CategoryRepository
 import ru.faimizufarov.domain.repository.NewsRepository
-import ru.faimizufarov.simbirtraining.java.domain.usecase.GetCategoriesUseCase
-import ru.faimizufarov.simbirtraining.java.domain.usecase.GetNewsUseCase
-import ru.faimizufarov.simbirtraining.java.domain.usecase.SetBadgeCounterEmitValueUseCase
+import ru.faimizufarov.domain.usecase.GetCategoriesUseCase
+import ru.faimizufarov.domain.usecase.GetNewsUseCase
+import ru.faimizufarov.domain.usecase.SetBadgeCounterEmitValueUseCase
 
 @Module
 class DomainModule {
