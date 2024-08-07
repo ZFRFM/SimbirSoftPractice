@@ -63,6 +63,7 @@ android {
 
 dependencies {
     implementation(project(path = ":domain"))
+    implementation(project(path = ":data"))
 
     implementation("androidx.activity:activity:1.8.0")
     implementation("androidx.compose.runtime:runtime-livedata:1.6.8")
@@ -114,9 +115,8 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
     implementation("io.coil-kt:coil-compose:2.4.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     //endregion
-    implementation("androidx.activity:activity-ktx:1.9.0")
+    implementation("androidx.activity:activity-ktx:1.9.1")
 
     //region RxJava-RxAndroid-RxBinding
     implementation("io.reactivex.rxjava3:rxandroid:3.0.2")
