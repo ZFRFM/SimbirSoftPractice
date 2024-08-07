@@ -7,13 +7,13 @@ import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.json.Json
 import retrofit2.HttpException
+import ru.faimizufarov.domain.repository.CategoryRepository
 import ru.faimizufarov.simbirtraining.java.data.local.AppDatabase
 import ru.faimizufarov.simbirtraining.java.data.local.CategoryEntity
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryAsset
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryResponse
 import ru.faimizufarov.simbirtraining.java.data.network.AppApi
 import ru.faimizufarov.simbirtraining.java.domain.models.Category
-import ru.faimizufarov.simbirtraining.java.domain.repository.CategoryRepository
 import java.io.BufferedReader
 import java.util.Locale
 import kotlin.coroutines.resume
