@@ -2,8 +2,8 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import ru.faimizufarov.domain.repository.NewsRepository
 import ru.faimizufarov.simbirtraining.java.data.repository.NewsRepositoryImpl
-import ru.faimizufarov.simbirtraining.java.domain.repository.NewsRepository
 import javax.inject.Inject
 
 class SearchViewPagerEventsViewModelFactory

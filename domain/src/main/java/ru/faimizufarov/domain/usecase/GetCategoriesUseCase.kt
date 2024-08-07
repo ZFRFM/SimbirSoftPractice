@@ -1,8 +1,8 @@
-package ru.faimizufarov.simbirtraining.java.domain.usecase
+package ru.faimizufarov.domain.usecase
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import ru.faimizufarov.simbirtraining.java.domain.repository.CategoryRepository
+import ru.faimizufarov.domain.repository.CategoryRepository
 
 class GetCategoriesUseCase(private val categoryRepository: CategoryRepository) {
     suspend fun execute() =

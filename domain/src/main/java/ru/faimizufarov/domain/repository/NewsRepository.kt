@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.domain.repository
+package ru.faimizufarov.domain.repository
 
 interface NewsRepository {
     suspend fun requestNewsList(ids: List<String>)

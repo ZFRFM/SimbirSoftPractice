@@ -5,10 +5,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.map
+import ru.faimizufarov.domain.models.Category
+import ru.faimizufarov.domain.usecase.GetCategoriesUseCase
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilter
 import ru.faimizufarov.simbirtraining.java.data.models.CategoryFilterItem
-import ru.faimizufarov.simbirtraining.java.domain.models.Category
-import ru.faimizufarov.simbirtraining.java.domain.usecase.GetCategoriesUseCase
 import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.GlobalNewsFilter
 
 class NewsFilterViewModel(

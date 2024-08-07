@@ -62,6 +62,8 @@ android {
 }
 
 dependencies {
+    implementation(project(path = ":domain"))
+
     implementation("androidx.activity:activity:1.8.0")
     implementation("androidx.compose.runtime:runtime-livedata:1.6.8")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
@@ -102,7 +104,7 @@ dependencies {
     //endregion
 
     //region Coroutine
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
     //endregion
 

@@ -1,6 +1,6 @@
-package ru.faimizufarov.simbirtraining.java.domain.usecase
+package ru.faimizufarov.domain.usecase
 
-import ru.faimizufarov.simbirtraining.java.domain.repository.NewsRepository
+import ru.faimizufarov.domain.repository.NewsRepository
 
 class SetBadgeCounterEmitValueUseCase(val newsRepository: NewsRepository) {
     suspend fun execute(emitValue: Int) {

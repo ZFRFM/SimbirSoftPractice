@@ -1,7 +1,7 @@
 package ru.faimizufarov.simbirtraining.java.presentation.models
 
 import androidx.compose.runtime.Immutable
-import ru.faimizufarov.simbirtraining.java.domain.models.News
+import ru.faimizufarov.domain.models.News
 
 @Immutable
 data class NewsCompose(

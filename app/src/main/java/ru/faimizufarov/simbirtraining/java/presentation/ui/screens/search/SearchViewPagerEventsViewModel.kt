@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.faimizufarov.domain.models.News
 import ru.faimizufarov.simbirtraining.java.data.repository.NewsRepositoryImpl
-import ru.faimizufarov.simbirtraining.java.domain.models.News
 
 class SearchViewPagerEventsViewModel(
     private val newsRepositoryImpl: NewsRepositoryImpl,
