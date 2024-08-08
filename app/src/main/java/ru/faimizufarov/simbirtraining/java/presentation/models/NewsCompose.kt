@@ -18,35 +18,3 @@ data class NewsCompose(
     val addressText: String,
     val organisationText: String,
 )
-
-fun News.toNewsCompose() =
-    NewsCompose(
-        id = id,
-        nameText = nameText,
-        startDate = startDate,
-        finishDate = finishDate,
-        descriptionText = descriptionText,
-        status = status,
-        newsImages = newsImages,
-        categoryIds = categoryIds,
-        createAt = createAt,
-        phoneText = phoneText,
-        addressText = addressText,
-        organisationText = organisationText,
-    )
-
-fun NewsCompose.toNews() =
-    News(
-        id = id,
-        nameText = nameText,
-        startDate = startDate,
-        finishDate = finishDate,
-        descriptionText = descriptionText,
-        status = status,
-        newsImages = newsImages,
-        categoryIds = categoryIds,
-        createAt = createAt,
-        phoneText = phoneText,
-        addressText = addressText,
-        organisationText = organisationText,
-    )

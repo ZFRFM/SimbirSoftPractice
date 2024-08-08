@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.presentation.ui.theme
+package ru.faimizufarov.core.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -12,6 +12,7 @@ import kotlinx.datetime.Clock
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.todayIn
+import ru.faimizufarov.news.NewsFragment
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentDetailDescriptionBinding
 
@@ -35,20 +36,25 @@ class DetailDescriptionFragment : Fragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        setFragmentResultListener(NEWS_POSITION_RESULT) { _, bundle ->
+        setFragmentResultListener(NewsFragment.NEWS_POSITION_RESULT) { _, bundle ->
 
-            val startDate = LocalDateTime.parse(bundle.getString(START_DATE) ?: "")
-            val finishDate = LocalDateTime.parse(bundle.getString(FINISH_DATE) ?: "")
+            val startDate =
+                LocalDateTime
+                    .parse(bundle.getString(NewsFragment.START_DATE) ?: "")
+
+            val finishDate =
+                LocalDateTime
+                    .parse(bundle.getString(NewsFragment.FINISH_DATE) ?: "")
 
             val finishDay =
                 LocalDateTime.parse(
-                    bundle.getString(FINISH_DATE) ?: "",
+                    bundle.getString(NewsFragment.FINISH_DATE) ?: "",
                 ).date.toEpochDays()
 
             val today = Clock.System.todayIn(TimeZone.currentSystemDefault()).toEpochDays()
 
             with(binding.contentDetailDescription) {
-                val imageUrlList = bundle.getStringArrayList(IMAGES_VIEW_NEWS)
+                val imageUrlList = bundle.getStringArrayList(NewsFragment.IMAGES_VIEW_NEWS)
                 val imageUrl = imageUrlList?.first().toString()
 
                 if (!imageUrl.startsWith("images/news")) {
@@ -63,9 +69,9 @@ class DetailDescriptionFragment : Fragment() {
                         .into(binding.contentDetailDescription.imageViewFirstPicture)
                 }
 
-                textViewNews.text = bundle.getString(TEXT_VIEW_NAME)
+                textViewNews.text = bundle.getString(NewsFragment.TEXT_VIEW_NAME)
 
-                textViewDescTop.text = bundle.getString(TEXT_VIEW_DESCRIPTION)
+                textViewDescTop.text = bundle.getString(NewsFragment.TEXT_VIEW_DESCRIPTION)
 
                 textViewRemainingTime.text =
                     if (finishDay - today >= 0) {
@@ -89,13 +95,6 @@ class DetailDescriptionFragment : Fragment() {
     }
 
     companion object {
-        const val IMAGES_VIEW_NEWS = "IMAGES_VIEW_NEWS"
-        const val TEXT_VIEW_NAME = "TEXT_VIEW_NAME"
-        const val TEXT_VIEW_DESCRIPTION = "TEXT_VIEW_DESCRIPTION"
-        const val START_DATE = "START_DATE"
-        const val FINISH_DATE = "FINISH_DATE"
-        const val NEWS_POSITION_RESULT = "NEWS_POSITION_RESULT"
-
         fun newInstance(): DetailDescriptionFragment {
             return DetailDescriptionFragment()
         }

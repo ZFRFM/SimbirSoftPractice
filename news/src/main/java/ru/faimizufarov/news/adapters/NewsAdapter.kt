@@ -1,11 +1,11 @@
-package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news.adapters
+package ru.faimizufarov.news.adapters
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import ru.faimizufarov.domain.models.News
-import ru.faimizufarov.simbirtraining.databinding.ItemNewsFragmentBinding
+import ru.faimizufarov.news.databinding.ItemNewsFragmentBinding
 
 class NewsAdapter(
     private val onItemClick: (News) -> Unit,

@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news.composeunit
+package ru.faimizufarov.news.composeunit
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -19,25 +19,23 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.faimizufarov.simbirtraining.R
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.HelpTheme
+import ru.faimizufarov.core.theme.HelpTheme
+import ru.faimizufarov.news.R
 
 @Composable
-fun NewsTopAppBar(
-    clickFilter: () -> Unit,
-) {
+fun NewsTopAppBar(clickFilter: () -> Unit) {
     Box(
         modifier =
-            Modifier
-                .background(MaterialTheme.colorScheme.primary)
-                .height(56.dp)
-                .fillMaxWidth(),
+        Modifier
+            .background(MaterialTheme.colorScheme.primary)
+            .height(56.dp)
+            .fillMaxWidth(),
     ) {
         Box(
             modifier =
-                Modifier
-                    .align(Alignment.CenterEnd)
-                    .padding(end = 12.dp),
+            Modifier
+                .align(Alignment.CenterEnd)
+                .padding(end = 12.dp),
             contentAlignment = Alignment.Center,
         ) {
             IconButton(onClick = clickFilter) {

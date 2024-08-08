@@ -48,8 +48,6 @@
     </string>
     <string name="splash_text_view">Загрузка...</string>
     <string name="profile">Профиль</string>
-    <string name="news">Новости</string>
-    <string name="filter">Фильтр</string>
     <string name="name">Константинов Денис</string>
     <string name="date_of_birth">Дата рождения</string>
     <string name="job">Сфера деятельности</string>
@@ -172,9 +170,7 @@
     <string name="search_results">Результаты поиска: 109 мероприятий</string>
     <string name="news_1_name">Спонсоры отремонтируют школу-интернат</string>
     <string name="news_1_description">"Дубовская школа-интернат для детей с ограниченными возможностями здоровья стала первой в области …"</string>
-    <string name="news_remaining_time">Осталось: </string>
     <string name="news_remaining_time_with_args">Осталось %d дней (%d.%d - %d.%d)</string>
-    <string name="news_event_finished">Событие прошло</string>
     <string name="news_date">%d %d, %d</string>
     <string name="news_2_name">Конкурс по вокальному пению в детском доме №6</string>
     <string name="news_2_description">"Дубовская школа-интернат для детей с ограниченными возможностями здоровья стала первой в области …"</string>
@@ -222,4 +218,6 @@
     <string name="search_item_click_exception">Возникла ошибка загрузки мероприятия</string>
     <string name="show_password">Показать пароль</string>
     <string name="hide_password">Скрыть пароль</string>
+    <string name="news_event_finished">Событие прошло</string>
+    <string name="news_remaining_time">"Осталось: "</string>
 </resources>

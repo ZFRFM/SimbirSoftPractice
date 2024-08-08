@@ -7,7 +7,7 @@ import ru.faimizufarov.data.repository.CategoryRepositoryImpl
 import ru.faimizufarov.data.repository.NewsRepositoryImpl
 import ru.faimizufarov.domain.repository.CategoryRepository
 import ru.faimizufarov.domain.repository.NewsRepository
-import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.GlobalNewsFilter
+import ru.faimizufarov.news.holders.GlobalNewsFilter
 import javax.inject.Singleton
 
 @Module

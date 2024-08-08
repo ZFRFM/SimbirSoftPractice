@@ -3,7 +3,7 @@ package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news_filter
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ru.faimizufarov.domain.usecase.GetCategoriesUseCase
-import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.GlobalNewsFilter
+import ru.faimizufarov.news.holders.GlobalNewsFilter
 import javax.inject.Inject
 
 class NewsFilterViewModelFactory

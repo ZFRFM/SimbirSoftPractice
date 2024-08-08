@@ -21,8 +21,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ru.faimizufarov.simbirtraining.R
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.Colors
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.HelpTheme
+import ru.faimizufarov.core.theme.Colors
+import ru.faimizufarov.core.theme.HelpTheme
 
 @Composable
 fun AuthorizationTopAppBar(

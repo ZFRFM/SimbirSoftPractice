@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="news_remaining_time">"Осталось: "</string>
+    <string name="news_event_finished">Событие прошло</string>
+    <string name="news">Новости</string>
+    <string name="filter">Фильтр</string>
+</resources>

@@ -9,7 +9,7 @@ import ru.faimizufarov.data.models.CategoryFilter
 import ru.faimizufarov.data.models.CategoryFilterItem
 import ru.faimizufarov.domain.models.Category
 import ru.faimizufarov.domain.usecase.GetCategoriesUseCase
-import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.GlobalNewsFilter
+import ru.faimizufarov.news.holders.GlobalNewsFilter
 
 class NewsFilterViewModel(
     private val getCategoriesUseCase: GetCategoriesUseCase,

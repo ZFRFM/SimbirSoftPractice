@@ -17,3 +17,5 @@ rootProject.name = "SimbirSoftPractice"
 include(":app")
 include(":domain")
 include(":data")
+include(":news")
+include(":core")

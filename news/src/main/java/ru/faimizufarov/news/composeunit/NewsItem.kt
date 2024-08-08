@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news.composeunit
+package ru.faimizufarov.news.composeunit
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -34,10 +34,10 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.todayIn
-import ru.faimizufarov.simbirtraining.R
-import ru.faimizufarov.simbirtraining.java.presentation.models.NewsCompose
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.Colors
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.HelpTheme
+import ru.faimizufarov.core.theme.Colors
+import ru.faimizufarov.core.theme.HelpTheme
+import ru.faimizufarov.news.R
+import ru.faimizufarov.news.models.NewsCompose
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable

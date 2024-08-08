@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.presentation.ui.holders
+package ru.faimizufarov.news.holders
 
 import kotlinx.coroutines.flow.StateFlow
 import ru.faimizufarov.data.models.CategoryFilter

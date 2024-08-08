@@ -8,7 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.main.MainActivity
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.HelpTheme
+import ru.faimizufarov.core.theme.HelpTheme
 
 class AuthorizationActivity : AppCompatActivity() {
     private val authorizationViewModel: AuthorizationViewModel by viewModels()

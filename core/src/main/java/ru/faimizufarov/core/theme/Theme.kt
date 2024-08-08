@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.presentation.ui.theme
+package ru.faimizufarov.core.theme
 
 import android.app.Activity
 import androidx.compose.material3.MaterialTheme
@@ -13,7 +13,7 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import ru.faimizufarov.simbirtraining.R
+import ru.faimizufarov.core.R
 
 private val mainColorScheme =
     lightColorScheme(

@@ -6,8 +6,8 @@ import dagger.Provides
 import ru.faimizufarov.domain.repository.NewsRepository
 import ru.faimizufarov.domain.usecase.GetNewsUseCase
 import ru.faimizufarov.domain.usecase.SetBadgeCounterEmitValueUseCase
-import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.GlobalNewsFilter
-import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news.NewsViewModelFactory
+import ru.faimizufarov.news.NewsViewModelFactory
+import ru.faimizufarov.news.holders.GlobalNewsFilter
 import javax.inject.Singleton
 
 @Module

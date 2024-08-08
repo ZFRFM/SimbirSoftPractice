@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news.adapters
+package ru.faimizufarov.news.adapters
 
 import android.net.Uri
 import androidx.core.content.ContextCompat
@@ -10,8 +10,8 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.todayIn
 import ru.faimizufarov.domain.models.News
-import ru.faimizufarov.simbirtraining.R
-import ru.faimizufarov.simbirtraining.databinding.ItemNewsFragmentBinding
+import ru.faimizufarov.news.R
+import ru.faimizufarov.news.databinding.ItemNewsFragmentBinding
 
 class NewsViewHolder(
     private val itemBinding: ItemNewsFragmentBinding,
