@@ -2,4 +2,6 @@
 <resources>
     <string name="news_remaining_time">"Осталось: "</string>
     <string name="news_event_finished">Событие прошло</string>
+    <string name="news">Новости</string>
+    <string name="filter">Фильтр</string>
 </resources>
