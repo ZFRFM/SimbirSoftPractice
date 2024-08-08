@@ -73,16 +73,14 @@ class MainActivity : AppCompatActivity(), NewsNavigator {
     override fun navigateToDetailDescriptionFragment() {
         val detailDescriptionFragment = DetailDescriptionFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainerView, detailDescriptionFragment)
-            .addToBackStack(null)
+            .add(R.id.fragmentContainerView, detailDescriptionFragment)
             .commit()
     }
 
     override fun navigateToFilterFragment() {
         val newsFilterFragment = NewsFilterFragment.newInstance()
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainerView, newsFilterFragment)
-            .addToBackStack(null)
+            .add(R.id.fragmentContainerView, newsFilterFragment)
             .commit()
     }
 }

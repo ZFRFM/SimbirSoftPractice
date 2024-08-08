@@ -89,19 +89,14 @@ class NewsFragment : Fragment() {
 
         val bundle =
             bundleOf(
-                DetailDescriptionFragment.IMAGES_VIEW_NEWS
-                    to news.newsImages,
-                DetailDescriptionFragment.TEXT_VIEW_NAME
-                    to news.nameText,
-                DetailDescriptionFragment.TEXT_VIEW_DESCRIPTION
-                    to news.descriptionText,
-                DetailDescriptionFragment.START_DATE
-                    to startDate,
-                DetailDescriptionFragment.FINISH_DATE
-                    to finishDate,
+                IMAGES_VIEW_NEWS to news.newsImages,
+                TEXT_VIEW_NAME to news.nameText,
+                TEXT_VIEW_DESCRIPTION to news.descriptionText,
+                START_DATE to startDate,
+                FINISH_DATE to finishDate,
             )
 
-        setFragmentResult(DetailDescriptionFragment.NEWS_POSITION_RESULT, bundle)
+        setFragmentResult(NEWS_POSITION_RESULT, bundle)
 
         newsNavigator?.navigateToDetailDescriptionFragment()
     }
@@ -112,6 +107,13 @@ class NewsFragment : Fragment() {
     }
 
     companion object {
+        const val IMAGES_VIEW_NEWS = "IMAGES_VIEW_NEWS"
+        const val TEXT_VIEW_NAME = "TEXT_VIEW_NAME"
+        const val TEXT_VIEW_DESCRIPTION = "TEXT_VIEW_DESCRIPTION"
+        const val START_DATE = "START_DATE"
+        const val FINISH_DATE = "FINISH_DATE"
+        const val NEWS_POSITION_RESULT = "NEWS_POSITION_RESULT"
+
         fun newInstance() = NewsFragment()
     }
 }
