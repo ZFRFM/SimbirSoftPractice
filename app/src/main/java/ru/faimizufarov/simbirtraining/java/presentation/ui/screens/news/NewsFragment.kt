@@ -14,6 +14,8 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import ru.faimizufarov.core.theme.HelpTheme
 import ru.faimizufarov.domain.models.News
+import ru.faimizufarov.news.NewsScreen
+import ru.faimizufarov.news.NewsViewModel
 import ru.faimizufarov.news.models.toNews
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsComposeBinding

@@ -38,6 +38,7 @@ android {
 
 dependencies {
     implementation(project(path = ":domain"))
+    implementation(project(path = ":data"))
     implementation(project(path = ":core"))
 
     //region Glide

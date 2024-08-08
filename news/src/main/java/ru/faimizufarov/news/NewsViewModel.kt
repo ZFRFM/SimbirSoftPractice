@@ -1,6 +1,6 @@
 @file:Suppress("ktlint:standard:no-wildcard-imports")
 
-package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news
+package ru.faimizufarov.news
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.Dispatchers
@@ -14,7 +14,7 @@ import ru.faimizufarov.data.repository.NewsRepositoryImpl
 import ru.faimizufarov.domain.models.News
 import ru.faimizufarov.domain.usecase.GetNewsUseCase
 import ru.faimizufarov.domain.usecase.SetBadgeCounterEmitValueUseCase
-import ru.faimizufarov.simbirtraining.java.presentation.ui.holders.GlobalNewsFilter
+import ru.faimizufarov.news.holders.GlobalNewsFilter
 
 class NewsViewModel(
     private val getNewsUseCase: GetNewsUseCase,

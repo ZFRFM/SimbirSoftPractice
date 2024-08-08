@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news
+package ru.faimizufarov.news
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
@@ -18,9 +18,9 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import ru.faimizufarov.core.theme.HelpTheme
 import ru.faimizufarov.news.composeunit.NewsItem
+import ru.faimizufarov.news.composeunit.NewsTopAppBar
 import ru.faimizufarov.news.models.NewsCompose
 import ru.faimizufarov.news.models.toNewsCompose
-import ru.faimizufarov.news.composeunit.NewsTopAppBar
 
 @Composable
 fun NewsScreen(
