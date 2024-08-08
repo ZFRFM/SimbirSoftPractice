@@ -34,10 +34,10 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlinx.datetime.todayIn
+import ru.faimizufarov.core.theme.Colors
+import ru.faimizufarov.core.theme.HelpTheme
 import ru.faimizufarov.news.R
 import ru.faimizufarov.news.models.NewsCompose
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.Colors
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.HelpTheme
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable

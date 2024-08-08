@@ -19,13 +19,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import ru.faimizufarov.core.theme.HelpTheme
 import ru.faimizufarov.simbirtraining.R
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.HelpTheme
 
 @Composable
-fun NewsTopAppBar(
-    clickFilter: () -> Unit,
-) {
+fun NewsTopAppBar(clickFilter: () -> Unit) {
     Box(
         modifier =
             Modifier

@@ -12,14 +12,14 @@ import androidx.lifecycle.ViewModelProvider
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import ru.faimizufarov.core.theme.HelpTheme
 import ru.faimizufarov.domain.models.News
+import ru.faimizufarov.news.models.toNews
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.FragmentNewsComposeBinding
 import ru.faimizufarov.simbirtraining.java.App
-import ru.faimizufarov.simbirtraining.java.presentation.models.toNews
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.detail_description.DetailDescriptionFragment
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news_filter.NewsFilterFragment
-import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.HelpTheme
 import javax.inject.Inject
 
 class NewsFragment : Fragment() {

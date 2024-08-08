@@ -51,7 +51,7 @@ android {
         buildConfig = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.13"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
 }
 
@@ -59,6 +59,7 @@ dependencies {
     implementation(project(path = ":domain"))
     implementation(project(path = ":data"))
     implementation(project(path = ":news"))
+    implementation(project(path = ":core"))
 
     implementation("androidx.activity:activity-ktx:1.9.1")
     implementation("androidx.compose.runtime:runtime-livedata:1.6.8")
