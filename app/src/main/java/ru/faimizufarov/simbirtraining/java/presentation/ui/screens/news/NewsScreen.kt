@@ -16,9 +16,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import ru.faimizufarov.simbirtraining.java.presentation.models.NewsCompose
-import ru.faimizufarov.simbirtraining.java.presentation.models.toNewsCompose
-import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news.composeunit.NewsItem
+import ru.faimizufarov.news.composeunit.NewsItem
+import ru.faimizufarov.news.models.NewsCompose
+import ru.faimizufarov.news.models.toNewsCompose
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news.composeunit.NewsTopAppBar
 import ru.faimizufarov.simbirtraining.java.presentation.ui.theme.HelpTheme
 
