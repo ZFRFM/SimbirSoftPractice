@@ -1,5 +1,6 @@
 package ru.faimizufarov.news
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,10 +22,16 @@ import javax.inject.Inject
 
 class NewsFragment : Fragment() {
     private lateinit var binding: FragmentNewsComposeBinding
+    private var newsNavigator: NewsNavigator? = null
 
     @Inject
     lateinit var newsViewModelFactory: NewsViewModelFactory
     private lateinit var newsViewModel: NewsViewModel
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        if (context is NewsNavigator) newsNavigator = context
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,10 +74,7 @@ class NewsFragment : Fragment() {
     }
 
     private fun openFilterFragment() {
-        parentFragmentManager.beginTransaction().add(
-            R.id.fragmentContainerView,
-            NewsFilterFragment.newInstance(),
-        ).commit()
+        newsNavigator?.navigateToFilterFragment()
     }
 
     private fun updateFeed(news: News) {
@@ -99,10 +103,12 @@ class NewsFragment : Fragment() {
 
         setFragmentResult(DetailDescriptionFragment.NEWS_POSITION_RESULT, bundle)
 
-        parentFragmentManager.beginTransaction().add(
-            R.id.fragmentContainerView,
-            DetailDescriptionFragment.newInstance(),
-        ).commit()
+        newsNavigator?.navigateToDetailDescriptionFragment()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        newsNavigator = null
     }
 
     companion object {
