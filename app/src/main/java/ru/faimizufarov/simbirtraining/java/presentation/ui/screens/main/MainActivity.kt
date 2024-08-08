@@ -5,11 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import ru.faimizufarov.news.NewsFragment
 import ru.faimizufarov.simbirtraining.R
 import ru.faimizufarov.simbirtraining.databinding.ActivityMainBinding
 import ru.faimizufarov.simbirtraining.java.App
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.categories.CategoriesFragment
-import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news.NewsFragment
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.profile.ProfileFragment
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.search.SearchFragment
 import javax.inject.Inject

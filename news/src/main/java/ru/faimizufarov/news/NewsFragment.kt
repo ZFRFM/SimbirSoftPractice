@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news
+package ru.faimizufarov.news
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,14 +14,9 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import ru.faimizufarov.core.theme.HelpTheme
 import ru.faimizufarov.domain.models.News
-import ru.faimizufarov.news.NewsScreen
-import ru.faimizufarov.news.NewsViewModel
+import ru.faimizufarov.news.databinding.FragmentNewsComposeBinding
+import ru.faimizufarov.news.di.NewsComponentProvider
 import ru.faimizufarov.news.models.toNews
-import ru.faimizufarov.simbirtraining.R
-import ru.faimizufarov.simbirtraining.databinding.FragmentNewsComposeBinding
-import ru.faimizufarov.simbirtraining.java.App
-import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.detail_description.DetailDescriptionFragment
-import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.news_filter.NewsFilterFragment
 import javax.inject.Inject
 
 class NewsFragment : Fragment() {
@@ -33,8 +28,8 @@ class NewsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        (requireActivity().applicationContext as App)
-            .appComponent
+        (requireActivity().applicationContext as NewsComponentProvider)
+            .provideNewsComponent()
             .injectNewsFragment(this)
         newsViewModel =
             ViewModelProvider(
