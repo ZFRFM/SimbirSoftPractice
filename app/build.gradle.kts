@@ -59,6 +59,7 @@ dependencies {
     implementation(project(path = ":domain"))
     implementation(project(path = ":data"))
     implementation(project(path = ":news"))
+    implementation(project(path = ":authorization"))
     implementation(project(path = ":core"))
 
     implementation("androidx.activity:activity-ktx:1.9.1")
