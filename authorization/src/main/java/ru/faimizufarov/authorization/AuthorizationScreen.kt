@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.authorization
+package ru.faimizufarov.authorization
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -47,8 +47,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import ru.faimizufarov.simbirtraining.R
-import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.authorization.composeunit.AuthorizationTopAppBar
+import ru.faimizufarov.authorization.composeunit.AuthorizationTopAppBar
 import ru.faimizufarov.core.theme.Colors
 import ru.faimizufarov.core.theme.HelpTheme
 
@@ -364,7 +363,7 @@ fun AuthorizationScreenBasePreview() =
         val password = "just_protect_it_compiler"
         Surface {
             AuthorizationScreenBase(
-                login = { /*TODO*/ },
+                login = { },
                 isSignInButtonEnabled = email.isNotEmpty() && password.isNotEmpty(),
                 setEmailText = { },
                 setPasswordText = { },

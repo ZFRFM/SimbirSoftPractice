@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.authorization.composeunit
+package ru.faimizufarov.authorization.composeunit
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -20,7 +20,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import ru.faimizufarov.simbirtraining.R
+import ru.faimizufarov.authorization.R
 import ru.faimizufarov.core.theme.Colors
 import ru.faimizufarov.core.theme.HelpTheme
 
@@ -30,16 +30,16 @@ fun AuthorizationTopAppBar(
 ) {
     Box(
         modifier =
-            Modifier
-                .background(MaterialTheme.colorScheme.primary)
-                .height(56.dp)
-                .fillMaxWidth(),
+        Modifier
+            .background(MaterialTheme.colorScheme.primary)
+            .height(56.dp)
+            .fillMaxWidth(),
     ) {
         Box(
             modifier =
-                Modifier
-                    .align(Alignment.CenterStart)
-                    .padding(end = 16.dp),
+            Modifier
+                .align(Alignment.CenterStart)
+                .padding(end = 16.dp),
             contentAlignment = Alignment.Center,
         ) {
             IconButton(onClick = backPressed) {

@@ -34,6 +34,7 @@ android {
 }
 
 dependencies {
+    implementation(project(path = ":core"))
 
     //region Compose
     implementation(platform("androidx.compose:compose-bom:2024.06.00"))

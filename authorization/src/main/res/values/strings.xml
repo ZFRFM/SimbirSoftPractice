@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="authorization">Авторизация</string>
+    <string name="hide_password">Скрыть пароль</string>
+    <string name="show_password">Показать пароль</string>
+    <string name="input_password">Введите пароль</string>
+    <string name="input_email">Введите e-mail</string>
+    <string name="sign_up">Регистрация</string>
+    <string name="forgot_password">Забыли пароль?</string>
+    <string name="sign_in">ВОЙТИ</string>
+    <string name="password">Пароль</string>
+    <string name="email">E-mail</string>
+    <string name="authorization_center_text">Или авторизуйтесь через приложение</string>
+    <string name="authorization_top_text">Для участия в мероприятиях войдите\nв приложение через социальые сети</string>
+</resources>
