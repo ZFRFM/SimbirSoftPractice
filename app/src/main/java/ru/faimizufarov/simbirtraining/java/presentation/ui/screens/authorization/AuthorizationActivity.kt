@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import ru.faimizufarov.authorization.AuthorizationScreen
+import ru.faimizufarov.authorization.AuthorizationViewModel
 import ru.faimizufarov.core.theme.HelpTheme
 import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.main.MainActivity
 

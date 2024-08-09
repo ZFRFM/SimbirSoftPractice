@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.authorization
+package ru.faimizufarov.authorization
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
