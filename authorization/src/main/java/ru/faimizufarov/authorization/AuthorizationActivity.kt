@@ -1,4 +1,4 @@
-package ru.faimizufarov.simbirtraining.java.presentation.ui.screens.authorization
+package ru.faimizufarov.authorization
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,10 +7,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
-import ru.faimizufarov.authorization.AuthorizationScreen
-import ru.faimizufarov.authorization.AuthorizationViewModel
 import ru.faimizufarov.core.theme.HelpTheme
-import ru.faimizufarov.simbirtraining.java.presentation.ui.screens.main.MainActivity
 
 class AuthorizationActivity : AppCompatActivity() {
     private val authorizationViewModel: AuthorizationViewModel by viewModels()
@@ -36,7 +33,10 @@ class AuthorizationActivity : AppCompatActivity() {
     }
 
     private fun navigateToMainActivityLocal() {
-        val intent = Intent(this, MainActivity::class.java)
+        val intent =
+            Intent(
+                "ru.faimizufarov.simbirtraining.java.presentation.ui.screens.main.MainActivity",
+            )
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
     }

@@ -22,9 +22,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SimbirSoftPractice"
         tools:targetApi="31">
-        <activity
-            android:name=".java.presentation.ui.screens.authorization.AuthorizationActivity"
-            android:exported="false"/>
 
         <service
             android:name=".java.presentation.services.CategoryLoaderService"
@@ -45,10 +42,12 @@
         </activity>
         <activity
             android:name=".java.presentation.ui.screens.main.MainActivity"
-            android:exported="false"
+            android:exported="true"
             android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
+                <action android:name="ru.faimizufarov.simbirtraining.java.presentation.ui.screens.main.MainActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
 
             <meta-data
